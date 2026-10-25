@@ -6,7 +6,17 @@ import '../router/auth_state_notifier.dart';
 import 'api_endpoints.dart';
 
 // Keys that must never appear in logs
-const _redactedKeys = {'password', 'refreshToken', 'accessToken', 'Authorization'};
+const _redactedKeys = {
+  'password',
+  'currentPassword',
+  'newPassword',
+  'otp',
+  'token',
+  'refreshToken',
+  'accessToken',
+  'Authorization',
+  'apikey',
+};
 
 class ApiClient {
   late final Dio _dio;

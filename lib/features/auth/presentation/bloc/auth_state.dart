@@ -30,19 +30,31 @@ class AuthUnauthenticated extends AuthState {
 
 class AuthError extends AuthState {
   final String message;
-  const AuthError(this.message);
+
+  /// Stable server error code (e.g. `OTP_INVALID`, `OTP_LOCKED`), when the
+  /// failure came from the API. UI decisions should key off this, not [message].
+  final String? code;
+
+  /// Present on rate-limited responses so the UI can show the real wait.
+  final int? retryAfterSeconds;
+
+  const AuthError(this.message, {this.code, this.retryAfterSeconds});
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, code, retryAfterSeconds];
 }
 
 // OTP send succeeded — navigate to OTP input screen
 class AuthOtpSent extends AuthState {
   final String phone;
-  const AuthOtpSent({required this.phone});
+
+  /// Server-authoritative cool-down before another send is allowed.
+  final int resendAfterSeconds;
+
+  const AuthOtpSent({required this.phone, this.resendAfterSeconds = 30});
 
   @override
-  List<Object?> get props => [phone];
+  List<Object?> get props => [phone, resendAfterSeconds];
 }
 
 // OTP verified for a NEW user — navigate to ProfileSetupScreen with signupToken

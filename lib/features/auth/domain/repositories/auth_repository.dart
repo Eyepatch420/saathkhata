@@ -2,11 +2,14 @@ import '../../data/models/auth_response_model.dart';
 import '../../data/models/upi_id_model.dart';
 import '../../data/models/user_model.dart';
 import '../delete_account_blocked_exception.dart';
+import '../otp_send_result.dart';
 
 abstract class AuthRepository {
   // ─── OTP ──────────────────────────────────────────────────────────────────
 
-  Future<void> sendOtp({required String phone});
+  /// Requests an OTP. Returns the server-provided timing so the UI can drive a
+  /// resend countdown that cannot be bypassed by changing the device clock.
+  Future<OtpSendResult> sendOtp({required String phone});
 
   Future<OtpVerifyResponseModel> verifyOtp({
     required String phone,

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/services/storage_service.dart';
@@ -7,6 +6,7 @@ import '../../../../core/services/push_notification_service.dart';
 import '../../../../core/utils/app_logger.dart';
 import '../../../notifications/presentation/bloc/notification_bloc.dart';
 import '../../../notifications/presentation/bloc/notification_event.dart';
+import '../../domain/auth_api_exception.dart';
 import '../../domain/repositories/auth_repository.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -35,6 +35,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthDeleteAccountRequested>(_onDeleteAccount);
   }
 
+  /// Builds a UI error state, preserving the server's stable error code so the
+  /// screens can react to the kind of failure instead of matching prose.
+  AuthError _errorState(Object error) {
+    if (error is AuthApiException) {
+      return AuthError(
+        error.message,
+        code: error.code,
+        retryAfterSeconds: error.retryAfterSeconds,
+      );
+    }
+    return AuthError(error.toString().replaceFirst('Exception: ', ''));
+  }
+
   Future<void> _onCheckStatus(
     AuthCheckStatusRequested event,
     Emitter<AuthState> emit,
@@ -47,9 +60,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         AppLogger.i(_m, 'Session restored — ${user.mobile} (${user.role})');
         final accessToken = await _storage.getAccessToken();
         if (accessToken != null) {
-          if (kDebugMode) {
-            AppLogger.i(_m, '🔑 [DEBUG] Bearer token: $accessToken');
-          }
           getIt<LedgerSocketService>().connect(accessToken);
           await getIt<PushNotificationService>().initialize();
           getIt<NotificationBloc>().add(LoadUnreadCount());
@@ -99,7 +109,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthAuthenticated(result.user));
     } catch (e) {
       AppLogger.e(_m, 'Email signup failed', e);
-      emit(AuthError(e.toString().replaceFirst('Exception: ', '')));
+      emit(_errorState(e));
     }
   }
 
@@ -139,7 +149,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthAuthenticated(user));
     } catch (e) {
       AppLogger.e(_m, 'Email login failed', e);
-      emit(AuthError(e.toString().replaceFirst('Exception: ', '')));
+      emit(_errorState(e));
     }
   }
 
@@ -150,11 +160,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AppLogger.i(_m, 'OTP send: ${event.phone}');
     emit(const AuthLoading());
     try {
-      await _authRepository.sendOtp(phone: event.phone);
-      emit(AuthOtpSent(phone: event.phone));
+      final result = await _authRepository.sendOtp(phone: event.phone);
+      emit(AuthOtpSent(
+        phone: event.phone,
+        resendAfterSeconds: result.resendAfterSeconds,
+      ));
     } catch (e) {
       AppLogger.e(_m, 'OTP send failed', e);
-      emit(AuthError(e.toString().replaceFirst('Exception: ', '')));
+      emit(_errorState(e));
     }
   }
 
@@ -192,9 +205,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         await _storage.saveFullUser(user);
         AppLogger.i(_m, 'OTP login — ${user.mobile} (${user.role})');
-        if (kDebugMode) {
-          AppLogger.i(_m, '🔑 [DEBUG] Bearer token: ${result.tokens!.accessToken}');
-        }
         getIt<LedgerSocketService>().connect(result.tokens!.accessToken);
         await getIt<PushNotificationService>().initialize();
         getIt<NotificationBloc>().add(LoadUnreadCount());
@@ -208,7 +218,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       AppLogger.e(_m, 'OTP verify failed', e);
-      emit(AuthError(e.toString().replaceFirst('Exception: ', '')));
+      emit(_errorState(e));
     }
   }
 
@@ -247,7 +257,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthAuthenticated(result.user));
     } catch (e) {
       AppLogger.e(_m, 'Signup failed', e);
-      emit(AuthError(e.toString().replaceFirst('Exception: ', '')));
+      emit(_errorState(e));
     }
   }
 
@@ -316,7 +326,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthAuthenticated(updated));
     } catch (e) {
       AppLogger.e(_m, 'Profile update failed', e);
-      emit(AuthError(e.toString().replaceFirst('Exception: ', '')));
+      emit(_errorState(e));
     }
   }
 }

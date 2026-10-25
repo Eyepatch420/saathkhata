@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
+import '../../domain/auth_api_exception.dart';
 import '../../domain/delete_account_blocked_exception.dart';
+import '../../domain/otp_send_result.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../models/auth_response_model.dart';
 import '../models/upi_id_model.dart';
@@ -15,11 +17,15 @@ class AuthRepositoryImpl implements AuthRepository {
   // ─── OTP ──────────────────────────────────────────────────────────────────
 
   @override
-  Future<void> sendOtp({required String phone}) async {
+  Future<OtpSendResult> sendOtp({required String phone}) async {
     try {
-      await _api.post(ApiEndpoints.sendOtp, data: {'phone': phone});
+      final response = await _api.post(
+        ApiEndpoints.sendOtp,
+        data: {'phone': phone},
+      );
+      return OtpSendResult.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {
-      throw Exception(ApiClient.extractErrorMessage(e));
+      throw _mapDioError(e);
     }
   }
 
@@ -35,7 +41,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return OtpVerifyResponseModel.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {
-      throw Exception(ApiClient.extractErrorMessage(e));
+      throw _mapDioError(e);
     }
   }
 
@@ -75,7 +81,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _api.post(ApiEndpoints.emailSignup, data: body);
       return AuthResponseModel.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {
-      throw Exception(ApiClient.extractErrorMessage(e));
+      throw _mapDioError(e);
     }
   }
 
@@ -94,7 +100,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return AuthResponseModel.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {
-      throw Exception(ApiClient.extractErrorMessage(e));
+      throw _mapDioError(e);
     }
   }
 
@@ -134,7 +140,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _api.post(ApiEndpoints.signup, data: body);
       return AuthResponseModel.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {
-      throw Exception(ApiClient.extractErrorMessage(e));
+      throw _mapDioError(e);
     }
   }
 
@@ -145,7 +151,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await _api.post(ApiEndpoints.logout, data: {'refreshToken': refreshToken});
     } on DioException catch (e) {
-      throw Exception(ApiClient.extractErrorMessage(e));
+      throw _mapDioError(e);
     }
   }
 
@@ -154,7 +160,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await _api.post(ApiEndpoints.deleteAccountOtp);
     } on DioException catch (e) {
-      throw Exception(ApiClient.extractErrorMessage(e));
+      throw _mapDioError(e);
     }
   }
 
@@ -172,7 +178,7 @@ class AuthRepositoryImpl implements AuthRepository {
             .toList();
         throw DeleteAccountBlockedException(blockers);
       }
-      throw Exception(ApiClient.extractErrorMessage(e));
+      throw _mapDioError(e);
     }
   }
 
@@ -211,7 +217,33 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _api.patch(ApiEndpoints.updateProfile, data: body);
       return UserModel.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {
-      throw Exception(ApiClient.extractErrorMessage(e));
+      throw _mapDioError(e);
+    }
+  }
+
+  /// Turns a Dio failure into a structured [AuthApiException].
+  ///
+  /// The backend's `error` code and additive `retryAfterSeconds` are preserved so
+  /// callers never have to match English message strings.
+  AuthApiException _mapDioError(DioException e) {
+    final body = e.response?.data;
+    if (body is Map<String, dynamic>) {
+      return AuthApiException(
+        body['message'] as String? ?? 'Something went wrong',
+        code: body['error'] as String?,
+        retryAfterSeconds: (body['retryAfterSeconds'] as num?)?.toInt(),
+      );
+    }
+
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.sendTimeout:
+      case DioExceptionType.receiveTimeout:
+        return const AuthApiException(
+          'The request timed out. Check your connection and try again.',
+        );
+      default:
+        return AuthApiException(e.message ?? 'Network error');
     }
   }
 }

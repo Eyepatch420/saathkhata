@@ -28,6 +28,13 @@ Open `.env` and add:
 LOCATIONIQ_API_KEY=pk.89bc3f5741b83c2e87bc594c481f9432
 ```
 
+> OTP delivery is backend-only. No UDO (or any other SMS provider) credentials
+> belong in this app — `.env` is bundled as a Flutter asset, so everything in it
+> ships inside the built binary. Set `OTP_PROVIDER` and the provider credentials
+> in `saath_khata_backend` instead; see `docs/UDO_OTP_API.md` for the API
+> reference and the backend's `tools/check-otp-key.sh` to validate a UDO key
+> without sending a message.
+
 > The `.env` file is bundled as a Flutter asset at build time.
 > Never commit it — it is already in `.gitignore`.
 

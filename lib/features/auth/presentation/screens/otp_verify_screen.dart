@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +17,17 @@ import '../bloc/auth_state.dart';
 class OtpVerifyScreen extends StatefulWidget {
   final String phone;
   final String role;
-  const OtpVerifyScreen({super.key, required this.phone, required this.role});
+
+  /// Server-provided cool-down. The countdown is cosmetic: the backend rejects
+  /// an early resend regardless of the device clock.
+  final int resendAfterSeconds;
+
+  const OtpVerifyScreen({
+    super.key,
+    required this.phone,
+    required this.role,
+    this.resendAfterSeconds = 30,
+  });
 
   @override
   State<OtpVerifyScreen> createState() => _OtpVerifyScreenState();
@@ -28,8 +40,18 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   );
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
 
+  Timer? _resendTimer;
+  int _secondsUntilResend = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _startResendCountdown(widget.resendAfterSeconds, notify: false);
+  }
+
   @override
   void dispose() {
+    _resendTimer?.cancel();
     for (final c in _controllers) {
       c.dispose();
     }
@@ -37,6 +59,26 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
       f.dispose();
     }
     super.dispose();
+  }
+
+  void _startResendCountdown(int seconds, {bool notify = true}) {
+    _resendTimer?.cancel();
+    void apply() => _secondsUntilResend = seconds < 0 ? 0 : seconds;
+    if (notify) {
+      setState(apply);
+    } else {
+      apply();
+    }
+    if (_secondsUntilResend == 0) return;
+
+    _resendTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      setState(() => _secondsUntilResend -= 1);
+      if (_secondsUntilResend <= 0) timer.cancel();
+    });
   }
 
   String get _otp => _controllers.map((c) => c.text).join();
@@ -60,13 +102,37 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   }
 
   void _resend(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    if (_secondsUntilResend > 0) return;
     for (final c in _controllers) {
       c.clear();
     }
     _focusNodes[0].requestFocus();
     context.read<AuthBloc>().add(AuthOtpSendRequested(phone: widget.phone));
-    AppToast.show(context, l10n.resendOtp, type: ToastType.success);
+  }
+
+  /// Clears the six boxes (used when the challenge is no longer usable).
+  void _clearDigits() {
+    for (final c in _controllers) {
+      c.clear();
+    }
+    _focusNodes[0].requestFocus();
+  }
+
+  /// Shows the failure and reacts to the *code*, not to the prose.
+  void _handleError(AuthError state) {
+    final code = state.code;
+    AppToast.show(context, state.message, type: ToastType.error);
+
+    // A wrong code is worth retrying with the same challenge: keep the boxes but
+    // clear them so the user can retype. A locked/expired challenge cannot be
+    // retried at all, so the input is cleared and the user must resend.
+    if (code == null || code == 'OTP_INVALID' || code == 'OTP_EXPIRED' || code == 'OTP_LOCKED') {
+      _clearDigits();
+    }
+
+    if (code == 'OTP_COOLDOWN' || code == 'OTP_RATE_LIMITED' || code == 'OTP_LOCKED') {
+      _startResendCountdown(state.retryAfterSeconds ?? 30);
+    }
   }
 
   Widget _buildDigitBox(BuildContext context, int index) {
@@ -140,12 +206,11 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
             AppRouter.profileSetup,
             extra: {'signupToken': state.signupToken, 'phone': state.phone},
           );
+        } else if (state is AuthOtpSent) {
+          // A resend restarts the server-provided cool-down.
+          _startResendCountdown(state.resendAfterSeconds);
         } else if (state is AuthError) {
-          AppToast.show(context, state.message, type: ToastType.error);
-          for (final c in _controllers) {
-            c.clear();
-          }
-          _focusNodes[0].requestFocus();
+          _handleError(state);
         }
       },
       builder: (context, state) {
@@ -226,7 +291,9 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                   const SizedBox(height: 16),
                   Center(
                     child: GestureDetector(
-                      onTap: isLoading ? null : () => _resend(context),
+                      onTap: (isLoading || _secondsUntilResend > 0)
+                          ? null
+                          : () => _resend(context),
                       child: RichText(
                         text: TextSpan(
                           text: "${l10n.noOtpReceived}  ",
@@ -235,9 +302,15 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                           ),
                           children: [
                             TextSpan(
-                              text: l10n.resendOtp,
+                              // The countdown comes from the server's cooldown,
+                              // so changing the device clock bypasses nothing.
+                              text: _secondsUntilResend > 0
+                                  ? '${l10n.resendOtp} (${_secondsUntilResend}s)'
+                                  : l10n.resendOtp,
                               style: AppTypography.bodySmall.copyWith(
-                                color: AppColors.primary,
+                                color: _secondsUntilResend > 0
+                                    ? AppColors.textSecondary
+                                    : AppColors.primary,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),

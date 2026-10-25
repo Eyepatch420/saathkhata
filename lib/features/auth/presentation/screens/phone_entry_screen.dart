@@ -54,7 +54,11 @@ class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
         if (state is AuthOtpSent) {
           context.push(
             AppRouter.otpVerify,
-            extra: {'phone': state.phone, 'role': widget.role},
+            extra: {
+              'phone': state.phone,
+              'role': widget.role,
+              'resendAfterSeconds': state.resendAfterSeconds,
+            },
           );
         } else if (state is AuthError) {
           AppToast.show(context, state.message, type: ToastType.error);
