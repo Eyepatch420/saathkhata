@@ -17,10 +17,7 @@ key.properties
 .LSOverride
 Icon
 *.docx
-/Users/hacksman/Developer/Flutter/saath_khata/.graphify
 
-/Users/hacksman/Developer/Flutter/saath_khata/docs
-/Users/hacksman/Developer/Flutter/saath_khata/lib/.graphify
 # ─── IDE / Editor ────────────────────────────────────────────────────────────
 *.iml
 *.ipr
@@ -34,6 +31,10 @@ Icon
 .cursor/
 .cursorignore
 .cursorindexingignore
+
+# graphify knowledge-graph output (generated, large, machine-specific)
+.graphify/
+graphify-out/
 
 # ─── Flutter / Dart / Pub ────────────────────────────────────────────────────
 **/doc/api/
