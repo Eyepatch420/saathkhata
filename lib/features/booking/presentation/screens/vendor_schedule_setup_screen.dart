@@ -424,13 +424,13 @@ class _DayTabState extends State<_DayTab> {
       return;
     }
     final result = await _showMergeConfirmDialog(context, selectedSlots);
-    if (result == null) return;
+    if (result == null || !mounted) return;
     widget.onMerge(_selected.toList(), result);
     setState(() {
       _selectMode = false;
       _selected.clear();
     });
-    if (context.mounted) AppToast.show(context, l10n.mergeSucceededToast, type: ToastType.success);
+    AppToast.show(context, l10n.mergeSucceededToast, type: ToastType.success);
   }
 
   @override
