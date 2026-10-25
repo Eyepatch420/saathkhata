@@ -199,18 +199,22 @@ the provider stopped at validation.
 The real key passed authentication (the provider moved on to payload
 validation), while the control key was rejected. **The key works.**
 
-Re-run the check any time:
+Re-run the check any time (the helper lives in the backend repo, where the UDO
+credentials belong — never in the Flutter app, whose `.env` ships inside the
+built binary):
 
 ```bash
-chmod +x tool/check_udo_otp_key.sh
-./tool/check_udo_otp_key.sh
+cd ../saath_khata_backend
+chmod +x tools/check-otp-key.sh
+./tools/check-otp-key.sh            # reads the backend .env
 ```
 
 ### What is still missing
 
 A real **`configId`**. Without it the provider cannot generate an OTP
 (`"Invalid Config ID"`). Copy it from the UDO dashboard (the OTP verification
-configuration, or Developer → API Key area) into `UDO_OTP_CONFIG_ID` in `.env`.
+configuration, or Developer → API Key area) into `UDO_OTP_CONFIG_ID` in the
+**backend** `.env` (the app never talks to UDO directly).
 A DLT-registered sender (`UDO_OTP_SENDER_ID`) is only needed if OTPs go out
 over `/v1/sms`.
 
@@ -218,8 +222,11 @@ over `/v1/sms`.
 
 ## 7. Where the credentials live
 
-`UDO_OTP_*` variables are in `.env` (git-ignored, not tracked) and documented
-in `.env.example`:
+`UDO_OTP_*` variables belong to the **backend** (`saath_khata_backend/.env`,
+git-ignored) — never to this Flutter app. The app's `.env` is bundled into the
+APK/IPA, so any key stored there ships to every user. The app only calls
+`POST /auth/otp/send` and `POST /auth/otp/verify`; the provider call is made by
+the backend adapter (`src/infrastructure/sms/udoOtp.provider.ts`).
 
 | Variable            | Purpose                                         |
 |---------------------|-------------------------------------------------|
@@ -229,28 +236,11 @@ in `.env.example`:
 | `UDO_OTP_CONFIG_ID` | Verification config — **required** to send OTPs |
 | `UDO_OTP_SENDER_ID` | DLT sender — required by `/v1/sms` only         |
 
-Dart access: `lib/core/config/udo_otp_config.dart`
-Direct client: `lib/features/auth/data/services/udo_otp_service.dart`
-
-```dart
-final udo = UdoOtpService();
-
-// Recommended OTP flow — needs apiKey + configId, no sender.
-final verifyId = await udo.generateOtp(phone: '9876543210'); // → 919876543210
-await udo.verifyOtp(verifyId: verifyId, otp: '123456');
-
-// Plain SMS — needs apiKey + senderId (UDO_OTP_SENDER_ID).
-final messageId = await udo.sendSms(
-  phone: '9876543210',
-  text: 'Payment of ₹500 recorded.',
-  type: 'OTP', // or 'TRANS' / 'PROMO'
-);
-```
-
-All three calls throw `UdoOtpException` carrying UDO's own message
-(`"Invalid Config ID"`, `"API Key is Invalid or Expired!"`, …). Call
-`UdoOtpConfig.isConfigured` first if you want to hide the flow when `.env` is
-incomplete.
+The backend reads them through `src/infrastructure/sms/otpConfig.ts` and builds
+the provider in `otpProvider.factory.ts`. Keep `OTP_PROVIDER=dummy` locally and
+set `OTP_PROVIDER=udo` only in an environment where the values above exist — a
+missing `configId` makes every send fail with `503 OTP_PROVIDER_ERROR`, and
+`OTP_PROVIDER=dummy` against `NODE_ENV=production` refuses to boot.
 
 ### Do I need `UDO_OTP_SENDER_ID`?
 
@@ -261,17 +251,16 @@ incomplete.
 | Generate + validate OTP | `POST /v1/verify`, `POST /v1/verify/validate` | ❌ sender/template/channel/expiry come from `configId` |
 | Send SMS (incl. `type: "OTP"`) | `POST /v1/sms` | ✅ required, else `"Please Select Sender ID"` |
 
-So leave `UDO_OTP_SENDER_ID` empty and the OTP flow still works end to end.
-`UdoOtpConfig.isConfigured` (key + configId) gates the OTP flow;
-`UdoOtpConfig.canSendSms` (key + sender) gates `sendSms()`, which throws a clear
-`UdoOtpException` when the sender is missing. In India the sender must be a
-DLT-registered header, and DLT template rules apply to `TRANS`/`PROMO` traffic.
+So leave `UDO_OTP_SENDER_ID` empty and the OTP flow still works end to end. In
+India the sender must be a DLT-registered header, and DLT template rules apply
+to `TRANS`/`PROMO` traffic.
 
 ## 8. Security caveat
 
 `.env` is listed under `flutter.assets` in `pubspec.yaml`, so anything in it is
-packaged inside the APK/IPA and can be extracted. UDO's own guidance is to keep
-the key on a server. The app's normal OTP flow already goes through the backend
-(`/auth/otp/send`, `/auth/otp/verify` — see `lib/core/network/api_endpoints.dart`);
-the direct `UdoOtpService` is for sandbox/direct use only. For production,
-proxy OTP calls through the backend and remove the key from the client bundle.
+packaged inside the APK/IPA and can be extracted. That is why no provider
+credentials are stored there: the former `UdoOtpService` /
+`udo_otp_config.dart` direct client was removed, and OTP traffic now goes only
+through the backend (`/auth/otp/send`, `/auth/otp/verify` — see
+`lib/core/network/api_endpoints.dart`). Only publishable keys such as
+`LOCATIONIQ_API_KEY` belong in the app `.env`.
