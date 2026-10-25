@@ -136,7 +136,9 @@ Live UDO generate/validate, real SMS delivery, staging-database verification, an
 
 **Up/down/up verified on a second scratch database** (`saath_khata_mig_test`, dropped afterwards): all 41 migrations applied from empty; two sample rows inserted (one provider-backed with `otp_hash IS NULL`); `migrate:down 20260041_otp_challenge_state.ts` succeeded and left the original 7-column table with `otp_hash NOT NULL`; `migrate:up` re-applied cleanly.
 
-**Production was not touched.** The `down()` path is destructive by design (it deletes provider-backed rows to restore `NOT NULL`), which is why the documented rollback is an application-only revert, never `migrate:rollback`.
+**Production was not touched by the migration work itself.** The `down()` path is destructive by design (it deletes provider-backed rows to restore `NOT NULL`), which is why the documented rollback is an application-only revert, never `migrate:rollback`.
+
+**Applied to production on 2026-10-25** by the deploy workflow (run `40223584862`, knex batch 26, one migration) with `OTP_PROVIDER` unset. The step is additive and left the previous build fully functional; the post-deploy health check returned `{"status":"ok","services":{"database":"ok","redis":"ok"}}`.
 
 **Cleanup:** `cleanup-otp` repeat job every 6 h on the existing `token-cleanup` queue, deleting terminal challenges older than 30 days in 5 000-row batches, plus a bounded per-phone opportunistic delete on the send path.
 
@@ -149,7 +151,7 @@ Live UDO generate/validate, real SMS delivery, staging-database verification, an
 | 1 | Real UDO **`configId`** | Cannot generate a real OTP; `OTP_PROVIDER` must stay unset in production until it exists. | Product / UDO |
 | 2 | UDO answers to plan §4.4: configured TTL, OTP length/format, whether a wrong validate consumes a provider attempt, whether a new generate invalidates the previous `verifyId`, IP allowlisting/concurrency caps, DLT template/sender on the config | Our local TTL/attempt budget stays authoritative either way, but the UX (how many provider-side attempts remain) is unknown. | UDO support |
 | 3 | Product decisions plan §25.3 (daily cap 10 vs 30, global cap 500 + paging, keep/retire `email-signup`, phone-change session revocation, staff role card, SMS budget owner) | Defaults are implemented (10 / 500 / keep / no revocation); confirmation needed. | Product |
-| 4 | VPS facts: pm2 mode (single vs cluster), `WORKERS_ENABLED`, proxy hop count, live `users.role` CHECK, current `otp_sessions` row count | Per-IP limits are only meaningful with the right proxy hops; cleanup only runs with a worker. | Ops |
+| 4 | VPS facts: ~~pm2 mode~~ (**answered: `fork`, single instance** — the deploy log lists `saath-khata-backend` id 3 in `fork` mode with one pid, so there is no cluster worker fleet and `WORKERS_ENABLED` does not apply); still open: proxy hop count (`req.ip` correctness for per-IP limits), live `users.role` CHECK, current `otp_sessions` row count | Per-IP limits are only meaningful with the right proxy hops; cleanup only runs with a worker (a single fork instance runs the token-cleanup queue, so it is covered). | Ops |
 | 5 | Staging sign-off: real-SMS send/receive on a controlled number, installed old-app compatibility, kill-switch rehearsal, release-bundle inspection | P5/P6 acceptance criteria; not executable from this environment. | QA / Ops |
 | 6 | Refresh-token rotation race (two concurrent refreshes can both mint pairs) | Not OTP-related; the same-second token collision that caused a **500** is fixed, but the full atomic revoke-and-issue is still open (P7). | Backend |
 
@@ -164,6 +166,8 @@ Live UDO generate/validate, real SMS delivery, staging-database verification, an
 | `UDO_OTP_API_KEY` | UDO dashboard API key (server-side only) |
 | `UDO_OTP_CONFIG_ID` | The verification-config ID for this account |
 | `OTP_PROVIDER` | `udo` **only after** staging verification; leave empty/unset before that |
+| `OTP_SENDING_ENABLED` | optional kill switch (`false` → instant `503 OTP_DISABLED` without a manual `.env` edit) |
+| `OTP_IP_HASH_SALT` | optional; required in production once `OTP_PROVIDER` is set (≥ 16 chars) |
 
 Existing secrets (VPS, Cloudinary, Gemini) are unchanged. Values are passed as environment variables and written with a non-echoing helper, so they never appear in the workflow log.
 
@@ -211,6 +215,18 @@ curl -fsS http://127.0.0.1:3001/api/v1/health
 | Bad code release | Revert the commit and redeploy. The migration is additive, so older code keeps working against the migrated schema (`verified` is still maintained). |
 | Never | `npm run migrate:rollback` in production (the `down()` deletes provider-backed rows), and never `OTP_PROVIDER=dummy` in production. |
 
+### 6. Deploy workflow behaviour
+
+`appleboy/ssh-action` runs one script on the VPS. Since 2026-10-25 it:
+
+1. upserts the deployment secrets into `.env` (empty secret = line untouched, never echoed);
+2. **reconciles the checkout** — `git fetch`, stash any server-side drift (kept as `auto-stash before deploy <timestamp>`), print any server-local commits, then `git reset --hard origin/main`. A hand edit left on the server used to abort the deploy at `git pull` ("local changes would be overwritten"); that is no longer fatal and nothing is lost;
+3. `npm install` → `npm run build`;
+4. **validates the runtime config before restarting** — `validateEnv()` against the real `.env` with `NODE_ENV` mirrored from that file. A bad OTP/provider configuration (e.g. `OTP_PROVIDER=udo` without credentials, or a missing `OTP_IP_HASH_SALT`) aborts the deploy *before* `pm2 restart`, so the previous build keeps serving;
+5. runs `migrate:latest`;
+6. `pm2 restart saath-khata-backend --update-env`, then the health check;
+7. on a failed health check, dumps 50 log lines, **rolls back to the previous SHA** (reset → install → build → restart), re-checks health and fails the run either way.
+
 ---
 
 ## H. Readiness verdict
@@ -220,3 +236,5 @@ curl -fsS http://127.0.0.1:3001/api/v1/health
 Backend typecheck/build/tests pass, the migration is verified on a disposable database, the provider boundary is unit-tested with a fake HTTP layer, and the auth flows (wrong OTP, lockout, cooldown, purpose isolation, account deletion, phone change, signup replay) are covered by DB-backed tests. The Flutter client builds clean and its tests pass with the provider code removed.
 
 Production activation still requires the real `configId`, a staging SMS round-trip on a controlled number, the VPS facts in §F, and explicit deployment authorization. Those are environmental dependencies, not code gaps.
+
+**Production state after this deploy (2026-10-25, commit `303647a`):** the code and migration are live, the health check is green, and OTP is intentionally disabled — no `UDO_OTP_API_KEY` / `UDO_OTP_CONFIG_ID` / `OTP_PROVIDER` GitHub secret exists yet, so the workflow leaves those `.env` lines untouched and the OTP endpoints answer `503 OTP_DISABLED` while login by password and every other endpoint keep working. No SMS can be sent (and none can be charged) until the credentials are added.
