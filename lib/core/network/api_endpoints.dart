@@ -1,5 +1,15 @@
 class ApiEndpoints {
-  static const String baseUrl = 'http://10.0.2.2:3001/api/v1';
+  /// Base URL for every API call.
+  ///
+  /// Defaults to the Android-emulator loopback alias (`10.0.2.2` = the host
+  /// machine). Override at build time for a physical device on the same Wi-Fi
+  /// or for a released build:
+  ///
+  ///   flutter build apk --dart-define=API_BASE_URL=http://192.168.0.107:3001/api/v1
+  static const String baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://10.0.2.2:3001/api/v1',
+  );
 
   // Auth — OTP
   static const String sendOtp = '/auth/otp/send';
