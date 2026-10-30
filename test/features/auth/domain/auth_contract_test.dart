@@ -74,7 +74,8 @@ void main() {
     test('falls back to safe defaults when timing is omitted', () {
       final result = OtpSendResult.fromJson({'sent': true});
       expect(result.expiresInSeconds, 300);
-      expect(result.resendAfterSeconds, 30);
+      // A minute is the product resend cool-down when the server omits it.
+      expect(result.resendAfterSeconds, 60);
     });
   });
 }

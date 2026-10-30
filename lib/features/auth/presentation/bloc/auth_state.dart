@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../data/models/user_model.dart';
+import '../../domain/otp_send_origin.dart';
 
 abstract class AuthState extends Equatable {
   const AuthState();
@@ -54,14 +55,18 @@ class AuthOtpSent extends AuthState {
   /// How many digits the provider issued (UDO = 5). Drives the OTP input boxes.
   final int codeLength;
 
+  /// Which screen requested this code; only that screen may react to it.
+  final OtpSendOrigin origin;
+
   const AuthOtpSent({
     required this.phone,
-    this.resendAfterSeconds = 30,
+    this.resendAfterSeconds = 60,
     this.codeLength = 5,
+    this.origin = OtpSendOrigin.phoneEntry,
   });
 
   @override
-  List<Object?> get props => [phone, resendAfterSeconds, codeLength];
+  List<Object?> get props => [phone, resendAfterSeconds, codeLength, origin];
 }
 
 // OTP verified for a NEW user — navigate to ProfileSetupScreen with signupToken

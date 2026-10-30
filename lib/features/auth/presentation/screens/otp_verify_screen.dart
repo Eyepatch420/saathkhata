@@ -6,10 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
+import '../../../../core/utils/phone_utils.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/widgets/app_toast.dart';
+import '../../domain/otp_send_origin.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -29,7 +31,7 @@ class OtpVerifyScreen extends StatefulWidget {
     super.key,
     required this.phone,
     required this.role,
-    this.resendAfterSeconds = 30,
+    this.resendAfterSeconds = 60,
     this.codeLength = 5,
   });
 
@@ -38,32 +40,81 @@ class OtpVerifyScreen extends StatefulWidget {
 }
 
 class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
-  late final List<TextEditingController> _controllers = List.generate(
-    widget.codeLength,
-    (_) => TextEditingController(),
-  );
-  late final List<FocusNode> _focusNodes =
-      List.generate(widget.codeLength, (_) => FocusNode());
+  /// ONE controller holds the whole code. A single (invisible) text field laid
+  /// over the boxes is what makes system SMS autofill, keyboard paste and the
+  /// long-press paste menu work: Android hands the entire code to one input,
+  /// which the formatter trims to `codeLength` digits. Five separate fields can
+  /// never receive a multi-digit paste or an autofill event.
+  final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   Timer? _resendTimer;
   int _secondsUntilResend = 0;
 
+  /// Normalised once, so this screen, the verify call and the resend all use the
+  /// same canonical 10 digits — never `+91`, spaces or a trunk zero.
+  late String _phone;
+
+  /// Kept in state (not read from the widget) because a resend may be answered
+  /// with a different provider-side length.
+  late int _codeLength;
+
+  /// Blocks a double tap on the resend link while its request is in flight.
+  bool _isResending = false;
+
   @override
   void initState() {
     super.initState();
+    _phone = normalizeIndianPhone(widget.phone);
+    _codeLength = widget.codeLength > 0 ? widget.codeLength : 5;
     _startResendCountdown(widget.resendAfterSeconds, notify: false);
+    // Rebuild the boxes whenever the code — or the focus — changes.
+    _controller.addListener(_onCodeChanged);
+    _focusNode.addListener(_onFocusChanged);
+    // Open the keyboard immediately; autofill and paste need a focused input.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showKeyboard());
   }
 
   @override
   void dispose() {
     _resendTimer?.cancel();
-    for (final c in _controllers) {
-      c.dispose();
-    }
-    for (final f in _focusNodes) {
-      f.dispose();
-    }
+    _focusNode.removeListener(_onFocusChanged);
+    _controller.removeListener(_onCodeChanged);
+    _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
+  }
+
+  void _onCodeChanged() {
+    if (mounted) setState(() {});
+  }
+
+  void _onFocusChanged() {
+    if (mounted) setState(() {});
+  }
+
+  /// Brings the keyboard back up — including the case where Android's back
+  /// button dismissed it while the field kept focus.
+  ///
+  /// A plain `requestFocus()` is a no-op when the node already holds focus, and
+  /// that is exactly the state a dismissed keyboard leaves behind: tapping the
+  /// boxes then silently did nothing. Dropping focus first forces the text-input
+  /// connection to be re-attached, after which the keyboard shows again.
+  Future<void> _showKeyboard() async {
+    if (!mounted) return;
+    // `viewInsets.bottom` is the on-screen keyboard height: zero means it is
+    // hidden, which is the only case that needs the re-attach dance. Tapping
+    // while the keyboard is already up must not make it flicker.
+    final keyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+    if (_focusNode.hasFocus && keyboardVisible) return;
+    if (_focusNode.hasFocus) {
+      _focusNode.unfocus();
+      // EditableText tears its input connection down on the following frame.
+      await Future<void>.delayed(const Duration(milliseconds: 40));
+      if (!mounted) return;
+    }
+    _focusNode.requestFocus();
+    await SystemChannels.textInput.invokeMethod<void>('TextInput.show');
   }
 
   void _startResendCountdown(int seconds, {bool notify = true}) {
@@ -86,117 +137,178 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
     });
   }
 
-  String get _otp => _controllers.map((c) => c.text).join();
+  String get _otp => _controller.text;
 
-  void _onDigitChanged(int index, String value) {
-    if (value.isNotEmpty && index < widget.codeLength - 1) {
-      _focusNodes[index + 1].requestFocus();
-    }
-  }
+  /// True when this screen is the visible route: a screen buried underneath
+  /// must never show toasts or react to events that belong to the one on top.
+  bool get _isCurrentRoute => ModalRoute.of(context)?.isCurrent ?? false;
 
   void _submit(BuildContext context) {
     final otp = _otp;
     final l10n = AppLocalizations.of(context)!;
-    if (otp.length != widget.codeLength) {
+    if (otp.length != _codeLength) {
       AppToast.show(
         context,
-        l10n.enterAllDigits(widget.codeLength),
+        l10n.enterAllDigits(_codeLength),
         type: ToastType.warning,
       );
+      _showKeyboard();
       return;
     }
     context.read<AuthBloc>().add(
-      AuthOtpVerifyRequested(phone: widget.phone, otp: otp, role: widget.role),
+      AuthOtpVerifyRequested(phone: _phone, otp: otp, role: widget.role),
     );
   }
 
   void _resend(BuildContext context) {
-    if (_secondsUntilResend > 0) return;
-    for (final c in _controllers) {
-      c.clear();
-    }
-    _focusNodes[0].requestFocus();
-    context.read<AuthBloc>().add(AuthOtpSendRequested(phone: widget.phone));
+    if (_secondsUntilResend > 0 || _isResending) return;
+    _isResending = true;
+    // Deliberately do NOT clear the boxes here: if the server rejects the
+    // resend (cool-down, hourly cap, provider outage) a half-typed code must
+    // survive. The boxes are cleared only once a new code was really issued.
+    context.read<AuthBloc>().add(
+      AuthOtpSendRequested(phone: _phone, origin: OtpSendOrigin.resend),
+    );
   }
 
   /// Clears every box (used when the challenge is no longer usable).
   void _clearDigits() {
-    for (final c in _controllers) {
-      c.clear();
-    }
-    _focusNodes[0].requestFocus();
+    _controller.clear();
+    _showKeyboard();
+  }
+
+  /// Applies a confirmed resend: new cool-down, clean boxes, keyboard ready.
+  void _onResent(AuthOtpSent state) {
+    if (!mounted) return;
+    setState(() {
+      _isResending = false;
+      _phone = normalizeIndianPhone(state.phone);
+      if (state.codeLength > 0) _codeLength = state.codeLength;
+    });
+    _controller.clear();
+    _startResendCountdown(state.resendAfterSeconds);
+    _showKeyboard();
   }
 
   /// Shows the failure and reacts to the *code*, not to the prose.
   void _handleError(AuthError state) {
+    if (!mounted) return;
     final code = state.code;
+    _isResending = false;
     AppToast.show(context, state.message, type: ToastType.error);
 
-    // A wrong code is worth retrying with the same challenge: keep the boxes but
-    // clear them so the user can retype. A locked/expired challenge cannot be
-    // retried at all, so the input is cleared and the user must resend.
-    if (code == null || code == 'OTP_INVALID' || code == 'OTP_EXPIRED' || code == 'OTP_LOCKED') {
+    // Only failures that invalidate the submitted code clear the boxes. A
+    // network timeout or a provider outage (`code == null`) must never throw
+    // away what the user already typed.
+    const unusable = {
+      'OTP_INVALID',
+      'OTP_EXPIRED',
+      'OTP_LOCKED',
+      'OTP_ALREADY_USED',
+      'OTP_NOT_READY',
+      'OTP_VERIFY_IN_PROGRESS',
+    };
+    if (code != null && unusable.contains(code)) {
       _clearDigits();
+    } else {
+      _showKeyboard();
     }
 
-    if (code == 'OTP_COOLDOWN' || code == 'OTP_RATE_LIMITED' || code == 'OTP_LOCKED') {
-      _startResendCountdown(state.retryAfterSeconds ?? 30);
+    if (code == 'OTP_COOLDOWN' ||
+        code == 'OTP_RATE_LIMITED' ||
+        code == 'OTP_LOCKED') {
+      // Trust the server's window (it measures real elapsed time); fall back to
+      // this screen's cool-down, never to a shorter hard-coded value.
+      _startResendCountdown(
+        state.retryAfterSeconds ?? widget.resendAfterSeconds,
+      );
     }
   }
 
+  /// Leaves this screen without ever emptying the navigator.
+  void _goBack(BuildContext context) {
+    if (context.canPop()) {
+      context.pop();
+      return;
+    }
+    // Deep-linked straight to /otp-verify: there is no number screen below.
+    context.pushReplacement(AppRouter.phoneEntry, extra: widget.role);
+  }
+
+  /// One visual box. Typing/pasting/autofill all happen in the single hidden
+  /// field below, so the boxes are display-only.
   Widget _buildDigitBox(BuildContext context, int index) {
     final cs = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final code = _controller.text;
+    final digit = index < code.length ? code[index] : '';
+    final isActive = _focusNode.hasFocus && index == code.length;
+    // Five digits keep the design width; a longer provider-issued code shrinks
+    // the boxes so the row still fits on a narrow phone.
+    final boxWidth = _codeLength <= 5 ? 52.0 : 260.0 / _codeLength;
 
-    return KeyboardListener(
-      focusNode: FocusNode(),
-      onKeyEvent: (event) {
-        if (event is KeyDownEvent &&
-            event.logicalKey == LogicalKeyboardKey.backspace &&
-            _controllers[index].text.isEmpty &&
-            index > 0) {
-          _controllers[index - 1].clear();
-          _focusNodes[index - 1].requestFocus();
-        }
-      },
-      child: ClipRRect(
+    return Container(
+      width: boxWidth,
+      height: 60,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: cs.surface,
         borderRadius: BorderRadius.circular(14),
-        child: Container(
-          width: 52,
-          height: 60,
-          decoration: BoxDecoration(
-            color: cs.surface,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppColors.primary, width: 1.5),
-            boxShadow: isDark
-                ? null
-                : [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-          ),
-          child: TextField(
-            controller: _controllers[index],
-            focusNode: _focusNodes[index],
-            textAlign: TextAlign.center,
-            keyboardType: TextInputType.number,
-            maxLength: 1,
-            style: AppTypography.h2.copyWith(color: cs.onSurface),
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: const InputDecoration(
-              counterText: '',
-              border: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              contentPadding: EdgeInsets.zero,
-            ),
-            onChanged: (v) => _onDigitChanged(index, v),
-          ),
+        border: Border.all(
+          color: isActive ? AppColors.primary : AppColors.primary.withValues(alpha: 0.45),
+          width: isActive ? 2 : 1.5,
         ),
+        boxShadow: isDark
+            ? null
+            : [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
       ),
+      child: Text(
+        digit,
+        style: AppTypography.h2.copyWith(color: cs.onSurface),
+      ),
+    );
+  }
+
+  /// The single input that receives every digit.
+  ///
+  /// - `AutofillHints.oneTimeCode` lets Android offer the code from the SMS
+  ///   (system autofill / SMS Retriever consent sheet).
+  /// - It stays a normal, selectable text field, so the long-press menu and the
+  ///   keyboard's clipboard both paste the whole code into it; the formatter
+  ///   keeps the first `codeLength` digits and the boxes re-render.
+  Widget _buildCodeInput() {
+    return TextField(
+      controller: _controller,
+      focusNode: _focusNode,
+      // Focus is opened deliberately after the first frame (see _showKeyboard);
+      // `autofocus` would race with it and leave the field focused with no
+      // visible keyboard on some Android OEMs.
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.done,
+      autofillHints: const [AutofillHints.oneTimeCode],
+      enableInteractiveSelection: true,
+      maxLength: _codeLength,
+      showCursor: false,
+      cursorColor: Colors.transparent,
+      style: const TextStyle(color: Colors.transparent, fontSize: 1),
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(_codeLength),
+      ],
+      decoration: const InputDecoration(
+        counterText: '',
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        contentPadding: EdgeInsets.zero,
+      ),
+      onSubmitted: (_) => _submit(context),
     );
   }
 
@@ -210,16 +322,20 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
 
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
+        if (!mounted) return;
         if (state is AuthOtpVerifiedNewUser) {
+          if (!_isCurrentRoute) return;
           context.push(
             AppRouter.profileSetup,
             extra: {'signupToken': state.signupToken, 'phone': state.phone},
           );
         } else if (state is AuthOtpSent) {
-          // A resend restarts the server-provided cool-down.
-          _startResendCountdown(state.resendAfterSeconds);
+          // Only this screen's own resend belongs here. The number screen's
+          // first send is not this screen's business — reacting to every
+          // `AuthOtpSent` is what used to stack OTP screens on each resend.
+          if (state.origin == OtpSendOrigin.resend) _onResent(state);
         } else if (state is AuthError) {
-          _handleError(state);
+          if (_isCurrentRoute) _handleError(state);
         }
       },
       builder: (context, state) {
@@ -233,7 +349,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                 children: [
                   const SizedBox(height: 16),
                   GestureDetector(
-                    onTap: () => context.pop(),
+                    onTap: () => _goBack(context),
                     child: Icon(
                       Icons.arrow_back,
                       size: 24,
@@ -273,7 +389,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                       ),
                       children: [
                         TextSpan(
-                          text: '+91 ${widget.phone}',
+                          text: formatIndianPhone(_phone),
                           style: AppTypography.bodyMedium.copyWith(
                             color: AppColors.primary,
                             fontWeight: FontWeight.w600,
@@ -284,12 +400,30 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                   ),
                   const SizedBox(height: 36),
                   // Large square OTP boxes — one per digit issued by the provider
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: List.generate(
-                      6,
-                      (i) => _buildDigitBox(context, i),
-                    ),
+                  Stack(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: List.generate(
+                          _codeLength,
+                          (i) => _buildDigitBox(context, i),
+                        ),
+                      ),
+                      // Invisible, full-width input that owns the keyboard,
+                      // the SMS autofill and the paste menu.
+                      Positioned.fill(
+                        child: Opacity(opacity: 0, child: _buildCodeInput()),
+                      ),
+                      // Tapping anywhere on the boxes (re)opens the keyboard,
+                      // even when a system back-press hid it while the field
+                      // kept focus.
+                      Positioned.fill(
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: _showKeyboard,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 28),
                   PrimaryButton(
@@ -300,7 +434,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                   const SizedBox(height: 16),
                   Center(
                     child: GestureDetector(
-                      onTap: (isLoading || _secondsUntilResend > 0)
+                      onTap: (isLoading || _secondsUntilResend > 0 || _isResending)
                           ? null
                           : () => _resend(context),
                       child: RichText(

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
+import '../../../../core/utils/phone_utils.dart';
 import '../../domain/auth_api_exception.dart';
 import '../../domain/delete_account_blocked_exception.dart';
 import '../../domain/otp_send_result.dart';
@@ -18,10 +19,14 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<OtpSendResult> sendOtp({required String phone}) async {
+    // The backend accepts exactly 10 digits: never a `+91` prefix, a space or a
+    // trunk zero. Normalising here makes every path (keyboard, deep link,
+    // stored profile) produce the same request body.
+    final normalized = normalizeIndianPhone(phone);
     try {
       final response = await _api.post(
         ApiEndpoints.sendOtp,
-        data: {'phone': phone},
+        data: {'phone': normalized},
       );
       return OtpSendResult.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {
@@ -37,7 +42,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await _api.post(
         ApiEndpoints.verifyOtp,
-        data: {'phone': phone, 'otp': otp},
+        data: {'phone': normalizeIndianPhone(phone), 'otp': otp.trim()},
       );
       return OtpVerifyResponseModel.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {

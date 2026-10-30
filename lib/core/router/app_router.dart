@@ -216,7 +216,7 @@ class AppRouter {
           return OtpVerifyScreen(
             phone: extra['phone'] as String? ?? '',
             role: extra['role'] as String? ?? 'vendor',
-            resendAfterSeconds: (extra['resendAfterSeconds'] as num?)?.toInt() ?? 30,
+            resendAfterSeconds: (extra['resendAfterSeconds'] as num?)?.toInt() ?? 60,
             codeLength: (extra['codeLength'] as num?)?.toInt() ?? 5,
           );
         },

@@ -4,6 +4,7 @@ import '../../../../core/services/storage_service.dart';
 import '../../../../core/services/ledger_socket_service.dart';
 import '../../../../core/services/push_notification_service.dart';
 import '../../../../core/utils/app_logger.dart';
+import '../../../../core/utils/phone_utils.dart';
 import '../../../notifications/presentation/bloc/notification_bloc.dart';
 import '../../../notifications/presentation/bloc/notification_event.dart';
 import '../../domain/auth_api_exception.dart';
@@ -157,14 +158,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthOtpSendRequested event,
     Emitter<AuthState> emit,
   ) async {
-    AppLogger.i(_m, 'OTP send: ${event.phone}');
+    // Defence in depth: no caller may put a country code, spaces or a trunk
+    // zero on the wire — the backend only accepts the canonical 10 digits.
+    final phone = normalizeIndianPhone(event.phone);
+    AppLogger.i(_m, 'OTP send (${event.origin.name}) to $phone');
     emit(const AuthLoading());
     try {
-      final result = await _authRepository.sendOtp(phone: event.phone);
+      final result = await _authRepository.sendOtp(phone: phone);
       emit(AuthOtpSent(
-        phone: event.phone,
+        phone: phone,
         resendAfterSeconds: result.resendAfterSeconds,
         codeLength: result.codeLength,
+        origin: event.origin,
       ));
     } catch (e) {
       AppLogger.e(_m, 'OTP send failed', e);

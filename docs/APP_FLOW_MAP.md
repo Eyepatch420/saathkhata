@@ -34,7 +34,9 @@ Role card → /phone-entry {role} → POST /auth/otp/send {phone}
 ```
 
 - The OTP is **never** in the response: `{sent, expiresInSeconds, resendAfterSeconds}` only **[live]**.
-- The resend countdown comes from the server (`resendAfterSeconds`), not a hard-coded 30 s.
+- The resend countdown comes from the server (`resendAfterSeconds`), not a hard-coded value. The backend default is **60 s** (`OTP_COOLDOWN_SECONDS`).
+- The phone number is sent as exactly **10 digits**. The client strips `+91`, spaces, dashes and a leading trunk zero before the request, and the backend normalises again at the validation boundary.
+- A **resend never navigates**. `AuthOtpSendRequested` carries an origin (`phoneEntry` / `resend`) and `AuthOtpSent` echoes it, so the number screen stays silent while the OTP screen is on top. Back from the OTP screen always returns straight to the number screen — there is no second OTP screen on the stack.
 - Server-side controls verified live: cooldown → `429 OTP_COOLDOWN` + `retryAfterSeconds`; wrong code → `400 OTP_INVALID`; reusing a consumed code → `409 OTP_ALREADY_USED`; 3 wrong attempts burns the challenge.
 - Every code is **single-use** and purpose-scoped (`login`, `account_delete`, `phone_change`, `email_setup`), so an account-deletion code can never be replayed as a login **[code]** `otpConfig.ts`.
 

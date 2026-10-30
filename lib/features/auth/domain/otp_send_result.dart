@@ -21,7 +21,8 @@ class OtpSendResult {
 
   factory OtpSendResult.fromJson(Map<String, dynamic> json) => OtpSendResult(
         expiresInSeconds: (json['expiresInSeconds'] as num?)?.toInt() ?? 300,
-        resendAfterSeconds: (json['resendAfterSeconds'] as num?)?.toInt() ?? 30,
+        // A minute is the product default; the server's value always wins.
+        resendAfterSeconds: (json['resendAfterSeconds'] as num?)?.toInt() ?? 60,
         // Backend sends `codeLength`; older builds answered without it.
         codeLength: (json['codeLength'] as num?)?.toInt() ?? 5,
       );

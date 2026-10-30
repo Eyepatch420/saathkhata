@@ -179,7 +179,7 @@ The workflow preserves existing lines. Confirm these exist on the server:
 OTP_PROVIDER=udo
 OTP_SENDING_ENABLED=true
 OTP_IP_HASH_SALT=<random, >= 16 chars>
-OTP_COOLDOWN_SECONDS=30
+OTP_COOLDOWN_SECONDS=60
 OTP_MAX_PER_HOUR=5
 OTP_MAX_PER_DAY=10
 OTP_MAX_ATTEMPTS=3

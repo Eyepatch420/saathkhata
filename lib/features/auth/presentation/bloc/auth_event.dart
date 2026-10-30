@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../data/models/user_model.dart';
+import '../../domain/otp_send_origin.dart';
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -16,10 +17,18 @@ class AuthCheckStatusRequested extends AuthEvent {
 
 class AuthOtpSendRequested extends AuthEvent {
   final String phone;
-  const AuthOtpSendRequested({required this.phone});
+
+  /// Which screen asked for the code. The OTP screen sets [OtpSendOrigin.resend]
+  /// so its own request cannot be mistaken for the number screen's first send.
+  final OtpSendOrigin origin;
+
+  const AuthOtpSendRequested({
+    required this.phone,
+    this.origin = OtpSendOrigin.phoneEntry,
+  });
 
   @override
-  List<Object?> get props => [phone];
+  List<Object?> get props => [phone, origin];
 }
 
 class AuthOtpVerifyRequested extends AuthEvent {
