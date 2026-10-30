@@ -58,15 +58,27 @@ class AuthOtpSent extends AuthState {
   /// Which screen requested this code; only that screen may react to it.
   final OtpSendOrigin origin;
 
+  /// The challenge to verify. Kept for the whole authentication lifecycle so a
+  /// verify, a resend or a second device can never settle the wrong challenge.
+  final String? challengeId;
+
+  /// True when the server reused an existing challenge instead of sending an SMS
+  /// (the user went Back, or another device requested the code). Navigation and
+  /// the countdown behave identically — the code is already on the phone.
+  final bool resumed;
+
   const AuthOtpSent({
     required this.phone,
     this.resendAfterSeconds = 60,
     this.codeLength = 5,
     this.origin = OtpSendOrigin.phoneEntry,
+    this.challengeId,
+    this.resumed = false,
   });
 
   @override
-  List<Object?> get props => [phone, resendAfterSeconds, codeLength, origin];
+  List<Object?> get props =>
+      [phone, resendAfterSeconds, codeLength, origin, challengeId, resumed];
 }
 
 // OTP verified for a NEW user — navigate to ProfileSetupScreen with signupToken

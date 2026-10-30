@@ -35,14 +35,20 @@ class AuthOtpVerifyRequested extends AuthEvent {
   final String phone;
   final String otp;
   final String role;
+
+  /// Which challenge this code belongs to, as returned by `AuthOtpSent`.
+  /// Null for callers that predate the challenge contract.
+  final String? challengeId;
+
   const AuthOtpVerifyRequested({
     required this.phone,
     required this.otp,
     required this.role,
+    this.challengeId,
   });
 
   @override
-  List<Object?> get props => [phone, otp, role];
+  List<Object?> get props => [phone, otp, role, challengeId];
 }
 
 // ─── Signup (OTP-based — no password) ────────────────────────────────────────

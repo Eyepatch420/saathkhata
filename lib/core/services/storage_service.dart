@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../features/auth/data/models/user_model.dart';
@@ -8,6 +9,11 @@ class StorageService {
   // Hive box for non-sensitive prefs (locale only)
   static const String _boxName = 'saath_khata_prefs';
   static const String _localeKey = 'app_locale';
+
+  /// Stable, non-sensitive install identity for the OTP flow. It is *not* a
+  /// credential: the server only uses it to tell one device from another when the
+  /// same phone number is authenticating in two places at once.
+  static const String _otpDeviceIdKey = 'otp_device_id';
 
   // Flutter Secure Storage keys
   static const String _accessTokenKey = 'access_token';
@@ -44,6 +50,25 @@ class StorageService {
 
   String? getLocale() => _box.get(_localeKey) as String?;
   Future<void> setLocale(String localeCode) => _box.put(_localeKey, localeCode);
+
+  // ─── OTP device identity (Hive) ────────────────────────────────────────────
+
+  /// Returns this install's OTP device id, creating it on first use.
+  ///
+  /// Generated with `Random.secure()` so two installs can never collide, and kept
+  /// in Hive rather than secure storage because it is an identifier, not a secret.
+  /// A failure here must never block authentication, so callers treat `null` as
+  /// "unknown device" and the backend falls back to single-device behaviour.
+  Future<String?> getOrCreateOtpDeviceId() async {
+    final existing = _box.get(_otpDeviceIdKey) as String?;
+    if (existing != null && existing.length >= 8) return existing;
+
+    final random = Random.secure();
+    final bytes = List<int>.generate(16, (_) => random.nextInt(256));
+    final id = bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+    await _box.put(_otpDeviceIdKey, id);
+    return id;
+  }
 
   // ─── Onboarding flag ───────────────────────────────────────────────────────
 

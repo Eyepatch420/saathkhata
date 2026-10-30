@@ -30,6 +30,20 @@ void main() {
       );
     });
 
+    test('a code redeemed on another device asks for a new one, with the window', () {
+      const e = AuthApiException(
+        'This code was already used on another device. Request a new one shortly.',
+        code: 'OTP_ALREADY_USED',
+        retryAfterSeconds: 42,
+      );
+      expect(e.isOtpAlreadyUsed, isTrue);
+      expect(e.requiresNewOtp, isTrue);
+      // Not a wrong code: the input must be cleared, not retried as-is.
+      expect(e.isOtpInvalid, isFalse);
+      // The server's cool-down drives the resend countdown.
+      expect(e.retryAfterSeconds, 42);
+    });
+
     test('provider/disabled failures are distinguishable from a wrong code', () {
       for (final code in [
         'OTP_PROVIDER_UNAVAILABLE',
@@ -76,6 +90,29 @@ void main() {
       expect(result.expiresInSeconds, 300);
       // A minute is the product resend cool-down when the server omits it.
       expect(result.resendAfterSeconds, 60);
+    });
+
+    test('carries the challenge identity and the resume flag', () {
+      final result = OtpSendResult.fromJson({
+        'sent': true,
+        'expiresInSeconds': 240,
+        'resendAfterSeconds': 31,
+        'codeLength': 5,
+        'challengeId': 'a3f1c2d4-0000-4000-8000-000000000001',
+        'resumed': true,
+        'adopted': true,
+      });
+      expect(result.challengeId, 'a3f1c2d4-0000-4000-8000-000000000001');
+      expect(result.resumed, isTrue);
+      expect(result.adopted, isTrue);
+      // A resumed challenge keeps the *remaining* TTL, not a fresh one.
+      expect(result.expiresInSeconds, 240);
+    });
+
+    test('a pre-challenge server response still yields a usable result', () {
+      final result = OtpSendResult.fromJson({'sent': true, 'resendAfterSeconds': 60});
+      expect(result.challengeId, isNull);
+      expect(result.resumed, isFalse);
     });
   });
 }

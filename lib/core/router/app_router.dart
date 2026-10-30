@@ -218,6 +218,9 @@ class AppRouter {
             role: extra['role'] as String? ?? 'vendor',
             resendAfterSeconds: (extra['resendAfterSeconds'] as num?)?.toInt() ?? 60,
             codeLength: (extra['codeLength'] as num?)?.toInt() ?? 5,
+            // Identifies exactly which challenge this screen is settling, so a
+            // second device cannot consume it and a Back-then-return resumes it.
+            challengeId: extra['challengeId'] as String?,
           );
         },
       ),

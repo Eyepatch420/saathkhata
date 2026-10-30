@@ -18,7 +18,7 @@ class AuthRepositoryImpl implements AuthRepository {
   // ─── OTP ──────────────────────────────────────────────────────────────────
 
   @override
-  Future<OtpSendResult> sendOtp({required String phone}) async {
+  Future<OtpSendResult> sendOtp({required String phone, String? deviceId}) async {
     // The backend accepts exactly 10 digits: never a `+91` prefix, a space or a
     // trunk zero. Normalising here makes every path (keyboard, deep link,
     // stored profile) produce the same request body.
@@ -26,7 +26,12 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await _api.post(
         ApiEndpoints.sendOtp,
-        data: {'phone': normalized},
+        data: {
+          'phone': normalized,
+          // Omitted entirely when unknown, so the payload stays identical to the
+          // pre-challenge contract for a client that cannot supply one.
+          if (deviceId != null && deviceId.isNotEmpty) 'deviceId': deviceId,
+        },
       );
       return OtpSendResult.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {
@@ -38,11 +43,18 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<OtpVerifyResponseModel> verifyOtp({
     required String phone,
     required String otp,
+    String? challengeId,
+    String? deviceId,
   }) async {
     try {
       final response = await _api.post(
         ApiEndpoints.verifyOtp,
-        data: {'phone': normalizeIndianPhone(phone), 'otp': otp.trim()},
+        data: {
+          'phone': normalizeIndianPhone(phone),
+          'otp': otp.trim(),
+          if (challengeId != null && challengeId.isNotEmpty) 'challengeId': challengeId,
+          if (deviceId != null && deviceId.isNotEmpty) 'deviceId': deviceId,
+        },
       );
       return OtpVerifyResponseModel.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {

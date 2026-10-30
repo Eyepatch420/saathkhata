@@ -9,11 +9,19 @@ abstract class AuthRepository {
 
   /// Requests an OTP. Returns the server-provided timing so the UI can drive a
   /// resend countdown that cannot be bypassed by changing the device clock.
-  Future<OtpSendResult> sendOtp({required String phone});
+  ///
+  /// [deviceId] is an opaque per-install identity. When the same number is live on
+  /// another device, it lets the server answer with a challenge for *this* device
+  /// instead of replacing (or rejecting) the other one.
+  Future<OtpSendResult> sendOtp({required String phone, String? deviceId});
 
+  /// Verifies a code. [challengeId] identifies exactly which challenge is being
+  /// settled, so concurrent sessions for one number cannot consume each other.
   Future<OtpVerifyResponseModel> verifyOtp({
     required String phone,
     required String otp,
+    String? challengeId,
+    String? deviceId,
   });
 
   // ─── Email signup (no OTP required) ──────────────────────────────────────

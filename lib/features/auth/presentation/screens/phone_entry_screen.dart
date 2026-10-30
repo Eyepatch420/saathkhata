@@ -63,6 +63,9 @@ class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
         'role': widget.role,
         'resendAfterSeconds': state.resendAfterSeconds,
         'codeLength': state.codeLength,
+        // The server may answer with an existing challenge (`resumed`) when this
+        // number was already sent a code — the screen then settles that one.
+        'challengeId': state.challengeId,
       },
     );
     // The OTP screen popped: accept a new "send" from this screen again.

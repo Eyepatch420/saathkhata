@@ -164,16 +164,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AppLogger.i(_m, 'OTP send (${event.origin.name}) to $phone');
     emit(const AuthLoading());
     try {
-      final result = await _authRepository.sendOtp(phone: phone);
+      final deviceId = await _otpDeviceId();
+      final result = await _authRepository.sendOtp(phone: phone, deviceId: deviceId);
+      AppLogger.i(
+        _m,
+        'OTP send OK — challenge ${result.challengeId} '
+        '${result.resumed ? '(resumed, no SMS)' : '(new SMS)'}',
+      );
       emit(AuthOtpSent(
         phone: phone,
         resendAfterSeconds: result.resendAfterSeconds,
         codeLength: result.codeLength,
         origin: event.origin,
+        challengeId: result.challengeId,
+        resumed: result.resumed,
       ));
     } catch (e) {
       AppLogger.e(_m, 'OTP send failed', e);
       emit(_errorState(e));
+    }
+  }
+
+  /// The install identity is optional: if storage is unavailable the flow still
+  /// works, it just loses per-device challenge fan-out.
+  Future<String?> _otpDeviceId() async {
+    try {
+      return await _storage.getOrCreateOtpDeviceId();
+    } catch (e) {
+      AppLogger.w(_m, 'OTP device id unavailable: $e');
+      return null;
     }
   }
 
@@ -187,6 +206,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final result = await _authRepository.verifyOtp(
         phone: event.phone,
         otp: event.otp,
+        challengeId: event.challengeId,
+        deviceId: await _otpDeviceId(),
       );
 
       if (result.existingUser) {

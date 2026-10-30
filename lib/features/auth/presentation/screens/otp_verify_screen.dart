@@ -27,12 +27,17 @@ class OtpVerifyScreen extends StatefulWidget {
   /// Digits the provider issued (UDO = 5), straight from `POST /auth/otp/send`.
   final int codeLength;
 
+  /// The challenge this screen settles. Every verify echoes it back, and a resend
+  /// replaces it, so two devices (or a re-entered number) can never mix codes.
+  final String? challengeId;
+
   const OtpVerifyScreen({
     super.key,
     required this.phone,
     required this.role,
     this.resendAfterSeconds = 60,
     this.codeLength = 5,
+    this.challengeId,
   });
 
   @override
@@ -59,6 +64,11 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   /// with a different provider-side length.
   late int _codeLength;
 
+  /// Current challenge id. Starts from the route (`/otp/send` created it) and is
+  /// replaced whenever a resend issues a new one — never left stale, otherwise the
+  /// next verify would be answered with "this challenge is gone".
+  String? _challengeId;
+
   /// Blocks a double tap on the resend link while its request is in flight.
   bool _isResending = false;
 
@@ -67,6 +77,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
     super.initState();
     _phone = normalizeIndianPhone(widget.phone);
     _codeLength = widget.codeLength > 0 ? widget.codeLength : 5;
+    _challengeId = widget.challengeId;
     _startResendCountdown(widget.resendAfterSeconds, notify: false);
     // Rebuild the boxes whenever the code — or the focus — changes.
     _controller.addListener(_onCodeChanged);
@@ -156,7 +167,12 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
       return;
     }
     context.read<AuthBloc>().add(
-      AuthOtpVerifyRequested(phone: _phone, otp: otp, role: widget.role),
+      AuthOtpVerifyRequested(
+        phone: _phone,
+        otp: otp,
+        role: widget.role,
+        challengeId: _challengeId,
+      ),
     );
   }
 
@@ -184,6 +200,9 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
       _isResending = false;
       _phone = normalizeIndianPhone(state.phone);
       if (state.codeLength > 0) _codeLength = state.codeLength;
+      // A resend either issued a new challenge or resumed the live one; either way
+      // this is now the challenge this screen settles.
+      if (state.challengeId != null) _challengeId = state.challengeId;
     });
     _controller.clear();
     _startResendCountdown(state.resendAfterSeconds);
@@ -216,7 +235,11 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
 
     if (code == 'OTP_COOLDOWN' ||
         code == 'OTP_RATE_LIMITED' ||
-        code == 'OTP_LOCKED') {
+        code == 'OTP_LOCKED' ||
+        // The code was redeemed (possibly on another device). The server sends the
+        // remaining cool-down, so the resend link unlocks at the right moment instead
+        // of leaving the user guessing.
+        code == 'OTP_ALREADY_USED') {
       // Trust the server's window (it measures real elapsed time); fall back to
       // this screen's cool-down, never to a shorter hard-coded value.
       _startResendCountdown(
