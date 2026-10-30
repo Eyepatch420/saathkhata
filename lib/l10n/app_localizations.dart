@@ -295,7 +295,7 @@ abstract class AppLocalizations {
   /// No description provided for @otpSentTo.
   ///
   /// In en, this message translates to:
-  /// **'Enter the 6-digit code sent to +91 {phoneNumber}'**
+  /// **'Enter the code sent to +91 {phoneNumber}'**
   String otpSentTo(String phoneNumber);
 
   /// No description provided for @email.
@@ -2721,6 +2721,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter all 6 digits'**
   String get enterAll6Digits;
+
+  /// No description provided for @enterAllDigits.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter all {count} digits'**
+  String enterAllDigits(int count);
 
   /// No description provided for @invalidEmailAddress.
   ///

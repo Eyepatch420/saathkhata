@@ -1391,6 +1391,11 @@ class AppLocalizationsGu extends AppLocalizations {
   String get enterAll6Digits => 'બધા 6 અંક દાખલ કરો';
 
   @override
+  String enterAllDigits(int count) {
+    return 'Enter all $count digits';
+  }
+
+  @override
   String get invalidEmailAddress => 'માન્ય ઈ-મેઇલ સરનામું દાખલ કરો';
 
   @override

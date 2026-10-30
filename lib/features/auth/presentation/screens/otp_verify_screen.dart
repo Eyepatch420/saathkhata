@@ -22,11 +22,15 @@ class OtpVerifyScreen extends StatefulWidget {
   /// an early resend regardless of the device clock.
   final int resendAfterSeconds;
 
+  /// Digits the provider issued (UDO = 5), straight from `POST /auth/otp/send`.
+  final int codeLength;
+
   const OtpVerifyScreen({
     super.key,
     required this.phone,
     required this.role,
     this.resendAfterSeconds = 30,
+    this.codeLength = 5,
   });
 
   @override
@@ -34,11 +38,12 @@ class OtpVerifyScreen extends StatefulWidget {
 }
 
 class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
-  final List<TextEditingController> _controllers = List.generate(
-    6,
+  late final List<TextEditingController> _controllers = List.generate(
+    widget.codeLength,
     (_) => TextEditingController(),
   );
-  final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
+  late final List<FocusNode> _focusNodes =
+      List.generate(widget.codeLength, (_) => FocusNode());
 
   Timer? _resendTimer;
   int _secondsUntilResend = 0;
@@ -84,7 +89,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   String get _otp => _controllers.map((c) => c.text).join();
 
   void _onDigitChanged(int index, String value) {
-    if (value.isNotEmpty && index < 5) {
+    if (value.isNotEmpty && index < widget.codeLength - 1) {
       _focusNodes[index + 1].requestFocus();
     }
   }
@@ -92,8 +97,12 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   void _submit(BuildContext context) {
     final otp = _otp;
     final l10n = AppLocalizations.of(context)!;
-    if (otp.length != 6) {
-      AppToast.show(context, l10n.enterAll6Digits, type: ToastType.warning);
+    if (otp.length != widget.codeLength) {
+      AppToast.show(
+        context,
+        l10n.enterAllDigits(widget.codeLength),
+        type: ToastType.warning,
+      );
       return;
     }
     context.read<AuthBloc>().add(
@@ -110,7 +119,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
     context.read<AuthBloc>().add(AuthOtpSendRequested(phone: widget.phone));
   }
 
-  /// Clears the six boxes (used when the challenge is no longer usable).
+  /// Clears every box (used when the challenge is no longer usable).
   void _clearDigits() {
     for (final c in _controllers) {
       c.clear();
@@ -274,7 +283,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                     ),
                   ),
                   const SizedBox(height: 36),
-                  // 6 large square OTP boxes
+                  // Large square OTP boxes — one per digit issued by the provider
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: List.generate(

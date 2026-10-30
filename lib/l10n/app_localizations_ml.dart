@@ -1401,6 +1401,11 @@ class AppLocalizationsMl extends AppLocalizations {
   String get enterAll6Digits => 'Enter all 6 digits';
 
   @override
+  String enterAllDigits(int count) {
+    return 'Enter all $count digits';
+  }
+
+  @override
   String get invalidEmailAddress => 'Enter a valid email address';
 
   @override

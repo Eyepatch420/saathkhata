@@ -217,6 +217,7 @@ class AppRouter {
             phone: extra['phone'] as String? ?? '',
             role: extra['role'] as String? ?? 'vendor',
             resendAfterSeconds: (extra['resendAfterSeconds'] as num?)?.toInt() ?? 30,
+            codeLength: (extra['codeLength'] as num?)?.toInt() ?? 5,
           );
         },
       ),

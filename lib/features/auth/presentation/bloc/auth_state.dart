@@ -51,10 +51,17 @@ class AuthOtpSent extends AuthState {
   /// Server-authoritative cool-down before another send is allowed.
   final int resendAfterSeconds;
 
-  const AuthOtpSent({required this.phone, this.resendAfterSeconds = 30});
+  /// How many digits the provider issued (UDO = 5). Drives the OTP input boxes.
+  final int codeLength;
+
+  const AuthOtpSent({
+    required this.phone,
+    this.resendAfterSeconds = 30,
+    this.codeLength = 5,
+  });
 
   @override
-  List<Object?> get props => [phone, resendAfterSeconds];
+  List<Object?> get props => [phone, resendAfterSeconds, codeLength];
 }
 
 // OTP verified for a NEW user — navigate to ProfileSetupScreen with signupToken

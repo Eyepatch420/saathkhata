@@ -102,7 +102,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String otpSentTo(String phoneNumber) {
-    return 'Enter the 6-digit code sent to +91 $phoneNumber';
+    return 'Enter the code sent to +91 $phoneNumber';
   }
 
   @override
@@ -1397,6 +1397,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterAll6Digits => 'Enter all 6 digits';
+
+  @override
+  String enterAllDigits(int count) {
+    return 'Enter all $count digits';
+  }
 
   @override
   String get invalidEmailAddress => 'Enter a valid email address';

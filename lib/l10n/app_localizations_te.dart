@@ -1401,6 +1401,11 @@ class AppLocalizationsTe extends AppLocalizations {
   String get enterAll6Digits => '6 అంకెలు పూర్తిగా నమోదు చేయండి';
 
   @override
+  String enterAllDigits(int count) {
+    return 'Enter all $count digits';
+  }
+
+  @override
   String get invalidEmailAddress =>
       'చెల్లుబాటు అయ్యే ఇమెయిల్ చిరునామా నమోదు చేయండి';
 

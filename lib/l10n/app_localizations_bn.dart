@@ -1391,6 +1391,11 @@ class AppLocalizationsBn extends AppLocalizations {
   String get enterAll6Digits => '৬টি সংখ্যাই দিন';
 
   @override
+  String enterAllDigits(int count) {
+    return 'Enter all $count digits';
+  }
+
+  @override
   String get invalidEmailAddress => 'বৈধ ইমেইল ঠিকানা দিন';
 
   @override

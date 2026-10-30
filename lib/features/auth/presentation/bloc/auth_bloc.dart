@@ -164,6 +164,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthOtpSent(
         phone: event.phone,
         resendAfterSeconds: result.resendAfterSeconds,
+        codeLength: result.codeLength,
       ));
     } catch (e) {
       AppLogger.e(_m, 'OTP send failed', e);

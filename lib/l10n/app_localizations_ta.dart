@@ -1407,6 +1407,11 @@ class AppLocalizationsTa extends AppLocalizations {
   String get enterAll6Digits => '6 இலக்கங்களையும் உள்ளிடவும்';
 
   @override
+  String enterAllDigits(int count) {
+    return 'Enter all $count digits';
+  }
+
+  @override
   String get invalidEmailAddress => 'சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்';
 
   @override

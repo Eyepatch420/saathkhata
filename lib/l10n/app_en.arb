@@ -32,7 +32,7 @@
   "verifyOtp": "Verify OTP",
   "verifyAndContinue": "Verify & Continue",
   "changePhoneNumber": "Change Phone Number",
-  "otpSentTo": "Enter the 6-digit code sent to +91 {phoneNumber}",
+  "otpSentTo": "Enter the code sent to +91 {phoneNumber}",
   "@otpSentTo": {
     "placeholders": {
       "phoneNumber": {
@@ -640,6 +640,14 @@
   "appAccess": "App access",
   "invalidPhoneNumber": "Enter a valid 10-digit Indian mobile number",
   "enterAll6Digits": "Enter all 6 digits",
+  "enterAllDigits": "Enter all {count} digits",
+  "@enterAllDigits": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "invalidEmailAddress": "Enter a valid email address",
   "passwordRequired": "Please enter your password",
   "nameRequired": "Name is required",
@@ -809,42 +817,62 @@
   "appointmentNext": "Next: {vendorName} · {date} at {time}",
   "@appointmentNext": {
     "placeholders": {
-      "vendorName": { "type": "String" },
-      "date": { "type": "String" },
-      "time": { "type": "String" }
+      "vendorName": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
     }
   },
   "outstandingShortLabel": "outstanding",
   "payViaUpiAmount": "Pay ₹{amount} via UPI",
   "@payViaUpiAmount": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "paymentSummarySkipped": "Paid {count} vendors, skipped {skipped}.",
   "@paymentSummarySkipped": {
     "placeholders": {
-      "count": { "type": "int" },
-      "skipped": { "type": "int" }
+      "count": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      }
     }
   },
   "paymentSummarySkippedSingular": "Paid {count} vendor, skipped {skipped}.",
   "@paymentSummarySkippedSingular": {
     "placeholders": {
-      "count": { "type": "int" },
-      "skipped": { "type": "int" }
+      "count": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      }
     }
   },
   "paymentSummaryComplete": "Paid all {count} vendors.",
   "@paymentSummaryComplete": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "paymentSummaryCompleteSingular": "Paid all {count} vendor.",
   "@paymentSummaryCompleteSingular": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "tapToAcceptOrDecline": "Tap to accept or decline",
@@ -854,7 +882,9 @@
   "waitingForVendorAcceptance": "Waiting for {name} to accept your request.",
   "@waitingForVendorAcceptance": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "vendorWantsToConnectAsCustomer": "A vendor wants to connect",
@@ -864,38 +894,46 @@
   "requestedTimeAgo": "Requested {time}",
   "@requestedTimeAgo": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "connectedVendorLinked": "Connected! {name} is now linked to your account.",
   "@connectedVendorLinked": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "requestDeclinedFrom": "Request from {name} declined.",
   "@requestDeclinedFrom": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "connectedCustomerLinked": "Connected! {name} is now linked to your business.",
   "@connectedCustomerLinked": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "processing": "Processing…",
   "retryButton": "Retry",
-
   "memberDiscountDescription": "Members on this tier get this discount on their dues.",
   "discountValueInvalid": "Enter a valid amount greater than 0",
   "percentageExceedsMax": "Percentage cannot exceed 100",
-
   "levelLabel": "Level {level}",
   "@levelLabel": {
     "placeholders": {
-      "level": { "type": "int" }
+      "level": {
+        "type": "int"
+      }
     }
   },
   "rename": "Rename",
@@ -907,7 +945,9 @@
   "chooseTierFor": "Choose a tier for {customerName}",
   "@chooseTierFor": {
     "placeholders": {
-      "customerName": { "type": "String" }
+      "customerName": {
+        "type": "String"
+      }
     }
   },
   "setButton": "Set",
@@ -917,17 +957,22 @@
   "customerRequestedTier": "{customerName} requested {tierName}",
   "@customerRequestedTier": {
     "placeholders": {
-      "customerName": { "type": "String" },
-      "tierName": { "type": "String" }
+      "customerName": {
+        "type": "String"
+      },
+      "tierName": {
+        "type": "String"
+      }
     }
   },
   "requestedTierAwaiting": "Requested {tierName} — awaiting approval",
   "@requestedTierAwaiting": {
     "placeholders": {
-      "tierName": { "type": "String" }
+      "tierName": {
+        "type": "String"
+      }
     }
   },
-
   "verificationConnecting": "Connecting to your bank…",
   "verificationVerifying": "Verifying transaction…",
   "verificationWaiting": "Waiting for confirmation…",
@@ -936,25 +981,32 @@
   "verificationElapsed": "{seconds}s  •  Do not close this screen",
   "@verificationElapsed": {
     "placeholders": {
-      "seconds": { "type": "int" }
+      "seconds": {
+        "type": "int"
+      }
     }
   },
   "txnLabel": "Txn: {txnId}",
   "@txnLabel": {
     "placeholders": {
-      "txnId": { "type": "String" }
+      "txnId": {
+        "type": "String"
+      }
     }
   },
   "paidAmountToRecipient": "₹{amount} paid to {name}",
   "@paidAmountToRecipient": {
     "placeholders": {
-      "amount": { "type": "String" },
-      "name": { "type": "String" }
+      "amount": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
     }
   },
   "verificationTimeoutBody": "We could not confirm your payment within 30 seconds. Your money may NOT have been debited — please check your bank statement before retrying.",
   "ifDebitedContactSupport": "If debited, contact support with Txn ID.",
-
   "thisMonthSubtitle": "This month",
   "billedNet": "Billed (net)",
   "exclDisputed": "excl. disputed",
@@ -964,42 +1016,53 @@
   "paymentCount": "{count} payment",
   "@paymentCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "paymentCountPlural": "{count} payments",
   "@paymentCountPlural": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "customersCount": "{count} customers",
   "@customersCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "rankedByOutstanding": "Ranked by outstanding balance",
   "collectedThisMonth": "₹{amount} this month",
   "@collectedThisMonth": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "collectedThisMonthShort": "₹{amount} this mo.",
   "@collectedThisMonthShort": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
-
   "categoryAll": "All",
   "findVendorsNearYou": "Find vendors near you",
   "searchByNameOrCategory": "Search by name, business name,\nor select a category above.",
   "noResultsForQuery": "No results for \"{query}\".\nTry a different name or category.",
   "@noResultsForQuery": {
     "placeholders": {
-      "query": { "type": "String" }
+      "query": {
+        "type": "String"
+      }
     }
   },
   "addressLabel": "Address",
@@ -1011,7 +1074,9 @@
   "labelCopied": "{label} copied!",
   "@labelCopied": {
     "placeholders": {
-      "label": { "type": "String" }
+      "label": {
+        "type": "String"
+      }
     }
   },
   "upiIdCopied": "UPI ID copied!",
@@ -1023,16 +1088,19 @@
   "requestSentToVendor": "Request sent! {name} will be notified.",
   "@requestSentToVendor": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "byOwnerName": "by {name}",
   "@byOwnerName": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
-
   "logOut": "Log out",
   "confirmLogoutTitle": "Log out",
   "areYouSureLogout": "Are you sure you want to log out?",
@@ -1043,26 +1111,30 @@
   "scanToPayName": "Scan to pay {name}",
   "@scanToPayName": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "salarySingle": "Salary",
   "advanceSingle": "Advance",
-
   "customersTitle": "Customers",
   "balanceDue": "₹{balance} due",
   "@balanceDue": {
     "placeholders": {
-      "balance": { "type": "String" }
+      "balance": {
+        "type": "String"
+      }
     }
   },
   "recordDeliveryTooltip": "Record delivery",
   "viewLedgerTooltip": "View ledger",
-
   "staffRoleSubtitle": "Staff · {name}",
   "@staffRoleSubtitle": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "recordDelivery": "Amount Pending",
@@ -1071,7 +1143,6 @@
   "collectPaymentSubtitle": "Customer paid — reduce their khata",
   "viewAll2": "View all",
   "noCustomersStaff": "No customers yet",
-
   "myVendorsSection": "My Vendors",
   "shopsYouBuyFrom": "Shops you buy from",
   "awaitingAcceptanceTitle": "Awaiting Acceptance",
@@ -1087,85 +1158,99 @@
   "nicknameOptionalLabel": "Nickname (optional)",
   "howYouKnowCustomer": "How you know this customer",
   "requestSentWillBeNotified": "Request sent! They will be notified to confirm.",
-
   "outstandingTitle": "Outstanding",
   "customersWithDues": "{count}+ customers with dues",
   "@customersWithDues": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "dueLabel": "due",
-
   "collectedTodayTitle": "Collected Today",
   "paymentsCountSubtitle": "{count}+ payments",
   "@paymentsCountSubtitle": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "noPaymentsYetSubtitle": "No payments yet",
-
   "removeLedgerVendorContent": "This will deactivate your link with {name}. Both parties will lose access to this shared ledger.",
   "@removeLedgerVendorContent": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "removeLedgerCustomerContent": "This will remove your connection with {name}.",
   "@removeLedgerCustomerContent": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "offlineUpdatesPaused": "Offline — updates paused",
-
   "exportStatementTitle": "Export Statement",
   "chooseExportDateRange": "Choose the date range to include in the PDF.",
   "last7DaysRange": "Entries from the past 7 days",
   "last30DaysRange": "Entries from the past 30 days",
   "last3MonthsRange": "Entries from the past 3 months",
   "completeLedgerHistory": "Complete ledger history",
-
   "appAccessActive": "Active · {phone}",
   "@appAccessActive": {
     "placeholders": {
-      "phone": { "type": "String" }
+      "phone": {
+        "type": "String"
+      }
     }
   },
   "appAccessDisabled": "Disabled",
   "appAccessGranted": "{name} can now log in with {phone}",
   "@appAccessGranted": {
     "placeholders": {
-      "name": { "type": "String" },
-      "phone": { "type": "String" }
+      "name": {
+        "type": "String"
+      },
+      "phone": {
+        "type": "String"
+      }
     }
   },
   "appAccessRevoked": "App access revoked for {name}",
   "@appAccessRevoked": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "appAccessDescription": "When on, {name} logs in with their own number ({phone}) and can record deliveries & payments and show their own QR — but cannot change attendance, add customers, or see other staff.",
   "@appAccessDescription": {
     "placeholders": {
-      "name": { "type": "String" },
-      "phone": { "type": "String" }
+      "name": {
+        "type": "String"
+      },
+      "phone": {
+        "type": "String"
+      }
     }
   },
-
   "paymentHistoryTitle": "Payment History",
   "couldNotLoadPaymentHistory": "Could not load payment history",
-
   "voicePleaseCheck": "Please check",
-
   "navHome": "Home",
   "qty": "Qty",
   "totalRupees": "Total: ₹{amount}",
   "@totalRupees": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "selectCustomerFirst": "Select a customer first",
@@ -1175,16 +1260,19 @@
   "deliveryRecordedFor": "Delivery recorded for {name}",
   "@deliveryRecordedFor": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "paymentCollectedFrom": "Payment collected from {name}",
   "@paymentCollectedFrom": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
-
   "manageSchedule": "Manage Schedule",
   "bookingsTab": "Bookings",
   "bySlotTab": "By Slot",
@@ -1193,7 +1281,9 @@
   "noSlotsForDay": "No slots for {day}",
   "@noSlotsForDay": {
     "placeholders": {
-      "day": { "type": "String" }
+      "day": {
+        "type": "String"
+      }
     }
   },
   "tapAddSlotHint": "Tap \"Add Slot\" to set your availability",
@@ -1205,7 +1295,9 @@
   "deleteSlotConfirm": "Remove the {time} slot?",
   "@deleteSlotConfirm": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "endTimeAfterStart": "End time must be after start time",
@@ -1225,31 +1317,40 @@
   "bookingsCount": "{count} booking",
   "@bookingsCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "bookingsCountPlural": "{count} bookings",
   "@bookingsCountPlural": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "pendingCountLabel": "{count} pending",
   "@pendingCountLabel": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "slotTimeRange": "{start} – {end}",
   "@slotTimeRange": {
     "placeholders": {
-      "start": { "type": "String" },
-      "end": { "type": "String" }
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
     }
   },
   "keepButton": "Keep",
   "deleteButton": "Delete",
-
   "weeklyTemplateTab": "Weekly Template",
   "calendarTab": "Calendar",
   "usingWeeklyTemplate": "Using weekly template",
@@ -1267,9 +1368,15 @@
   "replicateResultToast": "Applied to {applied} dates, skipped {skipped} already customized, {failed} failed",
   "@replicateResultToast": {
     "placeholders": {
-      "applied": { "type": "int" },
-      "skipped": { "type": "int" },
-      "failed": { "type": "int" }
+      "applied": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
     }
   },
   "selectModeButton": "Select",
@@ -1281,8 +1388,12 @@
   "confirmMergeMessage": "This will merge the selected slots into {start} – {end}.",
   "@confirmMergeMessage": {
     "placeholders": {
-      "start": { "type": "String" },
-      "end": { "type": "String" }
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
     }
   },
   "capacityLabel": "Capacity",
@@ -1290,14 +1401,20 @@
   "bookedOfCapacity": "{count}/{capacity} booked",
   "@bookedOfCapacity": {
     "placeholders": {
-      "count": { "type": "int" },
-      "capacity": { "type": "int" }
+      "count": {
+        "type": "int"
+      },
+      "capacity": {
+        "type": "int"
+      }
     }
   },
   "overCapacityWarning": "Over capacity by {count}",
   "@overCapacityWarning": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "noSlotsVendorMayBeClosed": "No slots available — vendor may be closed on this date",
@@ -1305,25 +1422,24 @@
   "dateSavedToast": "Saved custom slots for this date",
   "dateClosedToast": "Date marked as closed",
   "mergeSucceededToast": "Slots merged — tap Save to apply",
-
   "membershipPlansTitle": "Membership Plans",
   "newPlanButton": "New Plan",
   "deletePlanTitle": "Delete plan?",
   "deletePlanConfirm": "\"{name}\" will be removed. This cannot be undone.",
   "@deletePlanConfirm": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "inactiveLabel": "Inactive",
   "noBenefitsAdded": "No benefits added.",
   "noMembershipPlans": "No membership plans yet",
   "tapNewPlanHint": "Tap \"New Plan\" to create your first one.",
-
   "membershipRequestsTitle": "Membership Requests",
   "noPendingRequests": "No pending requests",
   "customersCanApplyHint": "Customers can apply for membership\nfrom their ledger screen.",
-
   "membersTitle": "Members",
   "noMembersYet": "No members yet",
   "activeStat": "Active",
@@ -1333,16 +1449,19 @@
   "daysLeft": "{count}d left",
   "@daysLeft": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "daysLeftFull": "{count} days",
   "@daysLeftFull": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
-
   "planNameLabel": "Plan name",
   "planNameHint": "e.g. Gold Membership",
   "durationDaysLabel": "Duration (days)",
@@ -1360,11 +1479,12 @@
   "publishPlanButton": "Publish Plan",
   "planUpdatedToast": "Plan updated",
   "planPublishedToast": "Plan published",
-
   "vendorPlansTitle": "{vendorName} · Plans",
   "@vendorPlansTitle": {
     "placeholders": {
-      "vendorName": { "type": "String" }
+      "vendorName": {
+        "type": "String"
+      }
     }
   },
   "noPlansAvailable": "No plans available yet",
@@ -1372,7 +1492,9 @@
   "applyForPlan": "Apply for {planName}",
   "@applyForPlan": {
     "placeholders": {
-      "planName": { "type": "String" }
+      "planName": {
+        "type": "String"
+      }
     }
   },
   "messageToVendorOptional": "Message to vendor (optional)",
@@ -1386,21 +1508,26 @@
   "requestSentToName": "Request sent to {name}",
   "@requestSentToName": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
-
   "membershipDialogTitle": "Membership",
   "pendingPlanPrefix": "Pending: {planName}",
   "@pendingPlanPrefix": {
     "placeholders": {
-      "planName": { "type": "String" }
+      "planName": {
+        "type": "String"
+      }
     }
   },
   "enrollCustomer": "Enroll {name}",
   "@enrollCustomer": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "choosePlanHint": "Choose a plan to start their membership.",
@@ -1413,15 +1540,18 @@
   "daysLeftLabel": "{count} days left",
   "@daysLeftLabel": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
-
   "orderPlacedSuccess": "Order placed successfully!",
   "orderFromVendor": "Order from {vendorName}",
   "@orderFromVendor": {
     "placeholders": {
-      "vendorName": { "type": "String" }
+      "vendorName": {
+        "type": "String"
+      }
     }
   },
   "addItemButton": "Add item",
@@ -1435,16 +1565,19 @@
   "itemNumber": "Item {number}",
   "@itemNumber": {
     "placeholders": {
-      "number": { "type": "int" }
+      "number": {
+        "type": "int"
+      }
     }
   },
   "subtotalLabel": "Subtotal: ₹{amount}",
   "@subtotalLabel": {
     "placeholders": {
-      "amount": { "type": "String" }
+      "amount": {
+        "type": "String"
+      }
     }
   },
-
   "orderDetailsTitle": "Order Details",
   "proofPhotoLabel": "Proof photo",
   "tapToViewFullScreen": "Tap to view full screen",
@@ -1457,24 +1590,21 @@
   "photoUploadFailed": "Photo upload failed: {error}",
   "@photoUploadFailed": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "orderNoteLabel": "Order note",
   "customerLabel": "Customer",
-
   "ordersTitle": "Orders",
   "noOrdersYet": "No orders yet",
   "markDeliveredButton": "Mark Delivered",
-
   "myOrdersTitle": "My Orders",
-
   "deliverButton": "Deliver",
   "noPendingDeliveries": "No pending deliveries",
-
   "deliveriesTitle": "Deliveries",
   "monthlyStatementTitle": "Monthly Statement",
-
   "deliveryProofLabel": "Delivery proof",
   "replacePhotoButton": "Replace Photo",
   "attachProofButton": "Attach Proof",
@@ -1484,7 +1614,9 @@
   "itemLabel": "Item {number}",
   "@itemLabel": {
     "placeholders": {
-      "number": { "type": "int" }
+      "number": {
+        "type": "int"
+      }
     }
   },
   "amountRequired": "Amount *",
@@ -1492,40 +1624,44 @@
   "totalAmountLabel": "Total",
   "deactivate": "Deactivate",
   "activate": "Activate",
-  "customersCanApplyHint": "Customers can apply for membership\nfrom their ledger screen.",
-  "decline": "Decline",
-  "approve": "Approve",
   "activeStatLabel": "Active",
   "mrrStatLabel": "MRR",
   "expiringStatLabel": "Expiring",
-  "allPlansFilter": "All Plans",
-  "membershipLabel": "Membership",
-  "noMembership": "No membership",
   "closeLabel": "Close",
   "pendingPlanLabel": "Pending: {name}",
   "@pendingPlanLabel": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "customerRequestedPlan": "{customer} requested {plan}",
   "@customerRequestedPlan": {
     "placeholders": {
-      "customer": { "type": "String" },
-      "plan": { "type": "String" }
+      "customer": {
+        "type": "String"
+      },
+      "plan": {
+        "type": "String"
+      }
     }
   },
   "itemsCount": "Items ({count})",
   "@itemsCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "deliveryLabel": "Delivery",
   "markedDeliveredBy": "Marked delivered by {role}",
   "@markedDeliveredBy": {
     "placeholders": {
-      "role": { "type": "String" }
+      "role": {
+        "type": "String"
+      }
     }
   },
   "deliveriesHint": "Items delivered through orders. Tap an entry to see the items."

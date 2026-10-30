@@ -58,6 +58,7 @@ class _PhoneEntryScreenState extends State<PhoneEntryScreen> {
               'phone': state.phone,
               'role': widget.role,
               'resendAfterSeconds': state.resendAfterSeconds,
+              'codeLength': state.codeLength,
             },
           );
         } else if (state is AuthError) {
