@@ -24,8 +24,9 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final localeProvider = Provider.of<LocaleProvider>(context);
-    final currentLang =
-        localeProvider.locale.languageCode == 'hi' ? 'हिंदी' : 'English';
+    final currentLang = localeProvider.locale.languageCode == 'hi'
+        ? l10n.languageHindi
+        : l10n.languageEnglish;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settings)),
@@ -110,18 +111,18 @@ class SettingsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 12),
-                      _SectionLabel(label: 'Memberships'),
+                      _SectionLabel(label: l10n.membershipsLabel),
                       const SizedBox(height: 8),
                       _SettingsTile(
                         icon: Icons.workspace_premium_rounded,
-                        title: 'Membership Plans',
-                        subtitle: 'Create and manage your plans',
+                        title: l10n.membershipPlansTitle,
+                        subtitle: l10n.membershipPlansSubtitle,
                         onTap: () => context.push(AppRouter.membershipPlans),
                       ),
                       _SettingsTile(
                         icon: Icons.people_alt_rounded,
-                        title: 'Members',
-                        subtitle: 'Active members, MRR, expiring soon',
+                        title: l10n.membersTitle,
+                        subtitle: l10n.membersSubtitle,
                         onTap: () => context.push(AppRouter.membersDashboard),
                       ),
                       const _MembershipRequestsTile(),
@@ -138,12 +139,12 @@ class SettingsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 12),
-                      const _SectionLabel(label: 'Ledger Preferences'),
+                      _SectionLabel(label: l10n.ledgerPreferences),
                       const SizedBox(height: 8),
                       _SettingsTile(
                         icon: Icons.auto_awesome_rounded,
-                        title: 'Auto-Confirm Entries',
-                        subtitle: 'Manage per-vendor auto-confirm settings',
+                        title: l10n.autoConfirmEntries,
+                        subtitle: l10n.autoConfirmSettingsSubtitle,
                         onTap: () => context.push(AppRouter.ledgerPreferences),
                       ),
                     ],
@@ -240,19 +241,19 @@ class SettingsScreen extends StatelessWidget {
 
   void _showLanguagePicker(
       BuildContext context, AppLocalizations l10n, LocaleProvider provider) {
-    const languages = [
-      {'locale': 'en', 'native': 'English', 'label': 'English'},
-      {'locale': 'hi', 'native': 'हिन्दी', 'label': 'Hindi'},
-      {'locale': 'bn', 'native': 'বাংলা', 'label': 'Bengali'},
-      {'locale': 'mr', 'native': 'मराठी', 'label': 'Marathi'},
-      {'locale': 'ta', 'native': 'தமிழ்', 'label': 'Tamil'},
-      {'locale': 'te', 'native': 'తెలుగు', 'label': 'Telugu'},
-      {'locale': 'kn', 'native': 'ಕನ್ನಡ', 'label': 'Kannada'},
-      {'locale': 'gu', 'native': 'ગુજરાતી', 'label': 'Gujarati'},
-      {'locale': 'pa', 'native': 'ਪੰਜਾਬੀ', 'label': 'Punjabi'},
-      {'locale': 'ml', 'native': 'മലയാളം', 'label': 'Malayalam'},
-      {'locale': 'bho', 'native': 'भोजपुरी', 'label': 'Bhojpuri'},
-      {'locale': 'mai', 'native': 'मैथिली', 'label': 'Maithili'},
+    final languages = [
+      {'locale': 'en', 'native': 'English', 'label': l10n.languageEnglish},
+      {'locale': 'hi', 'native': 'हिन्दी', 'label': l10n.languageHindi},
+      {'locale': 'bn', 'native': 'বাংলা', 'label': l10n.languageBengali},
+      {'locale': 'mr', 'native': 'मराठी', 'label': l10n.languageMarathi},
+      {'locale': 'ta', 'native': 'தமிழ்', 'label': l10n.languageTamil},
+      {'locale': 'te', 'native': 'తెలుగు', 'label': l10n.languageTelugu},
+      {'locale': 'kn', 'native': 'ಕನ್ನಡ', 'label': l10n.languageKannada},
+      {'locale': 'gu', 'native': 'ગુજરાતી', 'label': l10n.languageGujarati},
+      {'locale': 'pa', 'native': 'ਪੰਜਾਬੀ', 'label': l10n.languagePunjabi},
+      {'locale': 'ml', 'native': 'മലയാളം', 'label': l10n.languageMalayalam},
+      {'locale': 'bho', 'native': 'भोजपुरी', 'label': l10n.languageBhojpuri},
+      {'locale': 'mai', 'native': 'मैथिली', 'label': l10n.languageMaithili},
     ];
     final currentCode = provider.locale.languageCode;
     final initialIndex =
@@ -520,6 +521,7 @@ class _MembershipRequestsTileState extends State<_MembershipRequestsTile> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return FutureBuilder<int>(
       future: _pendingCount,
       builder: (context, snap) {
@@ -531,10 +533,12 @@ class _MembershipRequestsTileState extends State<_MembershipRequestsTile> {
             tileColor: Theme.of(context).colorScheme.surface,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             leading: const Icon(Icons.how_to_reg_rounded, color: AppColors.primary),
-            title: Text('Membership Requests',
+            title: Text(l10n.membershipRequestsTitle,
                 style: AppTypography.labelLarge),
             subtitle: Text(
-              count > 0 ? '$count pending request${count == 1 ? '' : 's'}' : 'No pending requests',
+              count > 0
+                  ? l10n.pendingRequestsSummary(count)
+                  : l10n.noPendingRequests,
               style: AppTypography.bodySmall,
             ),
             trailing: count > 0

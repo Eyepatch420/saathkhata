@@ -108,7 +108,8 @@ class LedgerBalanceHeader extends StatelessWidget {
     final authState = context.read<AuthBloc>().state;
     if (authState is! AuthAuthenticated) return;
 
-    AppToast.show(context, 'Generating statement…', type: ToastType.info);
+    AppToast.show(context, AppLocalizations.of(context)!.generatingStatement,
+        type: ToastType.info);
 
     try {
       await LedgerStatementService.generateAndShare(
@@ -120,7 +121,8 @@ class LedgerBalanceHeader extends StatelessWidget {
       );
     } catch (e) {
       if (context.mounted) {
-        AppToast.show(context, 'Failed to generate PDF', type: ToastType.error);
+        AppToast.show(context, AppLocalizations.of(context)!.failedToGeneratePdf,
+            type: ToastType.error);
       }
     }
   }

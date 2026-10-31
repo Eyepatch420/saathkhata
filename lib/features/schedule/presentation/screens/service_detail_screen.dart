@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/localized_labels.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/schedule_model.dart';
 import '../cubit/schedule_cubit.dart';
 import 'subscribe_sheet.dart';
@@ -23,6 +25,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final svc = widget.service;
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +39,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                 if (v == 'deactivate') _deactivate(context);
               },
               itemBuilder: (_) => [
-                const PopupMenuItem(value: 'deactivate', child: Text('Deactivate')),
+                PopupMenuItem(value: 'deactivate', child: Text(l10n.deactivate)),
               ],
             ),
         ],
@@ -49,12 +52,13 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Subscribers',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(l10n.subscribersTitle,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold)),
               ElevatedButton.icon(
                 onPressed: () => _showSubscribeSheet(context),
                 icon: const Icon(Icons.person_add, size: 16),
-                label: const Text('Add Customer'),
+                label: Text(l10n.addCustomerButton),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
@@ -78,11 +82,11 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
               }
               final subs = (state as SubscriptionsLoaded).subscriptions;
               if (subs.isEmpty) {
-                return const Center(
+                return Center(
                   child: Padding(
-                    padding: EdgeInsets.all(32),
-                    child: Text('No subscribers yet',
-                        style: TextStyle(color: AppColors.textSecondary)),
+                    padding: const EdgeInsets.all(32),
+                    child: Text(l10n.noSubscribersYet,
+                        style: const TextStyle(color: AppColors.textSecondary)),
                   ),
                 );
               }
@@ -113,21 +117,21 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   }
 
   void _deactivate(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final servicesCubit = context.read<ServicesCubit>();
     bool submitting = false;
     showDialog(
       context: context,
       builder: (dialogContext) => StatefulBuilder(
         builder: (dialogContext, setDialogState) => AlertDialog(
-          title: const Text('Deactivate Service'),
-          content: const Text(
-              'This will stop all future deliveries. Active subscriptions will be unaffected until manually removed.'),
+          title: Text(l10n.deactivateServiceTitle),
+          content: Text(l10n.deactivateServiceMessage),
           actions: [
             TextButton(
                 onPressed: submitting
                     ? null
                     : () => Navigator.pop(dialogContext),
-                child: const Text('Cancel')),
+                child: Text(l10n.cancel)),
             ElevatedButton(
               onPressed: submitting
                   ? null
@@ -151,8 +155,8 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         color: Colors.white,
                       ),
                     )
-                  : const Text('Deactivate',
-                      style: TextStyle(color: Colors.white)),
+                  : Text(l10n.deactivate,
+                      style: const TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -167,6 +171,7 @@ class _InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
@@ -179,14 +184,15 @@ class _InfoCard extends StatelessWidget {
                   style: const TextStyle(color: AppColors.textSecondary)),
               const SizedBox(height: 12),
             ],
-            _row('Type', service.serviceType.label),
-            _row('Schedule', service.scheduleLabel),
-            _row('Auto Ledger Entry',
-                service.autoCreateLedgerEntry ? 'Yes' : 'No'),
-            _row('Status', service.isActive ? 'Active' : 'Inactive'),
+            _row(l10n.typeLabel, l10n.serviceTypeName(service.serviceType)),
+            _row(l10n.scheduleLabel, l10n.serviceScheduleName(service)),
+            _row(l10n.autoLedgerEntryLabel,
+                service.autoCreateLedgerEntry ? l10n.yesLabel : l10n.noLabel),
+            _row(l10n.statusLabel,
+                service.isActive ? l10n.active : l10n.inactive),
             const SizedBox(height: 8),
-            const Text('Items',
-                style: TextStyle(
+            Text(l10n.itemsLabel,
+                style: const TextStyle(
                     fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
             const SizedBox(height: 4),
             ...service.items.map((i) => _row(
@@ -221,6 +227,7 @@ class _SubscriberTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final fmt = DateFormat('d MMM');
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
@@ -236,20 +243,25 @@ class _SubscriberTile extends StatelessWidget {
                   Text(sub.customerName,
                       style: const TextStyle(fontWeight: FontWeight.w600)),
                   Text(
-                    '${sub.itemsSummary} · starts ${fmt.format(sub.startDate)}',
+                    l10n.subscriptionStartsOn(
+                      sub.itemsSummary,
+                      fmt.format(sub.startDate),
+                    ),
                     style: const TextStyle(
                         fontSize: 12, color: AppColors.textSecondary),
                   ),
                   Text(
-                    '₹${sub.totalAmount.toStringAsFixed(0)} / delivery',
+                    l10n.amountPerDelivery(
+                      sub.totalAmount.toStringAsFixed(0),
+                    ),
                     style: const TextStyle(
                         fontSize: 12,
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600),
                   ),
                   if (sub.isPaused)
-                    const Text('Paused',
-                        style: TextStyle(
+                    Text(l10n.pausedLabel,
+                        style: const TextStyle(
                             fontSize: 11, color: AppColors.warning)),
                 ],
               ),
@@ -258,12 +270,12 @@ class _SubscriberTile extends StatelessWidget {
               onSelected: (v) => _onAction(context, v),
               itemBuilder: (_) => [
                 if (sub.isPaused)
-                  const PopupMenuItem(
-                      value: 'resume', child: Text('Resume'))
+                  PopupMenuItem(
+                      value: 'resume', child: Text(l10n.resumeLabel))
                 else
-                  const PopupMenuItem(value: 'pause', child: Text('Pause')),
-                const PopupMenuItem(
-                    value: 'remove', child: Text('Remove')),
+                  PopupMenuItem(value: 'pause', child: Text(l10n.pauseLabel)),
+                PopupMenuItem(
+                    value: 'remove', child: Text(l10n.remove)),
               ],
             ),
           ],

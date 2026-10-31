@@ -130,7 +130,7 @@ class _ActiveVendorTile extends StatelessWidget {
                             size: 11, color: Color(0xFFFF6B35)),
                         const SizedBox(width: 4),
                         Text(
-                          'Order',
+                          AppLocalizations.of(context)!.orderButtonLabel,
                           style: AppTypography.bodySmall.copyWith(
                             color: const Color(0xFFFF6B35),
                             fontWeight: FontWeight.w600,

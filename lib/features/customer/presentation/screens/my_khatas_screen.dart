@@ -19,20 +19,21 @@ class MyKhatasScreen extends StatefulWidget {
 class _MyKhatasScreenState extends State<MyKhatasScreen> {
   String? _activeCategory;
 
-  static const Map<String, String> _shortNames = {
-    'Milk / Dairy': 'Dairy',
-    'Press / Dhobi': 'Press',
-    'Maid / Cook': 'Maid',
-    'Newspaper': 'News',
-    'Water Can': 'Water',
-    'Tiffin / Food': 'Tiffin',
-    'Kirana / Grocery': 'Kirana',
-    'Salon / Parlour': 'Salon',
-    'Construction Labour': 'Labour',
-    'Transport / Auto': 'Transport',
-    'Gym / Fitness': 'Gym',
-    'Other': 'Other',
-  };
+  /// Short, localized chip label for a vendor's stored business category.
+  String _chipLabel(AppLocalizations l10n, String cat) => switch (cat) {
+        'Milk / Dairy' => l10n.categoryShortDairy,
+        'Press / Dhobi' => l10n.categoryShortPress,
+        'Maid / Cook' => l10n.categoryShortMaid,
+        'Newspaper' => l10n.categoryShortNews,
+        'Water Can' => l10n.categoryShortWater,
+        'Tiffin / Food' => l10n.categoryShortTiffin,
+        'Kirana / Grocery' => l10n.categoryShortKirana,
+        'Salon / Parlour' => l10n.categoryShortSalon,
+        'Construction Labour' => l10n.categoryShortLabour,
+        'Transport / Auto' => l10n.categoryShortTransport,
+        'Gym / Fitness' => l10n.categoryShortGym,
+        _ => cat,
+      };
 
   Map<String, List<VendorLinkItem>> _groupByCategory(List<VendorLinkItem> vendors) {
     final groups = <String, List<VendorLinkItem>>{};
@@ -53,10 +54,9 @@ class _MyKhatasScreenState extends State<MyKhatasScreen> {
     return cats;
   }
 
-  String _chipLabel(String cat) => _shortNames[cat] ?? cat;
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocProvider(
       create: (context) => CustomerBloc(getIt())..add(LoadCustomerDashboard()),
       child: Scaffold(
@@ -88,7 +88,7 @@ class _MyKhatasScreenState extends State<MyKhatasScreen> {
                       _CategoryFilterRow(
                         categories: categories,
                         activeCategory: _activeCategory,
-                        chipLabel: _chipLabel,
+                        chipLabel: (cat) => _chipLabel(l10n, cat),
                         onSelect: (cat) => setState(() => _activeCategory = cat),
                       ),
                     Expanded(
@@ -161,7 +161,7 @@ class _CategoryFilterRow extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: FilterChip(
-              label: const Text('All'),
+              label: Text(AppLocalizations.of(context)!.filterAll),
               selected: activeCategory == null,
               onSelected: (_) => onSelect(null),
               selectedColor: AppColors.primary.withValues(alpha: 0.15),
@@ -196,7 +196,10 @@ class _CategoryHeader extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8, top: 4),
       child: Text(
-        '${category.toUpperCase()}  ($count)',
+        AppLocalizations.of(context)!.categoryWithCount(
+          category.toUpperCase(),
+          count,
+        ),
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: Theme.of(context).colorScheme.primary,
               letterSpacing: 1.2,

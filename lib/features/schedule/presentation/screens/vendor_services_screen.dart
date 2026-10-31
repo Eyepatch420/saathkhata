@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/localized_labels.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/schedule_model.dart';
 import '../../../../shared/widgets/app_toast.dart';
 import '../../domain/models/delivery_filter.dart';
@@ -70,9 +72,10 @@ class _VendorServicesScreenState extends State<VendorServicesScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Scheduled Services'),
+        title: Text(l10n.scheduledServicesTitle),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         bottom: TabBar(
@@ -80,9 +83,9 @@ class _VendorServicesScreenState extends State<VendorServicesScreen>
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
           indicatorColor: Colors.white,
-          tabs: const [
-            Tab(text: 'Services'),
-            Tab(text: "Today's Deliveries"),
+          tabs: [
+            Tab(text: l10n.servicesTab),
+            Tab(text: l10n.todaysDeliveriesTab),
           ],
         ),
       ),
@@ -112,9 +115,9 @@ class _VendorServicesScreenState extends State<VendorServicesScreen>
                         onPressed: () => _showCreateSheet(context),
                         backgroundColor: AppColors.primary,
                         icon: const Icon(Icons.add, color: Colors.white),
-                        label: const Text(
-                          'New Service',
-                          style: TextStyle(color: Colors.white),
+                        label: Text(
+                          l10n.newService,
+                          style: const TextStyle(color: Colors.white),
                         ),
                       );
                     },
@@ -143,6 +146,7 @@ class _ServicesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocBuilder<ServicesCubit, ServicesState>(
       builder: (context, state) {
         if (state is ServicesLoading) {
@@ -160,7 +164,7 @@ class _ServicesTab extends StatelessWidget {
                 const SizedBox(height: 12),
                 ElevatedButton(
                   onPressed: () => context.read<ServicesCubit>().load(),
-                  child: const Text('Retry'),
+                  child: Text(l10n.retryButton),
                 ),
               ],
             ),
@@ -168,24 +172,24 @@ class _ServicesTab extends StatelessWidget {
         }
         final services = (state as ServicesLoaded).services;
         if (services.isEmpty) {
-          return const Center(
+          return Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
+                const Icon(
                   Icons.calendar_today_outlined,
                   size: 64,
                   color: AppColors.textHint,
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 Text(
-                  'No services yet',
-                  style: TextStyle(color: AppColors.textSecondary),
+                  l10n.noServicesYet,
+                  style: const TextStyle(color: AppColors.textSecondary),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
-                  'Tap + to create a scheduled service',
-                  style: TextStyle(color: AppColors.textHint, fontSize: 13),
+                  l10n.tapPlusToCreateService,
+                  style: const TextStyle(color: AppColors.textHint, fontSize: 13),
                 ),
               ],
             ),
@@ -211,6 +215,7 @@ class _ServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Card(
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -246,7 +251,7 @@ class _ServiceCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      service.scheduleLabel,
+                      l10n.serviceScheduleName(service),
                       style: const TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 13,
@@ -280,7 +285,7 @@ class _ServiceCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      '${service.subscriberCount} subs',
+                      l10n.subscriberCountLabel(service.subscriberCount),
                       style: const TextStyle(
                         color: AppColors.primary,
                         fontSize: 12,
@@ -289,11 +294,11 @@ class _ServiceCard extends StatelessWidget {
                     ),
                   ),
                   if (!service.isActive)
-                    const Padding(
-                      padding: EdgeInsets.only(top: 4),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
                       child: Text(
-                        'Inactive',
-                        style: TextStyle(
+                        l10n.inactive,
+                        style: const TextStyle(
                           color: AppColors.textHint,
                           fontSize: 11,
                         ),
@@ -381,6 +386,7 @@ class _DeliveriesTabState extends State<_DeliveriesTab> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
         DeliveryFilterBar(filter: _filter, onChanged: _applyFilter),
@@ -413,7 +419,7 @@ class _DeliveriesTabState extends State<_DeliveriesTab> {
                       const SizedBox(height: 12),
                       ElevatedButton(
                         onPressed: () => context.read<DeliveriesCubit>().load(),
-                        child: const Text('Retry'),
+                        child: Text(l10n.retryButton),
                       ),
                     ],
                   ),
@@ -435,8 +441,8 @@ class _DeliveriesTabState extends State<_DeliveriesTab> {
                       const SizedBox(height: 12),
                       Text(
                         _filter.isEmpty
-                            ? "No deliveries today"
-                            : 'No deliveries match your filters',
+                            ? l10n.noDeliveriesToday
+                            : l10n.noDeliveriesMatchFilters,
                         style: const TextStyle(color: AppColors.textSecondary),
                       ),
                     ],

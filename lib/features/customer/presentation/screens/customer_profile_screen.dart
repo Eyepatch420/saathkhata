@@ -26,7 +26,7 @@ class CustomerProfileScreen extends StatelessWidget {
       builder: (context, state) {
         final user = state is AuthAuthenticated ? state.user : null;
         return Scaffold(
-          appBar: AppBar(title: const Text('Profile')),
+          appBar: AppBar(title: Text(l10n.profile)),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: EdgeInsets.fromLTRB(
@@ -61,11 +61,11 @@ class CustomerProfileScreen extends StatelessWidget {
                     onTap: () => _showHelpSupport(context, l10n),
                   ),
                   const SizedBox(height: 20),
-                  _SectionHeader(label: 'Ledger Preferences'),
+                  _SectionHeader(label: l10n.ledgerPreferences),
                   const SizedBox(height: 8),
                   _ProfileItem(
                     icon: Icons.auto_awesome_rounded,
-                    title: 'Auto-Confirm Entries',
+                    title: l10n.autoConfirmEntries,
                     onTap: () => context.push(AppRouter.ledgerPreferences),
                   ),
                   const SizedBox(height: 20),
@@ -170,19 +170,19 @@ class CustomerProfileScreen extends StatelessWidget {
 
   void _showLanguagePicker(BuildContext context, AppLocalizations l10n) {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
-    const languages = [
-      {'locale': 'en', 'native': 'English', 'label': 'English'},
-      {'locale': 'hi', 'native': 'हिन्दी', 'label': 'Hindi'},
-      {'locale': 'bn', 'native': 'বাংলা', 'label': 'Bengali'},
-      {'locale': 'mr', 'native': 'मराठी', 'label': 'Marathi'},
-      {'locale': 'ta', 'native': 'தமிழ்', 'label': 'Tamil'},
-      {'locale': 'te', 'native': 'తెలుగు', 'label': 'Telugu'},
-      {'locale': 'kn', 'native': 'ಕನ್ನಡ', 'label': 'Kannada'},
-      {'locale': 'gu', 'native': 'ગુજરાતી', 'label': 'Gujarati'},
-      {'locale': 'pa', 'native': 'ਪੰਜਾਬੀ', 'label': 'Punjabi'},
-      {'locale': 'ml', 'native': 'മലയാളം', 'label': 'Malayalam'},
-      {'locale': 'hi', 'native': 'भोजपुरी', 'label': 'Bhojpuri'},
-      {'locale': 'hi', 'native': 'मैथिली', 'label': 'Maithili'},
+    final languages = [
+      {'locale': 'en', 'native': 'English', 'label': l10n.languageEnglish},
+      {'locale': 'hi', 'native': 'हिन्दी', 'label': l10n.languageHindi},
+      {'locale': 'bn', 'native': 'বাংলা', 'label': l10n.languageBengali},
+      {'locale': 'mr', 'native': 'मराठी', 'label': l10n.languageMarathi},
+      {'locale': 'ta', 'native': 'தமிழ்', 'label': l10n.languageTamil},
+      {'locale': 'te', 'native': 'తెలుగు', 'label': l10n.languageTelugu},
+      {'locale': 'kn', 'native': 'ಕನ್ನಡ', 'label': l10n.languageKannada},
+      {'locale': 'gu', 'native': 'ગુજરાતી', 'label': l10n.languageGujarati},
+      {'locale': 'pa', 'native': 'ਪੰਜਾਬੀ', 'label': l10n.languagePunjabi},
+      {'locale': 'ml', 'native': 'മലയാളം', 'label': l10n.languageMalayalam},
+      {'locale': 'hi', 'native': 'भोजपुरी', 'label': l10n.languageBhojpuri},
+      {'locale': 'hi', 'native': 'मैथिली', 'label': l10n.languageMaithili},
     ];
     final currentCode = localeProvider.locale.languageCode;
     final initialIndex =
@@ -278,8 +278,8 @@ class CustomerProfileScreen extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                       ),
-                      child: const Text('Done',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      child: Text(l10n.doneLabel,
+                              style: const TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ],
@@ -302,8 +302,8 @@ class CustomerProfileScreen extends StatelessWidget {
           children: [
             const Icon(Icons.mail_outline_rounded, size: 48, color: AppColors.primary),
             const SizedBox(height: 12),
-            const Text(
-              'For any assistance, reach out to us at:',
+            Text(
+              l10n.helpSupportContactPrefix,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
@@ -319,7 +319,7 @@ class CustomerProfileScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('OK'),
+            child: Text(l10n.ok),
           ),
         ],
       ),
@@ -331,11 +331,11 @@ class CustomerProfileScreen extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(l10n.logout),
-        content: const Text('Are you sure you want to log out?'),
+        content: Text(l10n.confirmLogout),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () {

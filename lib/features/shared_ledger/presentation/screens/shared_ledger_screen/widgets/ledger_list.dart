@@ -162,7 +162,7 @@ class _LedgerListState extends State<LedgerList> {
                     .read<LedgerBloc>()
                     .add(LoadMoreLedger(widget.linkId)),
                 icon: const Icon(Icons.expand_more),
-                label: const Text('Load more'),
+                label: Text(AppLocalizations.of(context)!.loadMoreButton),
               ),
             );
           }
@@ -191,11 +191,12 @@ class _DateDivider extends StatelessWidget {
   final DateTime date;
   const _DateDivider({required this.date});
 
-  String _label() {
+  String _label(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    if (date == today) return 'Today';
-    if (date == today.subtract(const Duration(days: 1))) return 'Yesterday';
+    if (date == today) return l10n.today;
+    if (date == today.subtract(const Duration(days: 1))) return l10n.yesterday;
     if (date.year == now.year) return DateFormat('d MMM').format(date);
     return DateFormat('d MMM yyyy').format(date);
   }
@@ -210,7 +211,7 @@ class _DateDivider extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
-              _label(),
+              _label(context),
               style: AppTypography.bodySmall.copyWith(
                 fontSize: 11,
                 color: AppColors.textHint,

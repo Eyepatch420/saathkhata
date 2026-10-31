@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/network/api_client.dart';
@@ -125,20 +126,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           children: [
             ListTile(
               leading: const Icon(Icons.camera_alt_rounded),
-              title: const Text('Camera'),
+              title: Text(AppLocalizations.of(ctx)!.camera),
               onTap: () => _pickImage(ImageSource.camera),
             ),
             ListTile(
               leading: const Icon(Icons.photo_library_rounded),
-              title: const Text('Gallery'),
+              title: Text(AppLocalizations.of(ctx)!.gallery),
               onTap: () => _pickImage(ImageSource.gallery),
             ),
             if (_pickedImage != null || widget.user.profilePhotoUrl != null)
               ListTile(
                 leading: const Icon(Icons.delete_outline_rounded,
                     color: AppColors.error),
-                title: const Text('Remove photo',
-                    style: TextStyle(color: AppColors.error)),
+                title: Text(AppLocalizations.of(ctx)!.removePhoto,
+                    style: const TextStyle(color: AppColors.error)),
                 onTap: () {
                   Navigator.pop(context);
                   setState(() => _pickedImage = null);
@@ -218,11 +219,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (photoUploadFailed) {
         AppToast.show(
           context,
-          'Profile saved — photo could not be uploaded right now',
+          AppLocalizations.of(context)!.profileSavedPhotoFailed,
           type: ToastType.warning,
         );
       } else {
-        AppToast.show(context, 'Profile updated successfully',
+        AppToast.show(context,
+            AppLocalizations.of(context)!.profileUpdatedSuccess,
             type: ToastType.success);
       }
       context.pop();
@@ -242,7 +244,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: Text(AppLocalizations.of(context)!.editProfile),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
@@ -256,9 +258,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   )
                 : TextButton(
                     onPressed: _save,
-                    child: const Text(
-                      'Save',
-                      style: TextStyle(
+                    child: Text(
+                      AppLocalizations.of(context)!.save,
+                      style: const TextStyle(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,
                       ),
@@ -316,7 +318,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                 // ── Personal info ─────────────────────────────────────────────
                 Text(
-                  'Personal Info',
+                  AppLocalizations.of(context)!.personalInfo,
                   style: AppTypography.labelLarge.copyWith(
                     fontWeight: FontWeight.w600,
                     color: AppColors.textSecondary,
@@ -325,20 +327,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _nameCtrl,
-                  decoration: const InputDecoration(
-                    labelText: 'Full Name',
-                    prefixIcon: Icon(Icons.person_outline_rounded),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.fullName,
+                    prefixIcon: const Icon(Icons.person_outline_rounded),
                   ),
                   validator: (v) => (v == null || v.trim().isEmpty)
-                      ? 'Name is required'
+                      ? AppLocalizations.of(context)!.nameRequired
                       : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _mobileCtrl,
-                  decoration: const InputDecoration(
-                    labelText: 'Mobile Number',
-                    prefixIcon: Icon(Icons.phone_outlined),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.mobileNumber,
+                    prefixIcon: const Icon(Icons.phone_outlined),
                   ),
                   keyboardType: TextInputType.phone,
                 ),
@@ -348,16 +350,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _upiCtrl,
-                    decoration: const InputDecoration(
-                      labelText: 'UPI ID',
-                      hintText: 'e.g. name@upi',
-                      prefixIcon:
-                          Icon(Icons.account_balance_wallet_outlined),
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.upiId,
+                      hintText: AppLocalizations.of(context)!
+                          .upiIdExampleHint,
+                      prefixIcon: const Icon(
+                          Icons.account_balance_wallet_outlined),
                     ),
                   ),
                   const SizedBox(height: 16),
                   LocationPickerTile(
-                    label: 'Delivery Address',
+                    label:
+                        AppLocalizations.of(context)!.deliveryAddressLabel,
                     location: _pickedLocation,
                     onTap: () async {
                       final result = await context.push<LocationData>(
@@ -375,7 +379,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 if (widget.user.isVendor) ...[
                   const SizedBox(height: 32),
                   Text(
-                    'Business Info',
+                    AppLocalizations.of(context)!.businessInfo,
                     style: AppTypography.labelLarge.copyWith(
                       fontWeight: FontWeight.w600,
                       color: AppColors.textSecondary,
@@ -384,9 +388,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _bizNameCtrl,
-                    decoration: const InputDecoration(
-                      labelText: 'Business Name',
-                      prefixIcon: Icon(Icons.store_outlined),
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.businessName,
+                      prefixIcon: const Icon(Icons.store_outlined),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -398,14 +402,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Business Category',
+                            AppLocalizations.of(context)!.businessCategory,
                             style: AppTypography.labelLarge.copyWith(
                               fontWeight: FontWeight.w600,
                               color: AppColors.textSecondary,
                             ),
                           ),
                           Text(
-                            '${_selectedCategories.length}/3',
+                            AppLocalizations.of(context)!
+                                .customCategoryCountLabel(
+                                    _selectedCategories.length),
                             style: AppTypography.bodySmall.copyWith(
                               color: _selectedCategories.length >= 3
                                   ? AppColors.error
@@ -457,11 +463,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Custom category (optional)',
-                          hintText: 'e.g. Ayurvedic Medicine',
-                          helperText: 'Add your own if not listed above',
-                          prefixIcon: Icon(Icons.add_circle_outline_rounded),
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!
+                              .customCategoryOptionalLabel,
+                          hintText: AppLocalizations.of(context)!
+                              .ayurvedicMedicineExample,
+                          helperText: AppLocalizations.of(context)!
+                              .customCategoryHelper,
+                          prefixIcon:
+                              const Icon(Icons.add_circle_outline_rounded),
                         ),
                         enabled: !_isSaving && _selectedCategories.length < 3,
                         onFieldSubmitted: (val) {

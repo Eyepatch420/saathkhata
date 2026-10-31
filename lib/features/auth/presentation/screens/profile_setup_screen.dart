@@ -469,7 +469,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
                   // ─── Email (optional) ──────────────────────────────────
                   CustomTextField(
-                    label: '${l10n.email} (optional)',
+                    label: l10n.emailOptionalLabel,
                     hintText: l10n.emailPlaceholder,
                     prefixIcon: Icons.email_rounded,
                     keyboardType: TextInputType.emailAddress,
@@ -491,7 +491,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       children: [
                         Text(l10n.businessCategory, style: AppTypography.labelLarge),
                         Text(
-                          '${_selectedCategories.length}/3',
+                          l10n.customCategoryCountLabel(
+                      _selectedCategories.length),
                           style: AppTypography.bodySmall.copyWith(
                             color: _selectedCategories.length >= 3
                                 ? AppColors.error
@@ -580,7 +581,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   // ─── UPI (optional) ────────────────────────────────────
                   const SizedBox(height: 20),
                   CustomTextField(
-                    label: '${l10n.upiId} (optional)',
+                    label: l10n.upiIdOptionalLabel,
                     hintText: l10n.upiHint,
                     prefixIcon: Icons.payments_rounded,
                     controller: _upiController,

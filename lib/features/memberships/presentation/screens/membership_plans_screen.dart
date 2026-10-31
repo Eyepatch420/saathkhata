@@ -184,6 +184,7 @@ class _PlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor = cs.surface;
@@ -226,7 +227,10 @@ class _PlanCard extends StatelessWidget {
                               fontSize: 18)),
                       const SizedBox(height: 3),
                       Text(
-                        '₹${plan.price.toStringAsFixed(0)} / ${plan.durationDays} days',
+                        l10n.planPricePerDuration(
+                        plan.price.toStringAsFixed(0),
+                        plan.durationDays,
+                      ),
                         style: const TextStyle(
                             color: Colors.white70, fontSize: 13),
                       ),
@@ -280,7 +284,7 @@ class _PlanCard extends StatelessWidget {
                                       .withValues(alpha: 0.12),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: Text('×${b.quota}',
+                                child: Text(l10n.benefitQuotaTimes(b.quota ?? 0),
                                     style: const TextStyle(
                                         color: MembershipTheme.purple,
                                         fontWeight: FontWeight.w700,
@@ -297,7 +301,9 @@ class _PlanCard extends StatelessWidget {
                           size: 14, color: secondaryText),
                       const SizedBox(width: 6),
                       Text(
-                          'Advance: ₹${plan.advanceRequired.toStringAsFixed(0)}',
+                          l10n.advanceAmountLabel(
+                        plan.advanceRequired.toStringAsFixed(0),
+                      ),
                           style:
                               TextStyle(color: secondaryText, fontSize: 13)),
                     ],
@@ -313,7 +319,7 @@ class _PlanCard extends StatelessWidget {
                     Icon(Icons.people_alt_rounded,
                         size: 15, color: MembershipTheme.purple),
                     const SizedBox(width: 5),
-                    Text('${plan.activeMembers} active',
+                    Text(l10n.activeMembersCount(plan.activeMembers),
                         style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             color: MembershipTheme.purple,

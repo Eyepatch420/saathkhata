@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/localization/localized_labels.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/services/ledger_attachment_service.dart';
 import '../../../../shared/models/order_model.dart';
@@ -67,7 +68,7 @@ class OrderDetailScreen extends StatelessWidget {
           body: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              _statusHeader(current),
+              _statusHeader(context, current),
               const SizedBox(height: 16),
               if (current.customerName != null) ...[
                 _SectionCard(
@@ -147,7 +148,8 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _statusHeader(Order order) {
+  Widget _statusHeader(BuildContext context, Order order) {
+    final l10n = AppLocalizations.of(context)!;
     final color = _statusColor(order.status);
     return Container(
       padding: const EdgeInsets.all(14),
@@ -165,7 +167,7 @@ class OrderDetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  order.status.label,
+                  l10n.orderStatusName(order.status),
                   style: TextStyle(
                     color: color,
                     fontWeight: FontWeight.bold,
@@ -173,7 +175,7 @@ class OrderDetailScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Placed ${_fmt(order.createdAt)}',
+                  l10n.orderPlacedOn(_fmt(order.createdAt)),
                   style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 12,
@@ -213,7 +215,7 @@ class OrderDetailScreen extends StatelessWidget {
           if (order.deliveryNote != null && order.deliveryNote!.isNotEmpty) ...[
             const SizedBox(height: 8),
             Text(
-              'Note: ${order.deliveryNote}',
+              l10n.noteWithValue(order.deliveryNote!),
               style: const TextStyle(color: AppColors.textSecondary),
             ),
           ],
@@ -472,7 +474,9 @@ class _DeliveryProofSheetState extends State<_DeliveryProofSheet> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Could not access ${source == ImageSource.camera ? 'camera' : 'gallery'}. Check app permissions.',
+            source == ImageSource.camera
+                ? AppLocalizations.of(context)!.couldNotAccessCamera
+                : AppLocalizations.of(context)!.couldNotAccessGallery,
           ),
           backgroundColor: AppColors.error,
         ),
@@ -541,7 +545,9 @@ class _DeliveryProofSheetState extends State<_DeliveryProofSheet> {
           ),
           const SizedBox(height: 4),
           Text(
-            '₹${widget.order.total.toStringAsFixed(2)} will be added to the customer\'s due.',
+            l10n.amountAddedToCustomerDue(
+              widget.order.total.toStringAsFixed(2),
+            ),
             style: const TextStyle(
               color: AppColors.textSecondary,
               fontSize: 13,

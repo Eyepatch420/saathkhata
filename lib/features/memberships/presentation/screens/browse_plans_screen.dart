@@ -144,8 +144,15 @@ class BrowsePlansScreen extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '₹${plan.price.toStringAsFixed(0)} / ${plan.durationDays} days'
-                '${plan.advanceRequired > 0 ? ' · advance ₹${plan.advanceRequired.toStringAsFixed(0)}' : ''}',
+                sl10n.planPricePerDuration(
+                      plan.price.toStringAsFixed(0),
+                      plan.durationDays,
+                    ) +
+                    (plan.advanceRequired > 0
+                        ? sl10n.advanceAmountSuffix(
+                            plan.advanceRequired.toStringAsFixed(0),
+                          )
+                        : ''),
                 style: TextStyle(
                   color: Theme.of(sheetCtx).colorScheme.onSurfaceVariant,
                 ),
@@ -211,6 +218,7 @@ class _PlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cs = Theme.of(context).colorScheme;
     final borderColor = isCurrent
@@ -308,7 +316,7 @@ class _PlanCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      ' / ${plan.durationDays} days',
+                      l10n.planDurationSuffix(plan.durationDays),
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 14,
@@ -389,7 +397,9 @@ class _PlanCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          'Advance: ₹${plan.advanceRequired.toStringAsFixed(0)}',
+                          l10n.advanceAmountLabel(
+                        plan.advanceRequired.toStringAsFixed(0),
+                      ),
                           style: TextStyle(
                             color: cs.onSurfaceVariant,
                             fontSize: 13,

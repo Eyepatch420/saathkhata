@@ -6,6 +6,7 @@ import '../../../../core/constants/app_typography.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/utils/app_logger.dart';
+import '../../../../core/localization/localized_labels.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/models/vendor_search_result.dart';
 import '../bloc/search_cubit.dart';
@@ -150,19 +151,18 @@ class _VendorSearchScreenState extends State<VendorSearchScreen> {
         separatorBuilder: (sepCtx, idx) => const SizedBox(width: 8),
         itemBuilder: (itemCtx, i) {
           final isAll = i == 0;
-          final label = isAll ? AppLocalizations.of(context)!.categoryAll : _kCategories[i - 1];
+          final l10n = AppLocalizations.of(context)!;
+          final raw = isAll ? null : _kCategories[i - 1];
+          final label = isAll ? l10n.categoryAll : l10n.businessCategoryName(raw!);
           final selected =
-              isAll ? _selectedCategory == null : _selectedCategory == label;
+              isAll ? _selectedCategory == null : _selectedCategory == raw;
 
           return ChoiceChip(
             label: Text(label),
             selected: selected,
             onSelected: (_) {
-              setState(
-                  () => _selectedCategory = isAll ? null : label);
-              ctx
-                  .read<SearchCubit>()
-                  .categorySelected(isAll ? null : label);
+              setState(() => _selectedCategory = raw);
+              ctx.read<SearchCubit>().categorySelected(raw);
             },
             selectedColor: _accent.withValues(alpha: 0.15),
             checkmarkColor: _accent,

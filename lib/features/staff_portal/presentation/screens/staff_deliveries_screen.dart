@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/widgets/app_toast.dart';
 import '../../../schedule/domain/models/delivery_filter.dart';
 import '../../../schedule/presentation/cubit/schedule_cubit.dart';
@@ -63,8 +64,9 @@ class _StaffDeliveriesScreenState extends State<StaffDeliveriesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text("Today's Deliveries")),
+      appBar: AppBar(title: Text(l10n.todaysDeliveriesTab)),
       body: SafeArea(
         child: Column(
           children: [
@@ -99,7 +101,7 @@ class _StaffDeliveriesScreenState extends State<StaffDeliveriesScreen> {
                           ElevatedButton(
                             onPressed: () =>
                                 context.read<DeliveriesCubit>().load(),
-                            child: const Text('Retry'),
+                            child: Text(l10n.retryButton),
                           ),
                         ],
                       ),
@@ -121,8 +123,8 @@ class _StaffDeliveriesScreenState extends State<StaffDeliveriesScreen> {
                           const SizedBox(height: 12),
                           Text(
                             _filter.isEmpty
-                                ? 'No deliveries today'
-                                : 'No deliveries match your filters',
+                                ? l10n.noDeliveriesToday
+                                : l10n.noDeliveriesMatchFilters,
                             style: const TextStyle(
                               color: AppColors.textSecondary,
                             ),

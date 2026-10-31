@@ -127,7 +127,8 @@ class _RecordEntrySheetState extends State<_RecordEntrySheet> {
     } catch (e) {
       if (mounted) {
         setState(() => _uploadingPhoto = false);
-        AppToast.show(context, 'Photo upload failed', type: ToastType.error);
+        AppToast.show(context, AppLocalizations.of(context)!.photoUploadFailedNoError,
+            type: ToastType.error);
       }
     }
   }
@@ -328,7 +329,7 @@ class _RecordEntrySheetState extends State<_RecordEntrySheet> {
                       ? null
                       : () => _pickAndUpload(ImageSource.camera),
                   icon: const Icon(Icons.camera_alt_rounded, size: 16),
-                  label: const Text('Camera'),
+                  label: Text(l10n.camera),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(0, 36),
                   ),
@@ -339,7 +340,7 @@ class _RecordEntrySheetState extends State<_RecordEntrySheet> {
                       ? null
                       : () => _pickAndUpload(ImageSource.gallery),
                   icon: const Icon(Icons.photo_library_rounded, size: 16),
-                  label: const Text('Gallery'),
+                  label: Text(l10n.gallery),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(0, 36),
                   ),
@@ -389,7 +390,7 @@ class _RecordEntrySheetState extends State<_RecordEntrySheet> {
                         size: 20,
                       ),
                 label: Text(
-                  _isDelivery ? 'Deliver & Charge' : 'Record Payment',
+                  _isDelivery ? l10n.deliverAndCharge : l10n.recordPaymentSheet,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

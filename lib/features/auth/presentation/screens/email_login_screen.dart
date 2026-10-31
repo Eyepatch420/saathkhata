@@ -161,13 +161,13 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                             ),
                       child: RichText(
                         text: TextSpan(
-                          text: "Don't have an account? ",
+                          text: '${l10n.noAccount} ',
                           style: AppTypography.bodySmall.copyWith(
                             color: AppColors.textSecondary,
                           ),
                           children: [
                             TextSpan(
-                              text: 'Sign up',
+                              text: l10n.signUp,
                               style: AppTypography.bodySmall.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w600,

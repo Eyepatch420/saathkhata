@@ -79,11 +79,13 @@ class _EmailSignupScreenState extends State<EmailSignupScreen> {
       return;
     }
     if (password != confirm) {
-      AppToast.show(ctx, 'Passwords do not match', type: ToastType.error);
+      AppToast.show(ctx, AppLocalizations.of(ctx)!.passwordsDoNotMatch,
+          type: ToastType.error);
       return;
     }
     if (password.length < 8) {
-      AppToast.show(ctx, 'Password must be at least 8 characters', type: ToastType.error);
+      AppToast.show(ctx, AppLocalizations.of(ctx)!.passwordTooShort,
+          type: ToastType.error);
       return;
     }
 
@@ -154,12 +156,12 @@ class _EmailSignupScreenState extends State<EmailSignupScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Create Account',
+                    AppLocalizations.of(context)!.createAccountButton,
                     style: AppTypography.h1.copyWith(color: cs.onSurface),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Sign up with your email address',
+                    AppLocalizations.of(context)!.signUpEmailSubtitle,
                     style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
                   ),
                   const SizedBox(height: 32),
@@ -182,7 +184,8 @@ class _EmailSignupScreenState extends State<EmailSignupScreen> {
                   const SizedBox(height: 12),
                   _InputField(
                     controller: _passwordController,
-                    hintText: '${l10n.password} (min 8 chars)',
+                    hintText:
+                        l10n.passwordWithMinHint(l10n.password),
                     prefixIcon: Icons.lock_outline_rounded,
                     obscureText: _obscurePassword,
                     enabled: !isLoading,
@@ -198,7 +201,7 @@ class _EmailSignupScreenState extends State<EmailSignupScreen> {
                   const SizedBox(height: 12),
                   _InputField(
                     controller: _confirmController,
-                    hintText: 'Confirm Password',
+                    hintText: l10n.passwordOptionalHint,
                     prefixIcon: Icons.lock_outline_rounded,
                     obscureText: _obscureConfirm,
                     enabled: !isLoading,
@@ -227,7 +230,8 @@ class _EmailSignupScreenState extends State<EmailSignupScreen> {
                       children: [
                         Text(l10n.businessCategory, style: AppTypography.labelLarge),
                         Text(
-                          '${_selectedCategories.length}/3',
+                          l10n.customCategoryCountLabel(
+                      _selectedCategories.length),
                           style: AppTypography.bodySmall.copyWith(
                             color: _selectedCategories.length >= 3
                                 ? AppColors.error
@@ -312,14 +316,14 @@ class _EmailSignupScreenState extends State<EmailSignupScreen> {
                   const SizedBox(height: 20),
                   _InputField(
                     controller: _upiController,
-                    hintText: '${l10n.upiId} (optional)',
+                    hintText: l10n.upiIdOptionalLabel,
                     prefixIcon: Icons.payments_rounded,
                     enabled: !isLoading,
                   ),
                   const SizedBox(height: 32),
 
                   PrimaryButton(
-                    label: 'Create Account',
+                    label: l10n.createAccountButton,
                     isLoading: isLoading,
                     onPressed: isLoading ? null : () => _submit(ctx),
                   ),
@@ -334,11 +338,11 @@ class _EmailSignupScreenState extends State<EmailSignupScreen> {
                               ),
                       child: RichText(
                         text: TextSpan(
-                          text: 'Already have an account? ',
+                          text: '${l10n.alreadyHaveAccount} ',
                           style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
                           children: [
                             TextSpan(
-                              text: 'Log in',
+                              text: l10n.logIn,
                               style: AppTypography.bodySmall.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w600,

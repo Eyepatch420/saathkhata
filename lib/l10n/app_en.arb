@@ -1664,5 +1664,693 @@
       }
     }
   },
-  "deliveriesHint": "Items delivered through orders. Tap an entry to see the items."
+  "deliveriesHint": "Items delivered through orders. Tap an entry to see the items.",
+  "scheduledServicesTitle": "Scheduled Services",
+  "servicesTab": "Services",
+  "todaysDeliveriesTab": "Today's Deliveries",
+  "newService": "New Service",
+  "noServicesYet": "No services yet",
+  "tapPlusToCreateService": "Tap + to create a scheduled service",
+  "subscriberCountLabel": "{count} subs",
+  "@subscriberCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noDeliveriesToday": "No deliveries today",
+  "noDeliveriesMatchFilters": "No deliveries match your filters",
+  "mySubscriptionsTitle": "My Subscriptions",
+  "deliveriesTab": "Deliveries",
+  "noActiveSubscriptions": "No active subscriptions",
+  "noDeliveriesYet": "No deliveries yet",
+  "serviceNameLabel": "Service Name *",
+  "serviceTypeLabel": "Service Type",
+  "scheduleLabel": "Schedule",
+  "deliveryDaysLabel": "Delivery Days",
+  "itemsLabel": "Items",
+  "autoCreateLedgerEntry": "Auto-create ledger entry",
+  "addToKhataAutomatically": "Add to khata automatically on delivery",
+  "createServiceButton": "Create Service",
+  "selectAtLeastOneDeliveryDay": "Select at least one delivery day",
+  "fillNameUnitPriceEveryItem": "Fill in name, unit and price for every item",
+  "itemNameLabel": "Item name",
+  "priceRupeeLabel": "Price (₹)",
+  "subscribersTitle": "Subscribers",
+  "addCustomerButton": "Add Customer",
+  "noSubscribersYet": "No subscribers yet",
+  "deactivateServiceTitle": "Deactivate Service",
+  "deactivateServiceMessage": "This will stop all future deliveries. Active subscriptions will be unaffected until manually removed.",
+  "typeLabel": "Type",
+  "autoLedgerEntryLabel": "Auto Ledger Entry",
+  "yesLabel": "Yes",
+  "noLabel": "No",
+  "subscriptionStartsOn": "{summary} · starts {date}",
+  "@subscriptionStartsOn": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "amountPerDelivery": "₹{amount} / delivery",
+  "@amountPerDelivery": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pausedLabel": "Paused",
+  "resumeLabel": "Resume",
+  "pauseLabel": "Pause",
+  "deliveryDetailsTitle": "Delivery Details",
+  "deliveryDueAt": "Due at {time}",
+  "@deliveryDueAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "deliveryDeliveredAt": "Delivered at {time}",
+  "@deliveryDeliveredAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "deliveryDeliveredBy": "Delivered by {name}",
+  "@deliveryDeliveredBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deliveryPhotoTitle": "Delivery Photo",
+  "skipDeliveryTitle": "Skip Delivery",
+  "skipDeliveryMessage": "Mark this delivery as skipped today?",
+  "confirmDeliveryButton": "Confirm Delivery",
+  "couldNotConfirmDelivery": "Could not confirm delivery",
+  "dateTimeLabel": "Date & time",
+  "amountToAddToLedger": "Amount to add to ledger",
+  "deliveryAutoLedgerNote": "This delivery will be added to the ledger automatically when confirmed — no need to add it again.",
+  "deliveryPhotoRequired": "DELIVERY PHOTO (REQUIRED)",
+  "addSubscriberTitle": "Add Subscriber",
+  "selectCustomerLabel": "Select customer",
+  "selectACustomerHint": "Select a customer",
+  "startDateLabel": "Start Date",
+  "setQuantityForOneItem": "Set a quantity for at least one item",
+  "customPriceQuestion": "Custom price?",
+  "customPriceOptionalLabel": "Custom Price (₹, optional)",
+  "allDeliveriesFilter": "All deliveries",
+  "clearAllFilters": "Clear all",
+  "locationPermissionDenied": "Location permission denied",
+  "couldNotGetCurrentLocation": "Couldn't get current location",
+  "filterDeliveriesTitle": "Filter Deliveries",
+  "filterCustomerServiceName": "CUSTOMER / SERVICE NAME",
+  "filterSearchByName": "Search by name",
+  "filterAnyDate": "Any date",
+  "filterRadiusFromLocation": "RADIUS FROM MY LOCATION",
+  "applyFilterButton": "Apply Filter",
+  "withinKmLabel": "Within {km} km",
+  "@withinKmLabel": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "kmLabel": "{km} km",
+  "@kmLabel": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "serviceTypeProduct": "Product",
+  "serviceTypeSession": "Session",
+  "scheduleTypeDaily": "Daily",
+  "scheduleTypeWeekly": "Weekly",
+  "scheduleTypeCustomDays": "Custom Days",
+  "deliveryStatusScheduled": "Scheduled",
+  "deliveryStatusDelivered": "Delivered",
+  "deliveryStatusSkipped": "Skipped",
+  "deliveryStatusFailed": "Failed",
+  "scheduleTypeCustom": "Custom",
+  "orderStatusPending": "Pending",
+  "orderStatusConfirmed": "Confirmed",
+  "orderStatusRejected": "Rejected",
+  "orderStatusDelivered": "Delivered",
+  "orderStatusCancelled": "Cancelled",
+  "weekdayShortSun": "Sun",
+  "weekdayShortMon": "Mon",
+  "weekdayShortTue": "Tue",
+  "weekdayShortWed": "Wed",
+  "weekdayShortThu": "Thu",
+  "weekdayShortFri": "Fri",
+  "weekdayShortSat": "Sat",
+  "subscriptionItemsAmount": "{summary} · ₹{amount}",
+  "@subscriptionItemsAmount": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionNextDelivery": "Next: {date}",
+  "@subscriptionNextDelivery": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionDeliverySubtitle": "{date} · {summary}",
+  "@subscriptionDeliverySubtitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "summary": {
+        "type": "String"
+      }
+    }
+  },
+  "statusLabel": "Status",
+  "callLabel": "Call",
+  "subscribeButton": "Subscribe",
+  "invalidValueLabel": "Invalid",
+  "resetLabel": "Reset",
+  "itemPriceWithUnit": "{name} ({unit}) · ₹{price}",
+  "@itemPriceWithUnit": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "forCustomerName": "for {name}",
+  "@forCustomerName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deliveredByLabel": "Delivered by",
+  "staffQuickDelivery": "Quick Delivery",
+  "staffQuickDeliverySubtitle": "Pre-filled with customer defaults",
+  "staffOrdersSubtitle": "Confirmed orders awaiting delivery",
+  "noResults": "No results",
+  "noDefaultSet": "No default set",
+  "photoUploadFailedNoError": "Photo upload failed",
+  "deliverAndCharge": "Deliver & Charge",
+  "staffPaySummary": "{role} · {salaryType} ₹{amount}",
+  "@staffPaySummary": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      },
+      "salaryType": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "itemsCountShort": "{count, plural, =1{1 item} other{{count} items}}",
+  "@itemsCountShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noteWithValue": "Note: {note}",
+  "@noteWithValue": {
+    "placeholders": {
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "orderPlacedOn": "Placed {date}",
+  "@orderPlacedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "couldNotAccessCamera": "Could not access camera. Check app permissions.",
+  "couldNotAccessGallery": "Could not access gallery. Check app permissions.",
+  "amountAddedToCustomerDue": "₹{amount} will be added to the customer's due.",
+  "@amountAddedToCustomerDue": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "moreItemsCount": "+ {count} more",
+  "@moreItemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "orderTotalAmount": "Total ₹{amount}",
+  "@orderTotalAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "orderStatusLabelAll": "All",
+  "minimumValueOne": "Min 1",
+  "planPricePerDuration": "₹{price} / {days} days",
+  "@planPricePerDuration": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "planDurationSuffix": " / {days} days",
+  "@planDurationSuffix": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "planPriceAndDuration": "₹{price} · {days} days",
+  "@planPriceAndDuration": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "benefitQuotaTimes": "×{quota}",
+  "@benefitQuotaTimes": {
+    "placeholders": {
+      "quota": {
+        "type": "int"
+      }
+    }
+  },
+  "advanceAmountLabel": "Advance: ₹{amount}",
+  "@advanceAmountLabel": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "advanceAmountSuffix": " · advance ₹{amount}",
+  "@advanceAmountSuffix": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "activeMembersCount": "{count} active",
+  "@activeMembersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "usedOfQuota": "{used}/{quota}",
+  "@usedOfQuota": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "quota": {
+        "type": "int"
+      }
+    }
+  },
+  "daysLeftWithWarning": "{count}d left ⚠",
+  "@daysLeftWithWarning": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "aPlanLabel": "a plan",
+  "planFallbackLabel": "Plan",
+  "planWithExpiry": "{plan} · {date}",
+  "@planWithExpiry": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "planPriceAndDaysLeft": "₹{price} · {days} days left",
+  "@planPriceAndDaysLeft": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "ledgerPreferences": "Ledger Preferences",
+  "autoConfirmEntries": "Auto-Confirm Entries",
+  "doneLabel": "Done",
+  "categoryShortDairy": "Dairy",
+  "categoryShortPress": "Press",
+  "categoryShortMaid": "Maid",
+  "categoryShortNews": "News",
+  "categoryShortWater": "Water",
+  "categoryShortTiffin": "Tiffin",
+  "categoryShortKirana": "Kirana",
+  "categoryShortSalon": "Salon",
+  "categoryShortLabour": "Labour",
+  "categoryShortTransport": "Transport",
+  "categoryShortGym": "Gym",
+  "categoryWithCount": "{category} ({count})",
+  "@categoryWithCount": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pageIndexOfTotal": "{index} of {total}",
+  "@pageIndexOfTotal": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "orderButtonLabel": "Order",
+  "historyTab": "History",
+  "duesTab": "Dues",
+  "infoTab": "Info",
+  "nameLabel": "Name",
+  "yourNicknameLabel": "Your nickname",
+  "linkedSinceLabel": "Linked since",
+  "defaultDeliveryTitle": "Default Delivery",
+  "editLabel": "Edit",
+  "productLabel": "Product",
+  "pricePerUnitShort": "Price/unit",
+  "noDefaultDeliveryHint": "No default set. Staff Quick Delivery will ask each time.",
+  "tierLabel": "Tier",
+  "newOrderForCustomerTooltip": "New order for customer",
+  "viewMonthlyStatement": "View Monthly Statement",
+  "customerDeliveriesHint": "Orders delivered to this customer. Tap an entry to see items.",
+  "remindersSentTo": "{count, plural, =1{Reminder sent to 1 customer} other{Reminders sent to {count} customers}}",
+  "@remindersSentTo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersNoOutstanding": "No customers with outstanding balance",
+  "remindersFailed": "Failed to send reminders. Please try again.",
+  "ordersSubtitle": "View and manage customer orders",
+  "defaultDeliverySaved": "Default delivery saved",
+  "defaultDeliveryPrefillHint": "Pre-fills staff Quick Delivery screen for {name}",
+  "@defaultDeliveryPrefillHint": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "fullCreamMilkExample": "e.g. Full Cream Milk",
+  "defaultQtyLabel": "Default qty",
+  "unitExampleHint": "L, kg…",
+  "saveDefaultsButton": "Save Defaults",
+  "daysAgo": "{count}d ago",
+  "@daysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "byName": "by {name}",
+  "@byName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "latLabel": "LAT",
+  "lngLabel": "LNG",
+  "noLinkedVendorsYet": "No linked vendors yet",
+  "autoConfirmingVendorEntries": "Auto-confirming vendor entries",
+  "manualConfirmationRequired": "Manual confirmation required",
+  "updatePreferenceFailed": "Failed to update preference",
+  "membershipsLabel": "Memberships",
+  "membershipPlansSubtitle": "Create and manage your plans",
+  "membersSubtitle": "Active members, MRR, expiring soon",
+  "autoConfirmSettingsSubtitle": "Manage per-vendor auto-confirm settings",
+  "pendingRequestsSummary": "{count, plural, =1{1 pending request} other{{count} pending requests}}",
+  "@pendingRequestsSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "totalBilledLabel": "Total Billed",
+  "totalDuesLabel": "Total Dues",
+  "netDueLabel": "Net Due",
+  "noTransactionsThisMonth": "No transactions this month",
+  "creditLabel": "Credit",
+  "paymentLabel": "Payment",
+  "entryTypeAdjustmentLabel": "Adjustment",
+  "liveUpdatesOn": "Live — real-time updates on",
+  "proofLocked": "Proof Locked",
+  "paymentProofTitle": "Payment Proof",
+  "couldNotLoadImage": "Could not load image",
+  "generatingStatement": "Generating statement…",
+  "failedToGeneratePdf": "Failed to generate PDF",
+  "pastDateLabel": "Past date",
+  "deliveriesOnly": "Deliveries only",
+  "filterEntriesTitle": "Filter Entries",
+  "dateRangeLabel": "DATE RANGE",
+  "amountRangeLabel": "AMOUNT RANGE",
+  "fromLabel": "From",
+  "toLabel": "To",
+  "minLabel": "Min",
+  "maxLabel": "Max",
+  "filterStatusChip": "Status: {value}",
+  "@filterStatusChip": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "filterTypeChip": "Type: {value}",
+  "@filterTypeChip": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "fromDateLabel": "From {date}",
+  "@fromDateLabel": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "toDateLabel": "To {date}",
+  "@toDateLabel": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "loadMoreButton": "Load more",
+  "perUnitLabel": "per unit",
+  "subtotalAmountLabel": "Subtotal: ₹{amount}",
+  "@subtotalAmountLabel": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "amLabel": "AM",
+  "pmLabel": "PM",
+  "alreadyBookedLabel": "Already Booked",
+  "bookingDateAtTime": "{date} at {time}",
+  "@bookingDateAtTime": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmedCountLabel": "{count} confirmed",
+  "@confirmedCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "doneCountLabel": "{count} done",
+  "@doneCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cancelledCountLabel": "{count} cancelled",
+  "@cancelledCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bookingDateTimeShort": "{date}  •  {time}",
+  "@bookingDateTimeShort": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "bookingDateTimeWithService": "{base}  •  {service}",
+  "@bookingDateTimeWithService": {
+    "placeholders": {
+      "base": {
+        "type": "String"
+      },
+      "service": {
+        "type": "String"
+      }
+    }
+  },
+  "deliveryAddressLabel": "Delivery Address",
+  "emailOptionalLabel": "Email (optional)",
+  "upiIdOptionalLabel": "UPI ID (optional)",
+  "passwordOptionalHint": "Confirm Password",
+  "passwordTooShort": "Password must be at least 8 characters",
+  "customCategoryOptionalLabel": "Custom category (optional)",
+  "ayurvedicMedicineExample": "e.g. Ayurvedic Medicine",
+  "customCategoryHelper": "Add your own if not listed above",
+  "signUpEmailSubtitle": "Sign up with your email address",
+  "passwordWithMinHint": "{label} (min 8 chars)",
+  "@passwordWithMinHint": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "customCategoryCountLabel": "{count}/3",
+  "@customCategoryCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "upiIdExampleHint": "e.g. name@upi",
+  "businessCategoryGymFitness": "Gym / Fitness",
+  "bulkChargePickOneItem": "This service has multiple items — pick one to charge",
+  "pricePerUnitValue": "₹{price} / {unit}",
+  "@pricePerUnitValue": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "navStaff": "Staff",
+  "navBooking": "Booking",
+  "navSchedule": "Schedule",
+  "navReports": "Reports",
+  "removeStaffTooltip": "Remove staff",
+  "searchVendorsByCategoryHint": "Search vendors by name or category…",
+  "latLngValue": "Lat {lat}  ·  Lng {lng}",
+  "@latLngValue": {
+    "placeholders": {
+      "lat": {
+        "type": "String"
+      },
+      "lng": {
+        "type": "String"
+      }
+    }
+  },
+  "tapToPickOnMap": "Tap to pick on map",
+  "deliveredByRoleLabel": "Delivered by {role}",
+  "@deliveredByRoleLabel": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "deliveredOnlyLabel": "Delivered"
 }

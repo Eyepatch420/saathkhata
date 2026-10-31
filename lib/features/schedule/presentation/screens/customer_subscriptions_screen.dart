@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/localized_labels.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/schedule_model.dart';
 import '../cubit/schedule_cubit.dart';
 import 'delivery_detail_screen.dart';
@@ -35,9 +37,10 @@ class _CustomerSubscriptionsScreenState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Subscriptions'),
+        title: Text(l10n.mySubscriptionsTitle),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         bottom: TabBar(
@@ -45,9 +48,9 @@ class _CustomerSubscriptionsScreenState
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
           indicatorColor: Colors.white,
-          tabs: const [
-            Tab(text: 'Active'),
-            Tab(text: 'Deliveries'),
+          tabs: [
+            Tab(text: l10n.active),
+            Tab(text: l10n.deliveriesTab),
           ],
         ),
       ),
@@ -64,6 +67,7 @@ class _ActiveSubsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocBuilder<MySubscriptionsCubit, SubscriptionsState>(
       builder: (context, state) {
         if (state is SubscriptionsLoading) {
@@ -81,7 +85,7 @@ class _ActiveSubsTab extends StatelessWidget {
                 const SizedBox(height: 12),
                 ElevatedButton(
                   onPressed: () => context.read<MySubscriptionsCubit>().load(),
-                  child: const Text('Retry'),
+                  child: Text(l10n.retryButton),
                 ),
               ],
             ),
@@ -89,19 +93,19 @@ class _ActiveSubsTab extends StatelessWidget {
         }
         final subs = (state as SubscriptionsLoaded).subscriptions;
         if (subs.isEmpty) {
-          return const Center(
+          return Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
+                const Icon(
                   Icons.subscriptions_outlined,
                   size: 64,
                   color: AppColors.textHint,
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 Text(
-                  'No active subscriptions',
-                  style: TextStyle(color: AppColors.textSecondary),
+                  l10n.noActiveSubscriptions,
+                  style: const TextStyle(color: AppColors.textSecondary),
                 ),
               ],
             ),
@@ -127,6 +131,7 @@ class _SubCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final fmt = DateFormat('d MMM');
     return Card(
       elevation: 1,
@@ -157,9 +162,9 @@ class _SubCard extends StatelessWidget {
                       color: AppColors.warning.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Text(
-                      'Paused',
-                      style: TextStyle(
+                    child: Text(
+                      l10n.pausedLabel,
+                      style: const TextStyle(
                         color: AppColors.warning,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -178,7 +183,10 @@ class _SubCard extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              '${sub.itemsSummary} · ₹${sub.totalAmount.toStringAsFixed(0)}',
+              l10n.subscriptionItemsAmount(
+                sub.itemsSummary,
+                sub.totalAmount.toStringAsFixed(0),
+              ),
               style: const TextStyle(color: AppColors.textHint, fontSize: 12),
             ),
             if (sub.nextDeliveryDate != null) ...[
@@ -192,7 +200,9 @@ class _SubCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'Next: ${fmt.format(sub.nextDeliveryDate!)}',
+                    l10n.subscriptionNextDelivery(
+                      fmt.format(sub.nextDeliveryDate!),
+                    ),
                     style: const TextStyle(
                       fontSize: 12,
                       color: AppColors.primary,
@@ -213,6 +223,7 @@ class _MyDeliveriesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocBuilder<DeliveriesCubit, DeliveriesState>(
       builder: (context, state) {
         if (state is DeliveriesLoading) {
@@ -228,10 +239,10 @@ class _MyDeliveriesTab extends StatelessWidget {
         }
         final deliveries = (state as DeliveriesLoaded).deliveries;
         if (deliveries.isEmpty) {
-          return const Center(
+          return Center(
             child: Text(
-              'No deliveries yet',
-              style: TextStyle(color: AppColors.textSecondary),
+              l10n.noDeliveriesYet,
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
           );
         }
@@ -255,6 +266,7 @@ class _DeliveryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final fmt = DateFormat('d MMM');
     final statusColor = switch (delivery.status) {
       DeliveryStatus.scheduled => AppColors.warning,
@@ -295,7 +307,10 @@ class _DeliveryTile extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.w600),
         ),
         subtitle: Text(
-          '${fmt.format(delivery.scheduledDate)} · ${delivery.itemsSummary}',
+          l10n.subscriptionDeliverySubtitle(
+            fmt.format(delivery.scheduledDate),
+            delivery.itemsSummary,
+          ),
           style: const TextStyle(fontSize: 12),
         ),
         trailing: Container(
@@ -305,7 +320,7 @@ class _DeliveryTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
-            delivery.status.label,
+            l10n.deliveryStatusName(delivery.status),
             style: TextStyle(
               color: statusColor,
               fontSize: 11,

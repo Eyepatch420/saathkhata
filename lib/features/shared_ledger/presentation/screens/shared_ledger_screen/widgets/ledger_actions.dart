@@ -318,7 +318,7 @@ class _AddEntrySheetState extends State<_AddEntrySheet> {
                       ? null
                       : () => _pickAndUpload(ImageSource.camera),
                   icon: const Icon(Icons.camera_alt_rounded, size: 16),
-                  label: const Text('Camera'),
+                  label: Text(l10n.camera),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(0, 36),
                   ),
@@ -329,7 +329,7 @@ class _AddEntrySheetState extends State<_AddEntrySheet> {
                       ? null
                       : () => _pickAndUpload(ImageSource.gallery),
                   icon: const Icon(Icons.photo_library_rounded, size: 16),
-                  label: const Text('Gallery'),
+                  label: Text(l10n.gallery),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(0, 36),
                   ),

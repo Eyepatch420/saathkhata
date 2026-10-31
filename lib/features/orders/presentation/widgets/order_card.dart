@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/localized_labels.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/order_model.dart';
 import '../bloc/order_bloc.dart';
@@ -36,6 +37,7 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -49,7 +51,7 @@ class OrderCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      order.customerName ?? 'Customer',
+                      order.customerName ?? l10n.customer,
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 15,
@@ -67,7 +69,7 @@ class OrderCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      order.status.label,
+                      l10n.orderStatusName(order.status),
                       style: TextStyle(
                         color: _statusColor(order.status),
                         fontSize: 12,
@@ -108,7 +110,7 @@ class OrderCard extends StatelessWidget {
                   ),
               if (order.items.length > 3)
                 Text(
-                  '+ ${order.items.length - 3} more',
+                  l10n.moreItemsCount(order.items.length - 3),
                   style: const TextStyle(
                     color: AppColors.textHint,
                     fontSize: 12,
@@ -118,7 +120,7 @@ class OrderCard extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  'Total ₹${order.total.toStringAsFixed(0)}',
+                  l10n.orderTotalAmount(order.total.toStringAsFixed(0)),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: AppColors.primary,

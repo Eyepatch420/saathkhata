@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../../../../core/constants/app_colors.dart';
+import '../../../../../../l10n/app_localizations.dart';
 import 'full_screen_photo_viewer.dart';
 
 /// Shows a thumbnail when [attachmentUrl] is set; tapping opens [FullScreenPhotoViewer].
@@ -70,14 +71,15 @@ class LedgerAttachmentSection extends StatelessWidget {
                     color: Colors.black.withValues(alpha: 0.6),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.lock_rounded, color: Colors.white, size: 10),
-                      SizedBox(width: 3),
+                      const Icon(Icons.lock_rounded,
+                          color: Colors.white, size: 10),
+                      const SizedBox(width: 3),
                       Text(
-                        'Proof Locked',
-                        style: TextStyle(
+                        AppLocalizations.of(context)!.proofLocked,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 9,
                           fontWeight: FontWeight.w600,

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../core/di/injection.dart';
@@ -213,7 +214,10 @@ class _CustomerBookingCard extends StatelessWidget {
                   size: 14, color: AppColors.textHint),
               const SizedBox(width: 6),
               Text(
-                '${_formatDate(booking.date)} at ${booking.startTime}',
+                AppLocalizations.of(context)!.bookingDateAtTime(
+                  _formatDate(booking.date),
+                  booking.startTime,
+                ),
                 style: AppTypography.bodySmall,
               ),
             ],
@@ -287,11 +291,7 @@ class _CustomerBookingCard extends StatelessWidget {
 
   String _formatDate(String dateStr) {
     final dt = DateTime.parse(dateStr);
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-    return '${dt.day} ${months[dt.month - 1]}';
+    return DateFormat('d MMM').format(dt);
   }
 }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../core/di/injection.dart';
@@ -113,7 +114,7 @@ class CustomerDashboardView extends StatelessWidget {
                       OutlinedButton.icon(
                         onPressed: () => context.push(AppRouter.customerOrders),
                         icon: const Icon(Icons.shopping_bag_outlined),
-                        label: const Text('My Orders'),
+                        label: Text(l10n.myOrdersTitle),
                       ),
                       const SizedBox(height: 24),
                       Text(l10n.myVendors, style: AppTypography.h3),
@@ -292,21 +293,7 @@ class _UpcomingAppointmentsCard extends StatelessWidget {
 
   String _fmtDate(String dateStr) {
     final dt = DateTime.parse(dateStr);
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    return '${dt.day} ${months[dt.month - 1]}';
+    return DateFormat('d MMM').format(dt);
   }
 }
 
@@ -326,6 +313,7 @@ class _PayAllDuesSheetState extends State<_PayAllDuesSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (_isDone) return _buildDoneView(context);
 
     final vendor = widget.vendors[_currentIndex];
@@ -355,7 +343,10 @@ class _PayAllDuesSheetState extends State<_PayAllDuesSheet> {
                 style: AppTypography.h3,
               ),
               Text(
-                '${_currentIndex + 1} of ${widget.vendors.length}',
+                l10n.pageIndexOfTotal(
+                  _currentIndex + 1,
+                  widget.vendors.length,
+                ),
                 style: AppTypography.bodySmall.copyWith(
                   color: AppColors.textHint,
                 ),

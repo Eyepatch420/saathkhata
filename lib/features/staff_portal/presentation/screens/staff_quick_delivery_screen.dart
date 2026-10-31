@@ -49,7 +49,7 @@ class _StaffQuickDeliveryScreenState extends State<StaffQuickDeliveryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quick Delivery'),
+        title: Text(l10n.staffQuickDelivery),
       ),
       body: BlocBuilder<StaffPortalCubit, StaffPortalState>(
         builder: (context, state) {
@@ -89,7 +89,7 @@ class _StaffQuickDeliveryScreenState extends State<StaffQuickDeliveryScreen> {
                 Expanded(
                   child: Center(
                     child: Text(
-                      _query.isEmpty ? l10n.noCustomersStaff : 'No results',
+                      _query.isEmpty ? l10n.noCustomersStaff : l10n.noResults,
                       style: AppTypography.bodyMedium
                           .copyWith(color: AppColors.textHint),
                     ),
@@ -120,10 +120,11 @@ class _CustomerDeliveryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final hasDefault = customer.defaultProduct != null;
     final defaultLabel = hasDefault
         ? '${customer.defaultQty != null ? '${customer.defaultQty!.toStringAsFixed(customer.defaultQty! % 1 == 0 ? 0 : 2)} ${customer.defaultUnit ?? ''} ' : ''}${customer.defaultProduct}'
-        : 'No default set';
+        : l10n.noDefaultSet;
 
     return Material(
       color: Theme.of(context).colorScheme.surface,

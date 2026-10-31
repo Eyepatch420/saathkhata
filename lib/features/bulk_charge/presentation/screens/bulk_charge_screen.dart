@@ -542,7 +542,7 @@ class _TemplatePicker extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'This service has multiple items — pick one to charge',
+                  AppLocalizations.of(context)!.bulkChargePickOneItem,
                   style: AppTypography.bodySmall.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -570,7 +570,10 @@ class _TemplatePicker extends StatelessWidget {
                           ? const Icon(Icons.price_change_outlined,
                               size: 18, color: AppColors.warning)
                           : Text(
-                              '₹${item.pricePerUnit!.toStringAsFixed(2)} / ${item.unit}',
+                              AppLocalizations.of(context)!.pricePerUnitValue(
+                                item.pricePerUnit!.toStringAsFixed(2),
+                                item.unit ?? '',
+                              ),
                               style: AppTypography.bodySmall.copyWith(
                                 color: AppColors.textSecondary,
                               ),

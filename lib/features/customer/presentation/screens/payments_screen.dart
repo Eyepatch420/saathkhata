@@ -198,7 +198,7 @@ class _QuickPayCard extends StatelessWidget {
                     AppRouter.upiPayment,
                     extra: {
                       'amount': 0.0,
-                      'recipientName': 'Vendor',
+                      'recipientName': l10n.vendor,
                       'upiId': null,
                     },
                   ),

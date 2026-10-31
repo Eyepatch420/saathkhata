@@ -143,7 +143,12 @@ class _PaySummary extends StatelessWidget {
       child: Column(
         children: [
           Text(me.name, style: AppTypography.h3),
-          Text('${me.role} · ${me.salaryType} ₹${me.salaryAmount.toStringAsFixed(0)}',
+          Text(
+              l10n.staffPaySummary(
+                me.role,
+                me.salaryType,
+                me.salaryAmount.toStringAsFixed(0),
+              ),
               style: AppTypography.bodySmall
                   .copyWith(color: AppColors.textSecondary)),
           const SizedBox(height: 16),

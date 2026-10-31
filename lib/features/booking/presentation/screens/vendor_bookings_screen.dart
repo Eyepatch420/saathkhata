@@ -16,14 +16,12 @@ import '../bloc/booking_event.dart';
 import '../bloc/booking_state.dart';
 
 // 24h 'HH:MM' → 12h display
-String _to12h(String hhmm) {
+String _to12h(String hhmm, BuildContext context) {
   final p = hhmm.split(':');
-  int h = int.parse(p[0]);
-  final m = p[1];
-  final period = h < 12 ? 'AM' : 'PM';
-  if (h == 0) h = 12;
-  if (h > 12) h -= 12;
-  return '$h:$m $period';
+  return MaterialLocalizations.of(context).formatTimeOfDay(
+    TimeOfDay(hour: int.parse(p[0]), minute: int.parse(p[1])),
+    alwaysUse24HourFormat: false,
+  );
 }
 
 class VendorBookingsScreen extends StatelessWidget {
@@ -288,7 +286,7 @@ class _SlotGroupState extends State<_SlotGroup> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          _to12h(widget.slotTime),
+                          _to12h(widget.slotTime, context),
                           style: AppTypography.labelLarge,
                         ),
                         Text(
@@ -412,7 +410,7 @@ class _SlotDetailSheet extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(_to12h(slotTime), style: AppTypography.h3),
+                        Text(_to12h(slotTime, context), style: AppTypography.h3),
                         Text(
                           total == 1
                               ? l10n.bookingsCount(total)
@@ -432,25 +430,25 @@ class _SlotDetailSheet extends StatelessWidget {
                     children: [
                       if (pendingCount > 0) ...[
                         _MiniChip(
-                            label: '$pendingCount pending',
+                            label: l10n.pendingCountLabel(pendingCount),
                             color: AppColors.warning),
                         const SizedBox(width: 8),
                       ],
                       if (confirmedCount > 0) ...[
                         _MiniChip(
-                            label: '$confirmedCount confirmed',
+                            label: l10n.confirmedCountLabel(confirmedCount),
                             color: AppColors.success),
                         const SizedBox(width: 8),
                       ],
                       if (completedCount > 0) ...[
                         _MiniChip(
-                            label: '$completedCount done',
+                            label: l10n.doneCountLabel(completedCount),
                             color: AppColors.primary),
                         const SizedBox(width: 8),
                       ],
                       if (cancelledCount > 0)
                         _MiniChip(
-                            label: '$cancelledCount cancelled',
+                            label: l10n.cancelledCountLabel(cancelledCount),
                             color: AppColors.error),
                     ],
                   ),
@@ -549,7 +547,7 @@ class _SlotCustomerTile extends StatelessWidget {
                   ],
                   const SizedBox(height: 6),
                   Text(
-                    '${_to12h(booking.startTime)} – ${_to12h(booking.endTime)}',
+                    '${_to12h(booking.startTime, context)} – ${_to12h(booking.endTime, context)}',
                     style: AppTypography.bodySmall.copyWith(
                       color: AppColors.textHint,
                       fontSize: 11,
@@ -699,8 +697,18 @@ void _showBookingActionSheet(BuildContext context, BookingModel booking) {
             const SizedBox(height: 16),
             Text(booking.customerName, style: AppTypography.h3),
             Text(
-              '$dateStr  •  ${_to12h(booking.startTime)}'
-              '${booking.serviceType != null ? '  •  ${booking.serviceType}' : ''}',
+              booking.serviceType != null
+                  ? l10n.bookingDateTimeWithService(
+                      l10n.bookingDateTimeShort(
+                        dateStr,
+                        _to12h(booking.startTime, context),
+                      ),
+                      booking.serviceType!,
+                    )
+                  : l10n.bookingDateTimeShort(
+                      dateStr,
+                      _to12h(booking.startTime, context),
+                    ),
               style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: 20),
@@ -762,7 +770,8 @@ void _showCancelConfirmDialog(
     context: context,
     builder: (ctx) => AlertDialog(
       title: Text(l10n.cancelAppointmentTitle),
-      content: Text(l10n.cancelAppointmentMessage(dateStr, _to12h(booking.startTime))),
+      content: Text(l10n.cancelAppointmentMessage(
+          dateStr, _to12h(booking.startTime, context))),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx),
@@ -880,7 +889,7 @@ class _BookingCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(_to12h(booking.startTime),
+                Text(_to12h(booking.startTime, context),
                     style: AppTypography.h3.copyWith(fontSize: 16)),
                 Text(
                   '${DateTime.parse(booking.date).day}/${DateTime.parse(booking.date).month}',

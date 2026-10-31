@@ -279,7 +279,7 @@ class _SharedLedgerViewState extends State<SharedLedgerView>
           IconButton(
             onPressed: () => _showDeliveries(context, currentUserId),
             icon: const Icon(Icons.local_shipping_outlined),
-            tooltip: 'Deliveries',
+            tooltip: AppLocalizations.of(context)!.deliveriesTitle,
             visualDensity: VisualDensity.compact,
           ),
           if (widget.isVendorView)
@@ -293,7 +293,7 @@ class _SharedLedgerViewState extends State<SharedLedgerView>
             IconButton(
               onPressed: () => _showMonthlySettlement(context),
               icon: const Icon(Icons.calendar_month_rounded),
-              tooltip: 'Monthly Statement',
+              tooltip: AppLocalizations.of(context)!.monthlyStatementTitle,
               visualDensity: VisualDensity.compact,
             ),
           IconButton(
@@ -547,7 +547,7 @@ class _LiveDotState extends State<_LiveDot>
   Widget build(BuildContext context) {
     if (!_isLive) {
       return Tooltip(
-        message: 'Offline — updates paused',
+        message: AppLocalizations.of(context)!.offlineUpdatesPaused,
         child: Container(
           width: 7,
           height: 7,
@@ -560,7 +560,7 @@ class _LiveDotState extends State<_LiveDot>
     }
 
     return Tooltip(
-      message: 'Live — real-time updates on',
+      message: AppLocalizations.of(context)!.liveUpdatesOn,
       child: ScaleTransition(
         scale: _scale,
         child: Container(

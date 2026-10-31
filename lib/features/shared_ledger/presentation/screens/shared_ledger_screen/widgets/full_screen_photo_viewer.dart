@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../../../../core/constants/app_colors.dart';
+import '../../../../../../l10n/app_localizations.dart';
 import '../../../../../../core/constants/app_typography.dart';
 
 class FullScreenPhotoViewer extends StatelessWidget {
@@ -29,14 +30,14 @@ class FullScreenPhotoViewer extends StatelessWidget {
                       color: AppColors.warning, size: 16),
                   const SizedBox(width: 6),
                   Text(
-                    'Proof Locked',
+                    AppLocalizations.of(context)!.proofLocked,
                     style:
                         AppTypography.labelLarge.copyWith(color: Colors.white),
                   ),
                 ],
               )
             : Text(
-                'Payment Proof',
+                AppLocalizations.of(context)!.paymentProofTitle,
                 style: AppTypography.labelLarge.copyWith(color: Colors.white),
               ),
       ),
@@ -59,7 +60,7 @@ class FullScreenPhotoViewer extends StatelessWidget {
                       color: Colors.white54, size: 48),
                   const SizedBox(height: 8),
                   Text(
-                    'Could not load image',
+                    AppLocalizations.of(context)!.couldNotLoadImage,
                     style: AppTypography.bodySmall
                         .copyWith(color: Colors.white54),
                   ),

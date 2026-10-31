@@ -104,6 +104,7 @@ class _DeliveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -117,7 +118,7 @@ class _DeliveryCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      order.customerName ?? 'Customer',
+                      order.customerName ?? l10n.customer,
                       style: const TextStyle(
                           fontWeight: FontWeight.w600, fontSize: 15),
                     ),
@@ -147,7 +148,7 @@ class _DeliveryCard extends StatelessWidget {
                     ),
                   )),
               if (order.items.length > 3)
-                Text('+ ${order.items.length - 3} more',
+                Text(l10n.moreItemsCount(order.items.length - 3),
                     style: const TextStyle(
                         color: AppColors.textHint, fontSize: 12)),
               const SizedBox(height: 10),

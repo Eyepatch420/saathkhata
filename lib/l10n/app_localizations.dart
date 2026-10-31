@@ -5235,6 +5235,1524 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Items delivered through orders. Tap an entry to see the items.'**
   String get deliveriesHint;
+
+  /// No description provided for @scheduledServicesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled Services'**
+  String get scheduledServicesTitle;
+
+  /// No description provided for @servicesTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get servicesTab;
+
+  /// No description provided for @todaysDeliveriesTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Deliveries'**
+  String get todaysDeliveriesTab;
+
+  /// No description provided for @newService.
+  ///
+  /// In en, this message translates to:
+  /// **'New Service'**
+  String get newService;
+
+  /// No description provided for @noServicesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No services yet'**
+  String get noServicesYet;
+
+  /// No description provided for @tapPlusToCreateService.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + to create a scheduled service'**
+  String get tapPlusToCreateService;
+
+  /// No description provided for @subscriberCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} subs'**
+  String subscriberCountLabel(int count);
+
+  /// No description provided for @noDeliveriesToday.
+  ///
+  /// In en, this message translates to:
+  /// **'No deliveries today'**
+  String get noDeliveriesToday;
+
+  /// No description provided for @noDeliveriesMatchFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'No deliveries match your filters'**
+  String get noDeliveriesMatchFilters;
+
+  /// No description provided for @mySubscriptionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My Subscriptions'**
+  String get mySubscriptionsTitle;
+
+  /// No description provided for @deliveriesTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Deliveries'**
+  String get deliveriesTab;
+
+  /// No description provided for @noActiveSubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'No active subscriptions'**
+  String get noActiveSubscriptions;
+
+  /// No description provided for @noDeliveriesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No deliveries yet'**
+  String get noDeliveriesYet;
+
+  /// No description provided for @serviceNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Name *'**
+  String get serviceNameLabel;
+
+  /// No description provided for @serviceTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Type'**
+  String get serviceTypeLabel;
+
+  /// No description provided for @scheduleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get scheduleLabel;
+
+  /// No description provided for @deliveryDaysLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Days'**
+  String get deliveryDaysLabel;
+
+  /// No description provided for @itemsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Items'**
+  String get itemsLabel;
+
+  /// No description provided for @autoCreateLedgerEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-create ledger entry'**
+  String get autoCreateLedgerEntry;
+
+  /// No description provided for @addToKhataAutomatically.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to khata automatically on delivery'**
+  String get addToKhataAutomatically;
+
+  /// No description provided for @createServiceButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Service'**
+  String get createServiceButton;
+
+  /// No description provided for @selectAtLeastOneDeliveryDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least one delivery day'**
+  String get selectAtLeastOneDeliveryDay;
+
+  /// No description provided for @fillNameUnitPriceEveryItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in name, unit and price for every item'**
+  String get fillNameUnitPriceEveryItem;
+
+  /// No description provided for @itemNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Item name'**
+  String get itemNameLabel;
+
+  /// No description provided for @priceRupeeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Price (₹)'**
+  String get priceRupeeLabel;
+
+  /// No description provided for @subscribersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribers'**
+  String get subscribersTitle;
+
+  /// No description provided for @addCustomerButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Customer'**
+  String get addCustomerButton;
+
+  /// No description provided for @noSubscribersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No subscribers yet'**
+  String get noSubscribersYet;
+
+  /// No description provided for @deactivateServiceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate Service'**
+  String get deactivateServiceTitle;
+
+  /// No description provided for @deactivateServiceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will stop all future deliveries. Active subscriptions will be unaffected until manually removed.'**
+  String get deactivateServiceMessage;
+
+  /// No description provided for @typeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get typeLabel;
+
+  /// No description provided for @autoLedgerEntryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Ledger Entry'**
+  String get autoLedgerEntryLabel;
+
+  /// No description provided for @yesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yesLabel;
+
+  /// No description provided for @noLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get noLabel;
+
+  /// No description provided for @subscriptionStartsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'{summary} · starts {date}'**
+  String subscriptionStartsOn(String summary, String date);
+
+  /// No description provided for @amountPerDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'₹{amount} / delivery'**
+  String amountPerDelivery(String amount);
+
+  /// No description provided for @pausedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get pausedLabel;
+
+  /// No description provided for @resumeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get resumeLabel;
+
+  /// No description provided for @pauseLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pauseLabel;
+
+  /// No description provided for @deliveryDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Details'**
+  String get deliveryDetailsTitle;
+
+  /// No description provided for @deliveryDueAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Due at {time}'**
+  String deliveryDueAt(String time);
+
+  /// No description provided for @deliveryDeliveredAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered at {time}'**
+  String deliveryDeliveredAt(String time);
+
+  /// No description provided for @deliveryDeliveredBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered by {name}'**
+  String deliveryDeliveredBy(String name);
+
+  /// No description provided for @deliveryPhotoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Photo'**
+  String get deliveryPhotoTitle;
+
+  /// No description provided for @skipDeliveryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip Delivery'**
+  String get skipDeliveryTitle;
+
+  /// No description provided for @skipDeliveryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark this delivery as skipped today?'**
+  String get skipDeliveryMessage;
+
+  /// No description provided for @confirmDeliveryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Delivery'**
+  String get confirmDeliveryButton;
+
+  /// No description provided for @couldNotConfirmDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not confirm delivery'**
+  String get couldNotConfirmDelivery;
+
+  /// No description provided for @dateTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date & time'**
+  String get dateTimeLabel;
+
+  /// No description provided for @amountToAddToLedger.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount to add to ledger'**
+  String get amountToAddToLedger;
+
+  /// No description provided for @deliveryAutoLedgerNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This delivery will be added to the ledger automatically when confirmed — no need to add it again.'**
+  String get deliveryAutoLedgerNote;
+
+  /// No description provided for @deliveryPhotoRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'DELIVERY PHOTO (REQUIRED)'**
+  String get deliveryPhotoRequired;
+
+  /// No description provided for @addSubscriberTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Subscriber'**
+  String get addSubscriberTitle;
+
+  /// No description provided for @selectCustomerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select customer'**
+  String get selectCustomerLabel;
+
+  /// No description provided for @selectACustomerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a customer'**
+  String get selectACustomerHint;
+
+  /// No description provided for @startDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date'**
+  String get startDateLabel;
+
+  /// No description provided for @setQuantityForOneItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a quantity for at least one item'**
+  String get setQuantityForOneItem;
+
+  /// No description provided for @customPriceQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom price?'**
+  String get customPriceQuestion;
+
+  /// No description provided for @customPriceOptionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Price (₹, optional)'**
+  String get customPriceOptionalLabel;
+
+  /// No description provided for @allDeliveriesFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'All deliveries'**
+  String get allDeliveriesFilter;
+
+  /// No description provided for @clearAllFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get clearAllFilters;
+
+  /// No description provided for @locationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission denied'**
+  String get locationPermissionDenied;
+
+  /// No description provided for @couldNotGetCurrentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t get current location'**
+  String get couldNotGetCurrentLocation;
+
+  /// No description provided for @filterDeliveriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Deliveries'**
+  String get filterDeliveriesTitle;
+
+  /// No description provided for @filterCustomerServiceName.
+  ///
+  /// In en, this message translates to:
+  /// **'CUSTOMER / SERVICE NAME'**
+  String get filterCustomerServiceName;
+
+  /// No description provided for @filterSearchByName.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name'**
+  String get filterSearchByName;
+
+  /// No description provided for @filterAnyDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Any date'**
+  String get filterAnyDate;
+
+  /// No description provided for @filterRadiusFromLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'RADIUS FROM MY LOCATION'**
+  String get filterRadiusFromLocation;
+
+  /// No description provided for @applyFilterButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filter'**
+  String get applyFilterButton;
+
+  /// No description provided for @withinKmLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Within {km} km'**
+  String withinKmLabel(String km);
+
+  /// No description provided for @kmLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km'**
+  String kmLabel(String km);
+
+  /// No description provided for @serviceTypeProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Product'**
+  String get serviceTypeProduct;
+
+  /// No description provided for @serviceTypeSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Session'**
+  String get serviceTypeSession;
+
+  /// No description provided for @scheduleTypeDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get scheduleTypeDaily;
+
+  /// No description provided for @scheduleTypeWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get scheduleTypeWeekly;
+
+  /// No description provided for @scheduleTypeCustomDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Days'**
+  String get scheduleTypeCustomDays;
+
+  /// No description provided for @deliveryStatusScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get deliveryStatusScheduled;
+
+  /// No description provided for @deliveryStatusDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get deliveryStatusDelivered;
+
+  /// No description provided for @deliveryStatusSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped'**
+  String get deliveryStatusSkipped;
+
+  /// No description provided for @deliveryStatusFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get deliveryStatusFailed;
+
+  /// No description provided for @scheduleTypeCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get scheduleTypeCustom;
+
+  /// No description provided for @orderStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get orderStatusPending;
+
+  /// No description provided for @orderStatusConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get orderStatusConfirmed;
+
+  /// No description provided for @orderStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get orderStatusRejected;
+
+  /// No description provided for @orderStatusDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get orderStatusDelivered;
+
+  /// No description provided for @orderStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get orderStatusCancelled;
+
+  /// No description provided for @weekdayShortSun.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get weekdayShortSun;
+
+  /// No description provided for @weekdayShortMon.
+  ///
+  /// In en, this message translates to:
+  /// **'Mon'**
+  String get weekdayShortMon;
+
+  /// No description provided for @weekdayShortTue.
+  ///
+  /// In en, this message translates to:
+  /// **'Tue'**
+  String get weekdayShortTue;
+
+  /// No description provided for @weekdayShortWed.
+  ///
+  /// In en, this message translates to:
+  /// **'Wed'**
+  String get weekdayShortWed;
+
+  /// No description provided for @weekdayShortThu.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu'**
+  String get weekdayShortThu;
+
+  /// No description provided for @weekdayShortFri.
+  ///
+  /// In en, this message translates to:
+  /// **'Fri'**
+  String get weekdayShortFri;
+
+  /// No description provided for @weekdayShortSat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat'**
+  String get weekdayShortSat;
+
+  /// No description provided for @subscriptionItemsAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'{summary} · ₹{amount}'**
+  String subscriptionItemsAmount(String summary, String amount);
+
+  /// No description provided for @subscriptionNextDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {date}'**
+  String subscriptionNextDelivery(String date);
+
+  /// No description provided for @subscriptionDeliverySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} · {summary}'**
+  String subscriptionDeliverySubtitle(String date, String summary);
+
+  /// No description provided for @statusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get statusLabel;
+
+  /// No description provided for @callLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get callLabel;
+
+  /// No description provided for @subscribeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe'**
+  String get subscribeButton;
+
+  /// No description provided for @invalidValueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid'**
+  String get invalidValueLabel;
+
+  /// No description provided for @resetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get resetLabel;
+
+  /// No description provided for @itemPriceWithUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} ({unit}) · ₹{price}'**
+  String itemPriceWithUnit(String name, String unit, String price);
+
+  /// No description provided for @forCustomerName.
+  ///
+  /// In en, this message translates to:
+  /// **'for {name}'**
+  String forCustomerName(String name);
+
+  /// No description provided for @deliveredByLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered by'**
+  String get deliveredByLabel;
+
+  /// No description provided for @staffQuickDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Delivery'**
+  String get staffQuickDelivery;
+
+  /// No description provided for @staffQuickDeliverySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pre-filled with customer defaults'**
+  String get staffQuickDeliverySubtitle;
+
+  /// No description provided for @staffOrdersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed orders awaiting delivery'**
+  String get staffOrdersSubtitle;
+
+  /// No description provided for @noResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No results'**
+  String get noResults;
+
+  /// No description provided for @noDefaultSet.
+  ///
+  /// In en, this message translates to:
+  /// **'No default set'**
+  String get noDefaultSet;
+
+  /// No description provided for @photoUploadFailedNoError.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo upload failed'**
+  String get photoUploadFailedNoError;
+
+  /// No description provided for @deliverAndCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Deliver & Charge'**
+  String get deliverAndCharge;
+
+  /// No description provided for @staffPaySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{role} · {salaryType} ₹{amount}'**
+  String staffPaySummary(String role, String salaryType, String amount);
+
+  /// No description provided for @itemsCountShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 item} other{{count} items}}'**
+  String itemsCountShort(int count);
+
+  /// No description provided for @noteWithValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Note: {note}'**
+  String noteWithValue(String note);
+
+  /// No description provided for @orderPlacedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Placed {date}'**
+  String orderPlacedOn(String date);
+
+  /// No description provided for @couldNotAccessCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not access camera. Check app permissions.'**
+  String get couldNotAccessCamera;
+
+  /// No description provided for @couldNotAccessGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not access gallery. Check app permissions.'**
+  String get couldNotAccessGallery;
+
+  /// No description provided for @amountAddedToCustomerDue.
+  ///
+  /// In en, this message translates to:
+  /// **'₹{amount} will be added to the customer\'s due.'**
+  String amountAddedToCustomerDue(String amount);
+
+  /// No description provided for @moreItemsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'+ {count} more'**
+  String moreItemsCount(int count);
+
+  /// No description provided for @orderTotalAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total ₹{amount}'**
+  String orderTotalAmount(String amount);
+
+  /// No description provided for @orderStatusLabelAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get orderStatusLabelAll;
+
+  /// No description provided for @minimumValueOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Min 1'**
+  String get minimumValueOne;
+
+  /// No description provided for @planPricePerDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'₹{price} / {days} days'**
+  String planPricePerDuration(String price, int days);
+
+  /// No description provided for @planDurationSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **' / {days} days'**
+  String planDurationSuffix(int days);
+
+  /// No description provided for @planPriceAndDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'₹{price} · {days} days'**
+  String planPriceAndDuration(String price, int days);
+
+  /// No description provided for @benefitQuotaTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'×{quota}'**
+  String benefitQuotaTimes(int quota);
+
+  /// No description provided for @advanceAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Advance: ₹{amount}'**
+  String advanceAmountLabel(String amount);
+
+  /// No description provided for @advanceAmountSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **' · advance ₹{amount}'**
+  String advanceAmountSuffix(String amount);
+
+  /// No description provided for @activeMembersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} active'**
+  String activeMembersCount(int count);
+
+  /// No description provided for @usedOfQuota.
+  ///
+  /// In en, this message translates to:
+  /// **'{used}/{quota}'**
+  String usedOfQuota(int used, int quota);
+
+  /// No description provided for @daysLeftWithWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}d left ⚠'**
+  String daysLeftWithWarning(int count);
+
+  /// No description provided for @aPlanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'a plan'**
+  String get aPlanLabel;
+
+  /// No description provided for @planFallbackLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan'**
+  String get planFallbackLabel;
+
+  /// No description provided for @planWithExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'{plan} · {date}'**
+  String planWithExpiry(String plan, String date);
+
+  /// No description provided for @planPriceAndDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'₹{price} · {days} days left'**
+  String planPriceAndDaysLeft(String price, int days);
+
+  /// No description provided for @ledgerPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Ledger Preferences'**
+  String get ledgerPreferences;
+
+  /// No description provided for @autoConfirmEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-Confirm Entries'**
+  String get autoConfirmEntries;
+
+  /// No description provided for @doneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get doneLabel;
+
+  /// No description provided for @categoryShortDairy.
+  ///
+  /// In en, this message translates to:
+  /// **'Dairy'**
+  String get categoryShortDairy;
+
+  /// No description provided for @categoryShortPress.
+  ///
+  /// In en, this message translates to:
+  /// **'Press'**
+  String get categoryShortPress;
+
+  /// No description provided for @categoryShortMaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Maid'**
+  String get categoryShortMaid;
+
+  /// No description provided for @categoryShortNews.
+  ///
+  /// In en, this message translates to:
+  /// **'News'**
+  String get categoryShortNews;
+
+  /// No description provided for @categoryShortWater.
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get categoryShortWater;
+
+  /// No description provided for @categoryShortTiffin.
+  ///
+  /// In en, this message translates to:
+  /// **'Tiffin'**
+  String get categoryShortTiffin;
+
+  /// No description provided for @categoryShortKirana.
+  ///
+  /// In en, this message translates to:
+  /// **'Kirana'**
+  String get categoryShortKirana;
+
+  /// No description provided for @categoryShortSalon.
+  ///
+  /// In en, this message translates to:
+  /// **'Salon'**
+  String get categoryShortSalon;
+
+  /// No description provided for @categoryShortLabour.
+  ///
+  /// In en, this message translates to:
+  /// **'Labour'**
+  String get categoryShortLabour;
+
+  /// No description provided for @categoryShortTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get categoryShortTransport;
+
+  /// No description provided for @categoryShortGym.
+  ///
+  /// In en, this message translates to:
+  /// **'Gym'**
+  String get categoryShortGym;
+
+  /// No description provided for @categoryWithCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{category} ({count})'**
+  String categoryWithCount(String category, int count);
+
+  /// No description provided for @pageIndexOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{index} of {total}'**
+  String pageIndexOfTotal(int index, int total);
+
+  /// No description provided for @orderButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Order'**
+  String get orderButtonLabel;
+
+  /// No description provided for @historyTab.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get historyTab;
+
+  /// No description provided for @duesTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Dues'**
+  String get duesTab;
+
+  /// No description provided for @infoTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Info'**
+  String get infoTab;
+
+  /// No description provided for @nameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get nameLabel;
+
+  /// No description provided for @yourNicknameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your nickname'**
+  String get yourNicknameLabel;
+
+  /// No description provided for @linkedSinceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked since'**
+  String get linkedSinceLabel;
+
+  /// No description provided for @defaultDeliveryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Default Delivery'**
+  String get defaultDeliveryTitle;
+
+  /// No description provided for @editLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get editLabel;
+
+  /// No description provided for @productLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Product'**
+  String get productLabel;
+
+  /// No description provided for @pricePerUnitShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Price/unit'**
+  String get pricePerUnitShort;
+
+  /// No description provided for @noDefaultDeliveryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No default set. Staff Quick Delivery will ask each time.'**
+  String get noDefaultDeliveryHint;
+
+  /// No description provided for @tierLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier'**
+  String get tierLabel;
+
+  /// No description provided for @newOrderForCustomerTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'New order for customer'**
+  String get newOrderForCustomerTooltip;
+
+  /// No description provided for @viewMonthlyStatement.
+  ///
+  /// In en, this message translates to:
+  /// **'View Monthly Statement'**
+  String get viewMonthlyStatement;
+
+  /// No description provided for @customerDeliveriesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders delivered to this customer. Tap an entry to see items.'**
+  String get customerDeliveriesHint;
+
+  /// No description provided for @remindersSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Reminder sent to 1 customer} other{Reminders sent to {count} customers}}'**
+  String remindersSentTo(int count);
+
+  /// No description provided for @remindersNoOutstanding.
+  ///
+  /// In en, this message translates to:
+  /// **'No customers with outstanding balance'**
+  String get remindersNoOutstanding;
+
+  /// No description provided for @remindersFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send reminders. Please try again.'**
+  String get remindersFailed;
+
+  /// No description provided for @ordersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View and manage customer orders'**
+  String get ordersSubtitle;
+
+  /// No description provided for @defaultDeliverySaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Default delivery saved'**
+  String get defaultDeliverySaved;
+
+  /// No description provided for @defaultDeliveryPrefillHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pre-fills staff Quick Delivery screen for {name}'**
+  String defaultDeliveryPrefillHint(String name);
+
+  /// No description provided for @fullCreamMilkExample.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Full Cream Milk'**
+  String get fullCreamMilkExample;
+
+  /// No description provided for @defaultQtyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Default qty'**
+  String get defaultQtyLabel;
+
+  /// No description provided for @unitExampleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'L, kg…'**
+  String get unitExampleHint;
+
+  /// No description provided for @saveDefaultsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Defaults'**
+  String get saveDefaultsButton;
+
+  /// No description provided for @daysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}d ago'**
+  String daysAgo(int count);
+
+  /// No description provided for @byName.
+  ///
+  /// In en, this message translates to:
+  /// **'by {name}'**
+  String byName(String name);
+
+  /// No description provided for @latLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'LAT'**
+  String get latLabel;
+
+  /// No description provided for @lngLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'LNG'**
+  String get lngLabel;
+
+  /// No description provided for @noLinkedVendorsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No linked vendors yet'**
+  String get noLinkedVendorsYet;
+
+  /// No description provided for @autoConfirmingVendorEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-confirming vendor entries'**
+  String get autoConfirmingVendorEntries;
+
+  /// No description provided for @manualConfirmationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual confirmation required'**
+  String get manualConfirmationRequired;
+
+  /// No description provided for @updatePreferenceFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update preference'**
+  String get updatePreferenceFailed;
+
+  /// No description provided for @membershipsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Memberships'**
+  String get membershipsLabel;
+
+  /// No description provided for @membershipPlansSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and manage your plans'**
+  String get membershipPlansSubtitle;
+
+  /// No description provided for @membersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Active members, MRR, expiring soon'**
+  String get membersSubtitle;
+
+  /// No description provided for @autoConfirmSettingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage per-vendor auto-confirm settings'**
+  String get autoConfirmSettingsSubtitle;
+
+  /// No description provided for @pendingRequestsSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 pending request} other{{count} pending requests}}'**
+  String pendingRequestsSummary(int count);
+
+  /// No description provided for @totalBilledLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Billed'**
+  String get totalBilledLabel;
+
+  /// No description provided for @totalDuesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Dues'**
+  String get totalDuesLabel;
+
+  /// No description provided for @netDueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Net Due'**
+  String get netDueLabel;
+
+  /// No description provided for @noTransactionsThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions this month'**
+  String get noTransactionsThisMonth;
+
+  /// No description provided for @creditLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit'**
+  String get creditLabel;
+
+  /// No description provided for @paymentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get paymentLabel;
+
+  /// No description provided for @entryTypeAdjustmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjustment'**
+  String get entryTypeAdjustmentLabel;
+
+  /// No description provided for @liveUpdatesOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Live — real-time updates on'**
+  String get liveUpdatesOn;
+
+  /// No description provided for @proofLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Proof Locked'**
+  String get proofLocked;
+
+  /// No description provided for @paymentProofTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Proof'**
+  String get paymentProofTitle;
+
+  /// No description provided for @couldNotLoadImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load image'**
+  String get couldNotLoadImage;
+
+  /// No description provided for @generatingStatement.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating statement…'**
+  String get generatingStatement;
+
+  /// No description provided for @failedToGeneratePdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to generate PDF'**
+  String get failedToGeneratePdf;
+
+  /// No description provided for @pastDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Past date'**
+  String get pastDateLabel;
+
+  /// No description provided for @deliveriesOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Deliveries only'**
+  String get deliveriesOnly;
+
+  /// No description provided for @filterEntriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Entries'**
+  String get filterEntriesTitle;
+
+  /// No description provided for @dateRangeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'DATE RANGE'**
+  String get dateRangeLabel;
+
+  /// No description provided for @amountRangeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'AMOUNT RANGE'**
+  String get amountRangeLabel;
+
+  /// No description provided for @fromLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get fromLabel;
+
+  /// No description provided for @toLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get toLabel;
+
+  /// No description provided for @minLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Min'**
+  String get minLabel;
+
+  /// No description provided for @maxLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Max'**
+  String get maxLabel;
+
+  /// No description provided for @filterStatusChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Status: {value}'**
+  String filterStatusChip(String value);
+
+  /// No description provided for @filterTypeChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Type: {value}'**
+  String filterTypeChip(String value);
+
+  /// No description provided for @fromDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'From {date}'**
+  String fromDateLabel(String date);
+
+  /// No description provided for @toDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'To {date}'**
+  String toDateLabel(String date);
+
+  /// No description provided for @loadMoreButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get loadMoreButton;
+
+  /// No description provided for @perUnitLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'per unit'**
+  String get perUnitLabel;
+
+  /// No description provided for @subtotalAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtotal: ₹{amount}'**
+  String subtotalAmountLabel(String amount);
+
+  /// No description provided for @amLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'AM'**
+  String get amLabel;
+
+  /// No description provided for @pmLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'PM'**
+  String get pmLabel;
+
+  /// No description provided for @alreadyBookedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Already Booked'**
+  String get alreadyBookedLabel;
+
+  /// No description provided for @bookingDateAtTime.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} at {time}'**
+  String bookingDateAtTime(String date, String time);
+
+  /// No description provided for @confirmedCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} confirmed'**
+  String confirmedCountLabel(int count);
+
+  /// No description provided for @doneCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} done'**
+  String doneCountLabel(int count);
+
+  /// No description provided for @cancelledCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} cancelled'**
+  String cancelledCountLabel(int count);
+
+  /// No description provided for @bookingDateTimeShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{date}  •  {time}'**
+  String bookingDateTimeShort(String date, String time);
+
+  /// No description provided for @bookingDateTimeWithService.
+  ///
+  /// In en, this message translates to:
+  /// **'{base}  •  {service}'**
+  String bookingDateTimeWithService(String base, String service);
+
+  /// No description provided for @deliveryAddressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Address'**
+  String get deliveryAddressLabel;
+
+  /// No description provided for @emailOptionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email (optional)'**
+  String get emailOptionalLabel;
+
+  /// No description provided for @upiIdOptionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'UPI ID (optional)'**
+  String get upiIdOptionalLabel;
+
+  /// No description provided for @passwordOptionalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get passwordOptionalHint;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get passwordTooShort;
+
+  /// No description provided for @customCategoryOptionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom category (optional)'**
+  String get customCategoryOptionalLabel;
+
+  /// No description provided for @ayurvedicMedicineExample.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Ayurvedic Medicine'**
+  String get ayurvedicMedicineExample;
+
+  /// No description provided for @customCategoryHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your own if not listed above'**
+  String get customCategoryHelper;
+
+  /// No description provided for @signUpEmailSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up with your email address'**
+  String get signUpEmailSubtitle;
+
+  /// No description provided for @passwordWithMinHint.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} (min 8 chars)'**
+  String passwordWithMinHint(String label);
+
+  /// No description provided for @customCategoryCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}/3'**
+  String customCategoryCountLabel(int count);
+
+  /// No description provided for @upiIdExampleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. name@upi'**
+  String get upiIdExampleHint;
+
+  /// No description provided for @businessCategoryGymFitness.
+  ///
+  /// In en, this message translates to:
+  /// **'Gym / Fitness'**
+  String get businessCategoryGymFitness;
+
+  /// No description provided for @bulkChargePickOneItem.
+  ///
+  /// In en, this message translates to:
+  /// **'This service has multiple items — pick one to charge'**
+  String get bulkChargePickOneItem;
+
+  /// No description provided for @pricePerUnitValue.
+  ///
+  /// In en, this message translates to:
+  /// **'₹{price} / {unit}'**
+  String pricePerUnitValue(String price, String unit);
+
+  /// No description provided for @navStaff.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get navStaff;
+
+  /// No description provided for @navBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking'**
+  String get navBooking;
+
+  /// No description provided for @navSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get navSchedule;
+
+  /// No description provided for @navReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get navReports;
+
+  /// No description provided for @removeStaffTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove staff'**
+  String get removeStaffTooltip;
+
+  /// No description provided for @searchVendorsByCategoryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search vendors by name or category…'**
+  String get searchVendorsByCategoryHint;
+
+  /// No description provided for @latLngValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Lat {lat}  ·  Lng {lng}'**
+  String latLngValue(String lat, String lng);
+
+  /// No description provided for @tapToPickOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to pick on map'**
+  String get tapToPickOnMap;
+
+  /// No description provided for @deliveredByRoleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered by {role}'**
+  String deliveredByRoleLabel(String role);
+
+  /// No description provided for @deliveredOnlyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get deliveredOnlyLabel;
 }
 
 class _AppLocalizationsDelegate

@@ -89,7 +89,7 @@ class _StaffDetailView extends StatelessWidget {
                   Icons.delete_outline_rounded,
                   color: AppColors.error,
                 ),
-                tooltip: 'Remove staff',
+                tooltip: AppLocalizations.of(context)!.removeStaffTooltip,
                 onPressed: () => _confirmDelete(context, staff),
               ),
             ],

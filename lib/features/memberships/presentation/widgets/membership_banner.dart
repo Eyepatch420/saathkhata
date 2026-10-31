@@ -82,7 +82,9 @@ class MembershipBanner extends StatelessWidget {
                           ),
                         ),
                         if (current != null)
-                          Text('${current.daysLeft} days left',
+                          Text(
+                              AppLocalizations.of(context)!.daysLeftLabel(
+                                  current.daysLeft),
                               style: AppTypography.bodySmall
                                   .copyWith(color: secondaryColor)),
                       ],
@@ -144,7 +146,9 @@ class MembershipBanner extends StatelessWidget {
                           ),
                           const SizedBox(width: 2),
                         ],
-                        Text('${b.used}/${b.quota}',
+                        Text(
+                            AppLocalizations.of(context)!.usedOfQuota(
+                                b.used, b.quota ?? 0),
                             style: TextStyle(
                                 color: done
                                     ? AppColors.error
@@ -178,7 +182,8 @@ class MembershipBanner extends StatelessWidget {
                 const SizedBox(height: 12),
                 _PendingRequestCard(
                   planName:
-                      status.pendingRequest!.requestedPlan?.name ?? 'a plan',
+                      status.pendingRequest!.requestedPlan?.name ??
+                          AppLocalizations.of(context)!.aPlanLabel,
                   message: status.pendingRequest!.message,
                   customerName: customerName,
                   busy: busy,
@@ -220,7 +225,9 @@ class MembershipBanner extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                        sl10n.enrollCustomer(customerName.isEmpty ? 'customer' : customerName),
+                        sl10n.enrollCustomer(customerName.isEmpty
+                            ? sl10n.customer
+                            : customerName),
                         style: AppTypography.h3.copyWith(color: cs.onSurface)),
                     const SizedBox(height: 4),
                     Text(sl10n.choosePlanHint,
@@ -250,7 +257,9 @@ class MembershipBanner extends StatelessWidget {
                     title: Text(p.name,
                         style: TextStyle(color: cs.onSurface)),
                     subtitle: Text(
-                        '₹${p.price.toStringAsFixed(0)} · ${p.durationDays} days',
+                        AppLocalizations.of(context)!
+                            .planPriceAndDuration(
+                                p.price.toStringAsFixed(0), p.durationDays),
                         style: TextStyle(color: cs.onSurfaceVariant)),
                     trailing: isCurrent
                         ? const Icon(Icons.check_circle,

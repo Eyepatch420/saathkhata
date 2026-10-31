@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -241,6 +242,7 @@ class _MemberCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
     final expSoon = member.daysLeft <= 7;
     final borderColor = isDark
@@ -318,7 +320,10 @@ class _MemberCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      '${member.planName} · ${_fmt(member.expiresAt)}',
+                      l10n.planWithExpiry(
+                        member.planName,
+                        _fmt(member.expiresAt),
+                      ),
                       style: TextStyle(
                         color: cs.onSurfaceVariant,
                         fontSize: 12,
@@ -343,7 +348,10 @@ class _MemberCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        '${member.totalUsed}/${member.totalQuota}',
+                        l10n.usedOfQuota(
+                          member.totalUsed,
+                          member.totalQuota,
+                        ),
                         style: TextStyle(
                           color: usageColor,
                           fontWeight: FontWeight.w700,
@@ -354,8 +362,8 @@ class _MemberCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     expSoon
-                        ? '${member.daysLeft}d left ⚠'
-                        : '${member.daysLeft} days',
+                        ? l10n.daysLeftWithWarning(member.daysLeft)
+                        : l10n.daysLeftFull(member.daysLeft),
                     style: TextStyle(
                       color: expSoon ? AppColors.warning : cs.onSurfaceVariant,
                       fontSize: 11,
@@ -371,21 +379,5 @@ class _MemberCard extends StatelessWidget {
     );
   }
 
-  String _fmt(DateTime d) {
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    return '${d.day} ${months[d.month - 1]}';
-  }
+  String _fmt(DateTime d) => DateFormat('d MMM').format(d);
 }

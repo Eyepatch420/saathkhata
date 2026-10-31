@@ -3,6 +3,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
+import '../../../../core/localization/localized_labels.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/schedule_model.dart';
 import '../../domain/models/delivery_filter.dart';
 
@@ -22,6 +24,7 @@ class DeliveryFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final hasActiveFilters = !filter.isEmpty;
 
     return Container(
@@ -78,7 +81,7 @@ class DeliveryFilterBar extends StatelessWidget {
                 children: [
                   if (!hasActiveFilters)
                     Text(
-                      'All deliveries',
+                      l10n.allDeliveriesFilter,
                       style: AppTypography.bodySmall.copyWith(
                         color: AppColors.textHint,
                       ),
@@ -86,7 +89,7 @@ class DeliveryFilterBar extends StatelessWidget {
                   else ...[
                     if (filter.status != null) ...[
                       _ActiveChip(
-                        label: filter.status!.label,
+                        label: l10n.deliveryStatusName(filter.status!),
                         onRemove: () =>
                             onChanged(filter.copyWith(clearStatus: true)),
                       ),
@@ -111,8 +114,9 @@ class DeliveryFilterBar extends StatelessWidget {
                     ],
                     if (filter.radiusKm != null) ...[
                       _ActiveChip(
-                        label:
-                            'Within ${filter.radiusKm!.toStringAsFixed(0)} km',
+                        label: l10n.withinKmLabel(
+                          filter.radiusKm!.toStringAsFixed(0),
+                        ),
                         onRemove: () =>
                             onChanged(filter.copyWith(clearRadius: true)),
                       ),
@@ -121,7 +125,7 @@ class DeliveryFilterBar extends StatelessWidget {
                     GestureDetector(
                       onTap: () => onChanged(const DeliveryFilter()),
                       child: Text(
-                        'Clear all',
+                        l10n.clearAllFilters,
                         style: AppTypography.bodySmall.copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w600,
@@ -224,6 +228,7 @@ class _FilterSheetState extends State<_FilterSheet> {
   }
 
   Future<void> _pickRadius(double km) async {
+    final l10n = AppLocalizations.of(context)!;
     if (_centerLat == null || _centerLng == null) {
       setState(() => _locating = true);
       try {
@@ -235,7 +240,7 @@ class _FilterSheetState extends State<_FilterSheet> {
             permission == LocationPermission.deniedForever) {
           setState(() {
             _locating = false;
-            _locationError = 'Location permission denied';
+            _locationError = l10n.locationPermissionDenied;
           });
           return;
         }
@@ -257,7 +262,7 @@ class _FilterSheetState extends State<_FilterSheet> {
         if (!mounted) return;
         setState(() {
           _locating = false;
-          _locationError = "Couldn't get current location";
+          _locationError = l10n.couldNotGetCurrentLocation;
         });
       }
     } else {
@@ -267,6 +272,7 @@ class _FilterSheetState extends State<_FilterSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: EdgeInsets.only(
         bottom:
@@ -282,44 +288,44 @@ class _FilterSheetState extends State<_FilterSheet> {
             children: [
               Row(
                 children: [
-                  Text('Filter Deliveries', style: AppTypography.h3),
+                  Text(l10n.filterDeliveriesTitle, style: AppTypography.h3),
                   const Spacer(),
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                       widget.onApply(const DeliveryFilter());
                     },
-                    child: const Text('Reset'),
+                    child: Text(l10n.resetLabel),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
 
-              Text('CUSTOMER / SERVICE NAME', style: _sectionStyle()),
+              Text(l10n.filterCustomerServiceName, style: _sectionStyle()),
               const SizedBox(height: 8),
               TextField(
                 controller: _nameCtrl,
-                decoration: const InputDecoration(
-                  hintText: 'Search by name',
+                decoration: InputDecoration(
+                  hintText: l10n.filterSearchByName,
                   isDense: true,
-                  prefixIcon: Icon(Icons.search_rounded, size: 18),
+                  prefixIcon: const Icon(Icons.search_rounded, size: 18),
                 ),
               ),
               const SizedBox(height: 16),
 
-              Text('STATUS', style: _sectionStyle()),
+              Text(l10n.statusLabel.toUpperCase(), style: _sectionStyle()),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
                 children: [
                   _OptionChip(
-                    label: 'All',
+                    label: l10n.filterAll,
                     selected: _status == null,
                     onTap: () => setState(() => _status = null),
                   ),
                   for (final s in DeliveryStatus.values)
                     _OptionChip(
-                      label: s.label,
+                      label: l10n.deliveryStatusName(s),
                       selected: _status == s,
                       onTap: () =>
                           setState(() => _status = _status == s ? null : s),
@@ -328,14 +334,14 @@ class _FilterSheetState extends State<_FilterSheet> {
               ),
               const SizedBox(height: 16),
 
-              Text('DATE', style: _sectionStyle()),
+              Text(l10n.date.toUpperCase(), style: _sectionStyle()),
               const SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(
                     child: _DateButton(
                       label: _date == null
-                          ? 'Any date'
+                          ? l10n.filterAnyDate
                           : DateFormat('EEE, d MMM').format(_date!),
                       onTap: () async {
                         final now = DateTime.now();
@@ -361,14 +367,14 @@ class _FilterSheetState extends State<_FilterSheet> {
               ),
               const SizedBox(height: 16),
 
-              Text('RADIUS FROM MY LOCATION', style: _sectionStyle()),
+              Text(l10n.filterRadiusFromLocation, style: _sectionStyle()),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
                 children: [
                   for (final km in [1.0, 3.0, 5.0, 10.0])
                     _OptionChip(
-                      label: '${km.toStringAsFixed(0)} km',
+                      label: l10n.kmLabel(km.toStringAsFixed(0)),
                       selected: _radiusKm == km,
                       onTap: _locating
                           ? () {}
@@ -419,9 +425,9 @@ class _FilterSheetState extends State<_FilterSheet> {
                     backgroundColor: AppColors.primary,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  child: const Text(
-                    'Apply Filter',
-                    style: TextStyle(
+                  child: Text(
+                    l10n.applyFilterButton,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),

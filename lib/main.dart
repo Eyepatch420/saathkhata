@@ -115,7 +115,8 @@ class _SaathKhataAppState extends State<SaathKhataApp>
       builder: (context, child) {
         final localeProvider = Provider.of<LocaleProvider>(context);
         return MaterialApp.router(
-          title: 'Saath Khata',
+          onGenerateTitle: (context) =>
+              AppLocalizations.of(context)!.appTitle,
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,

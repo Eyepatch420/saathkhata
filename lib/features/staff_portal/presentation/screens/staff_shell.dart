@@ -33,7 +33,7 @@ class StaffMainWrapper extends StatelessWidget {
               items: [
                 AppNavItem(riveIcon: AppRiveIcon.home, label: l10n.navHome),
                 AppNavItem(riveIcon: AppRiveIcon.message, label: l10n.customersTitle),
-                const AppNavItem(riveIcon: AppRiveIcon.clock, label: 'Deliveries'),
+                AppNavItem(riveIcon: AppRiveIcon.clock, label: l10n.deliveriesTitle),
                 AppNavItem(riveIcon: AppRiveIcon.zap, label: l10n.myPay),
               ],
             );

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../core/constants/app_colors.dart';
 import '../../../../../../core/constants/app_typography.dart';
 import '../../../../../../l10n/app_localizations.dart';
@@ -11,11 +12,6 @@ class RevenueChartCard extends StatelessWidget {
   final ReportsDashboardLoaded state;
   const RevenueChartCard({super.key, required this.state});
 
-  static const _monthAbbr = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-  ];
-
   List<_MonthBar> _buildBars(MonthlyRevenueReport report) {
     final map = <int, double>{};
     for (final m in report.months) {
@@ -25,7 +21,7 @@ class RevenueChartCard extends StatelessWidget {
     return List.generate(
       12,
       (i) => _MonthBar(
-        label: _monthAbbr[i],
+        label: DateFormat('MMM').format(DateTime(2020, i + 1)),
         amount: map[i + 1] ?? 0,
         isCurrentMonth: (i + 1) == DateTime.now().month &&
             report.year == DateTime.now().year,

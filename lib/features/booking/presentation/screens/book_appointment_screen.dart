@@ -311,14 +311,12 @@ class _SlotGrid extends StatelessWidget {
   }
 }
 
-String _to12h(String hhmm) {
+String _to12h(String hhmm, BuildContext context) {
   final p = hhmm.split(':');
-  int h = int.parse(p[0]);
-  final m = p[1];
-  final period = h < 12 ? 'AM' : 'PM';
-  if (h == 0) h = 12;
-  if (h > 12) h -= 12;
-  return '$h:$m $period';
+  return MaterialLocalizations.of(context).formatTimeOfDay(
+    TimeOfDay(hour: int.parse(p[0]), minute: int.parse(p[1])),
+    alwaysUse24HourFormat: false,
+  );
 }
 
 class _SlotChip extends StatelessWidget {
@@ -367,7 +365,7 @@ class _SlotChip extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              _to12h(slot.startTime),
+              _to12h(slot.startTime, context),
               style: AppTypography.labelLarge.copyWith(
                 color: textColor,
                 decoration: isDisabled ? TextDecoration.lineThrough : null,
@@ -382,7 +380,7 @@ class _SlotChip extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  'Already Booked',
+                  AppLocalizations.of(context)!.alreadyBookedLabel,
                   style: AppTypography.bodySmall.copyWith(
                     fontSize: 10,
                     color: AppColors.primary.withValues(alpha: 0.6),

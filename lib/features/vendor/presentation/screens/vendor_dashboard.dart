@@ -87,14 +87,14 @@ class VendorDashboardView extends StatelessWidget {
                 AppToast.show(
                   context,
                   count == 0
-                      ? 'No customers with outstanding balance'
-                      : 'Reminders sent to $count customer${count == 1 ? '' : 's'}',
+                      ? l10n.remindersNoOutstanding
+                      : l10n.remindersSentTo(count),
                   type: ToastType.success,
                 );
               } else if (state.remindAllStatus == RemindAllStatus.failure) {
                 AppToast.show(
                   context,
-                  'Failed to send reminders. Please try again.',
+                  l10n.remindersFailed,
                   type: ToastType.error,
                 );
               }
@@ -206,8 +206,8 @@ class VendorDashboardView extends StatelessWidget {
                       const SizedBox(height: 12),
                       _ActionCard(
                         icon: Icons.shopping_bag_outlined,
-                        label: 'Orders',
-                        subtitle: 'View and manage customer orders',
+                        label: l10n.ordersTitle,
+                        subtitle: l10n.ordersSubtitle,
                         gradient: const LinearGradient(
                           colors: [Color(0xFFFF6B35), Color(0xFFE84A1A)],
                           begin: Alignment.topLeft,

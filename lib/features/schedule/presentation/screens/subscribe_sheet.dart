@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../features/vendor/presentation/bloc/vendor_bloc.dart';
 import '../../../../features/vendor/presentation/bloc/vendor_state.dart';
@@ -61,6 +62,7 @@ class _SubscribeSheetState extends State<SubscribeSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final mq = MediaQuery.of(context);
     return Padding(
       // viewInsets clears the keyboard; viewPadding clears the gesture bar /
@@ -76,10 +78,10 @@ class _SubscribeSheetState extends State<SubscribeSheet> {
             children: [
               Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'Add Subscriber',
-                      style: TextStyle(
+                      l10n.addSubscriberTitle,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -92,9 +94,9 @@ class _SubscribeSheetState extends State<SubscribeSheet> {
                 ],
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Customer',
-                style: TextStyle(fontWeight: FontWeight.w600),
+              Text(
+                l10n.customer,
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 6),
               BlocBuilder<VendorBloc, VendorState>(
@@ -105,7 +107,7 @@ class _SubscribeSheetState extends State<SubscribeSheet> {
                       : <CustomerLinkItem>[];
                   return DropdownButtonFormField<CustomerLinkItem>(
                     initialValue: _selectedCustomer,
-                    hint: const Text('Select customer'),
+                    hint: Text(l10n.selectCustomerLabel),
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                     ),
@@ -119,14 +121,14 @@ class _SubscribeSheetState extends State<SubscribeSheet> {
                         .toList(),
                     onChanged: (v) => setState(() => _selectedCustomer = v),
                     validator: (_) =>
-                        _selectedCustomer == null ? 'Select a customer' : null,
+                        _selectedCustomer == null ? l10n.selectACustomerHint : null,
                   );
                 },
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Items',
-                style: TextStyle(fontWeight: FontWeight.w600),
+              Text(
+                l10n.itemsLabel,
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 6),
               ...List.generate(
@@ -143,9 +145,9 @@ class _SubscribeSheetState extends State<SubscribeSheet> {
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Start Date',
-                style: TextStyle(fontWeight: FontWeight.w600),
+              Text(
+                l10n.startDateLabel,
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 6),
               InkWell(
@@ -198,9 +200,10 @@ class _SubscribeSheetState extends State<SubscribeSheet> {
                                 color: Colors.white,
                               ),
                             )
-                          : const Text(
-                              'Subscribe',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                          : Text(
+                              l10n.subscribeButton,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold),
                             ),
                     ),
                   );
@@ -224,6 +227,7 @@ class _SubscribeSheetState extends State<SubscribeSheet> {
   }
 
   Future<void> _submit(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
     if (!_formKey.currentState!.validate()) return;
 
     final items = <SubscriptionItemInput>[];
@@ -241,7 +245,7 @@ class _SubscribeSheetState extends State<SubscribeSheet> {
 
     if (!items.any((i) => i.quantity > 0)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Set a quantity for at least one item')),
+        SnackBar(content: Text(l10n.setQuantityForOneItem)),
       );
       return;
     }
@@ -263,6 +267,7 @@ class _ItemQtyRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -270,7 +275,11 @@ class _ItemQtyRow extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                '${draft.item.name} (${draft.item.unit}) · ₹${draft.item.defaultPricePerUnit.toStringAsFixed(2)}',
+                l10n.itemPriceWithUnit(
+                  draft.item.name,
+                  draft.item.unit,
+                  draft.item.defaultPricePerUnit.toStringAsFixed(2),
+                ),
                 style: const TextStyle(fontSize: 13),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -280,12 +289,12 @@ class _ItemQtyRow extends StatelessWidget {
               width: 90,
               child: TextFormField(
                 controller: draft.qtyCtrl,
-                decoration: const InputDecoration(labelText: 'Qty'),
+                decoration: InputDecoration(labelText: l10n.qty),
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 validator: (v) {
                   if (v == null || v.trim().isEmpty) return null;
                   if (double.tryParse(v) == null || double.parse(v) < 0) {
-                    return 'Invalid';
+                    return l10n.invalidValueLabel;
                   }
                   return null;
                 },
@@ -298,7 +307,8 @@ class _ItemQtyRow extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: TextButton(
               onPressed: onCustomPriceToggle,
-              child: const Text('Custom price?', style: TextStyle(fontSize: 12)),
+              child: Text(l10n.customPriceQuestion,
+                  style: const TextStyle(fontSize: 12)),
             ),
           )
         else
@@ -306,8 +316,8 @@ class _ItemQtyRow extends StatelessWidget {
             padding: const EdgeInsets.only(top: 6),
             child: TextFormField(
               controller: draft.priceCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Custom Price (₹, optional)',
+              decoration: InputDecoration(
+                labelText: l10n.customPriceOptionalLabel,
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
             ),

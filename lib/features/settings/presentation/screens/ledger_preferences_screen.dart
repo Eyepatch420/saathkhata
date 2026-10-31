@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/utils/app_logger.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/widgets/app_toast.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../../../shared/models/link_model.dart';
@@ -72,7 +73,7 @@ class _LedgerPreferencesScreenState extends State<LedgerPreferencesScreen> {
         );
         AppToast.show(
           context,
-          'Failed to update preference',
+          AppLocalizations.of(context)!.updatePreferenceFailed,
           type: ToastType.error,
         );
       }
@@ -82,13 +83,16 @@ class _LedgerPreferencesScreenState extends State<LedgerPreferencesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Ledger Preferences')),
+      appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.ledgerPreferences)),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
           ? ErrorStateWidget(message: _error!, onRetry: _load)
           : _links.isEmpty
-          ? const Center(child: Text('No linked vendors yet'))
+          ? Center(
+              child: Text(
+                  AppLocalizations.of(context)!.noLinkedVendorsYet))
           : ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: _links.length,
@@ -112,8 +116,10 @@ class _LedgerPreferencesScreenState extends State<LedgerPreferencesScreen> {
                   title: Text(vendorName),
                   subtitle: Text(
                     link.customerAutoConfirm
-                        ? 'Auto-confirming vendor entries'
-                        : 'Manual confirmation required',
+                        ? AppLocalizations.of(context)!
+                            .autoConfirmingVendorEntries
+                        : AppLocalizations.of(context)!
+                            .manualConfirmationRequired,
                     style: TextStyle(
                       color: link.customerAutoConfirm
                           ? AppColors.success

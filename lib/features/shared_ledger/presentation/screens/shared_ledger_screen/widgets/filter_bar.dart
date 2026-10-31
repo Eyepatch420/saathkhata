@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../../../../../core/constants/app_colors.dart';
 import '../../../../../../core/constants/app_typography.dart';
+import '../../../../../../core/localization/localized_labels.dart';
 import '../../../../../../l10n/app_localizations.dart';
 import '../../../../../../shared/models/ledger_entry.dart';
 import '../../../../../shared_ledger/domain/models/ledger_filter.dart';
@@ -15,6 +16,7 @@ class LedgerFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocBuilder<LedgerBloc, LedgerState>(
       builder: (context, state) {
         final filter = state is LedgerLoaded
@@ -116,7 +118,9 @@ class LedgerFilterBar extends StatelessWidget {
                       ] else ...[
                         if (filter.status != null)
                           _ActiveChip(
-                            label: 'Status: ${filter.status!.name}',
+                            label: l10n.filterStatusChip(
+                              l10n.entryStatusName(filter.status!),
+                            ),
                             onRemove: () => context.read<LedgerBloc>().add(
                               ApplyLedgerFilter(
                                 filter.copyWith(clearStatus: true),
@@ -127,8 +131,10 @@ class LedgerFilterBar extends StatelessWidget {
                           if (filter.status != null) const SizedBox(width: 6),
                           _ActiveChip(
                             label: filter.deliveriesOnly
-                                ? 'Deliveries only'
-                                : 'Type: ${filter.type!.name}',
+                                ? l10n.deliveriesOnly
+                                : l10n.filterTypeChip(
+                                    l10n.entryTypeName(filter.type!),
+                                  ),
                             onRemove: () => context.read<LedgerBloc>().add(
                               ApplyLedgerFilter(
                                 filter.copyWith(clearType: true),
@@ -140,7 +146,7 @@ class LedgerFilterBar extends StatelessWidget {
                             filter.dateTo != null) ...[
                           const SizedBox(width: 6),
                           _ActiveChip(
-                            label: _dateRangeLabel(filter),
+                            label: _dateRangeLabel(l10n, filter),
                             onRemove: () => context.read<LedgerBloc>().add(
                               ApplyLedgerFilter(
                                 filter.copyWith(clearDates: true),
@@ -166,7 +172,7 @@ class LedgerFilterBar extends StatelessWidget {
                             const ClearLedgerFilter(),
                           ),
                           child: Text(
-                            'Clear all',
+                            l10n.clearAllFilters,
                             style: AppTypography.bodySmall.copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.w600,
@@ -185,13 +191,15 @@ class LedgerFilterBar extends StatelessWidget {
     );
   }
 
-  String _dateRangeLabel(LedgerFilter f) {
+  String _dateRangeLabel(AppLocalizations l10n, LedgerFilter f) {
     final fmt = DateFormat('d MMM');
     if (f.dateFrom != null && f.dateTo != null) {
       return '${fmt.format(f.dateFrom!)}–${fmt.format(f.dateTo!)}';
     }
-    if (f.dateFrom != null) return 'From ${fmt.format(f.dateFrom!)}';
-    return 'To ${fmt.format(f.dateTo!)}';
+    if (f.dateFrom != null) {
+      return l10n.fromDateLabel(fmt.format(f.dateFrom!));
+    }
+    return l10n.toDateLabel(fmt.format(f.dateTo!));
   }
 
   String _amountLabel(LedgerFilter f) {
@@ -367,21 +375,22 @@ class _FilterSheetState extends State<_FilterSheet> {
             children: [
               Row(
                 children: [
-                  Text('Filter Entries', style: AppTypography.h3),
+                  Text(l10n.filterEntriesTitle, style: AppTypography.h3),
                   const Spacer(),
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                       widget.onReset();
                     },
-                    child: const Text('Reset'),
+                    child: Text(l10n.resetLabel),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
 
               // Status
-              Text('STATUS', style: _sectionStyle(context)),
+              Text(l10n.statusLabel.toUpperCase(),
+                  style: _sectionStyle(context)),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -426,7 +435,8 @@ class _FilterSheetState extends State<_FilterSheet> {
               const SizedBox(height: 16),
 
               // Type
-              Text('TYPE', style: _sectionStyle(context)),
+              Text(l10n.typeLabel.toUpperCase(),
+                  style: _sectionStyle(context)),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -440,7 +450,7 @@ class _FilterSheetState extends State<_FilterSheet> {
                     }),
                   ),
                   _OptionChip(
-                    label: 'Credit',
+                    label: l10n.creditLabel,
                     selected: _type == EntryType.credit,
                     onTap: () => setState(() {
                       _type = _type == EntryType.credit
@@ -450,7 +460,7 @@ class _FilterSheetState extends State<_FilterSheet> {
                     }),
                   ),
                   _OptionChip(
-                    label: 'Payment',
+                    label: l10n.paymentLabel,
                     selected: _type == EntryType.payment,
                     onTap: () => setState(() {
                       _type = _type == EntryType.payment
@@ -460,7 +470,7 @@ class _FilterSheetState extends State<_FilterSheet> {
                     }),
                   ),
                   _OptionChip(
-                    label: 'Advance',
+                    label: l10n.advanceSingle,
                     selected: _type == EntryType.advance,
                     onTap: () => setState(() {
                       _type = _type == EntryType.advance
@@ -470,7 +480,7 @@ class _FilterSheetState extends State<_FilterSheet> {
                     }),
                   ),
                   _OptionChip(
-                    label: 'Deliveries only',
+                    label: l10n.deliveriesOnly,
                     selected: _deliveriesOnly,
                     onTap: () => setState(() {
                       _deliveriesOnly = !_deliveriesOnly;
@@ -482,14 +492,14 @@ class _FilterSheetState extends State<_FilterSheet> {
               const SizedBox(height: 16),
 
               // Date range
-              Text('DATE RANGE', style: _sectionStyle(context)),
+              Text(l10n.dateRangeLabel, style: _sectionStyle(context)),
               const SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(
                     child: _DateButton(
                       label: _dateFrom == null
-                          ? 'From'
+                          ? l10n.fromLabel
                           : DateFormat('d MMM').format(_dateFrom!),
                       onTap: () async {
                         final picked = await showDatePicker(
@@ -506,7 +516,7 @@ class _FilterSheetState extends State<_FilterSheet> {
                   Expanded(
                     child: _DateButton(
                       label: _dateTo == null
-                          ? 'To'
+                          ? l10n.toLabel
                           : DateFormat('d MMM').format(_dateTo!),
                       onTap: () async {
                         final picked = await showDatePicker(
@@ -535,7 +545,7 @@ class _FilterSheetState extends State<_FilterSheet> {
               const SizedBox(height: 16),
 
               // Amount range
-              Text('AMOUNT RANGE', style: _sectionStyle(context)),
+              Text(l10n.amountRangeLabel, style: _sectionStyle(context)),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -543,9 +553,9 @@ class _FilterSheetState extends State<_FilterSheet> {
                     child: TextField(
                       controller: _minCtrl,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         prefixText: '₹',
-                        hintText: 'Min',
+                        hintText: l10n.minLabel,
                         isDense: true,
                       ),
                     ),
@@ -555,9 +565,9 @@ class _FilterSheetState extends State<_FilterSheet> {
                     child: TextField(
                       controller: _maxCtrl,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         prefixText: '₹',
-                        hintText: 'Max',
+                        hintText: l10n.maxLabel,
                         isDense: true,
                       ),
                     ),
@@ -587,9 +597,9 @@ class _FilterSheetState extends State<_FilterSheet> {
                     backgroundColor: AppColors.primary,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  child: const Text(
-                    'Apply Filter',
-                    style: TextStyle(
+                  child: Text(
+                    l10n.applyFilterButton,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),

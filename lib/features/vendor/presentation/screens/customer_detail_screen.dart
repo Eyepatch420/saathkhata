@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/services/ledger_socket_service.dart';
 import '../../../../core/utils/app_logger.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/ledger_entry.dart';
 import '../../../../shared/models/link_model.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -163,15 +165,16 @@ class _CustomerDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final authState = context.read<AuthBloc>().state;
     final currentUserId =
         authState is AuthAuthenticated ? authState.user.id : '';
 
     final tabs = [
-      const Tab(text: 'History'),
-      const Tab(text: 'Dues'),
-      if (showDeliveryTab) const Tab(text: 'Delivery'),
-      const Tab(text: 'Info'),
+      Tab(text: l10n.historyTab),
+      Tab(text: l10n.duesTab),
+      if (showDeliveryTab) Tab(text: l10n.deliveryLabel),
+      Tab(text: l10n.infoTab),
     ];
 
     return Scaffold(
@@ -199,7 +202,7 @@ class _CustomerDetailView extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.add_shopping_cart_outlined),
-            tooltip: 'New order for customer',
+            tooltip: l10n.newOrderForCustomerTooltip,
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => BlocProvider(
@@ -296,6 +299,7 @@ class _DuesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
         LedgerBalanceHeader(
@@ -335,7 +339,7 @@ class _DuesTab extends StatelessWidget {
                 ),
               ),
               icon: const Icon(Icons.calendar_month_rounded, size: 16),
-              label: const Text('View Monthly Statement'),
+              label: Text(l10n.viewMonthlyStatement),
             ),
           ),
         ),
@@ -382,6 +386,7 @@ class _DeliveriesHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
@@ -390,15 +395,16 @@ class _DeliveriesHeader extends StatelessWidget {
         color: AppColors.primary.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(Icons.local_shipping_rounded,
+          const Icon(Icons.local_shipping_rounded,
               size: 16, color: AppColors.primary),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Orders delivered to this customer. Tap an entry to see items.',
-              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+              l10n.customerDeliveriesHint,
+              style: const TextStyle(
+                  fontSize: 12, color: AppColors.textSecondary),
             ),
           ),
         ],
@@ -422,6 +428,7 @@ class _InfoTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final c = customer.customer;
     final hasDefaults = customer.defaultProduct != null;
 
@@ -429,42 +436,42 @@ class _InfoTab extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       children: [
         _InfoSection(
-          title: 'Customer',
+          title: l10n.customer,
           children: [
-            _InfoRow('Name', c.name),
-            if (c.mobile != null) _InfoRow('Mobile', c.mobile!),
+            _InfoRow(l10n.nameLabel, c.name),
+            if (c.mobile != null)
+              _InfoRow(l10n.mobileNumber, c.mobile!),
             if (customer.nickname != null)
-              _InfoRow('Your nickname', customer.nickname!),
+              _InfoRow(l10n.yourNicknameLabel, customer.nickname!),
             _InfoRow(
-                'Linked since',
-                _formatDate(customer.createdAt)),
+                l10n.linkedSinceLabel, _formatDate(customer.createdAt)),
           ],
         ),
         const SizedBox(height: 20),
         _InfoSection(
-          title: 'Default Delivery',
+          title: l10n.defaultDeliveryTitle,
           trailing: TextButton(
             onPressed: () => _showDefaultsSheet(context),
-            child: Text(hasDefaults ? 'Edit' : 'Set'),
+            child: Text(hasDefaults ? l10n.editLabel : l10n.setButton),
           ),
           children: hasDefaults
               ? [
                   if (customer.defaultProduct != null)
-                    _InfoRow('Product', customer.defaultProduct!),
+                    _InfoRow(l10n.productLabel, customer.defaultProduct!),
                   if (customer.defaultQty != null)
                     _InfoRow(
-                        'Qty',
+                        l10n.qty,
                         '${customer.defaultQty!.toStringAsFixed(customer.defaultQty! % 1 == 0 ? 0 : 2)}'
                         ' ${customer.defaultUnit ?? ''}'),
                   if (customer.defaultPricePerUnit != null)
-                    _InfoRow('Price/unit',
+                    _InfoRow(l10n.pricePerUnitShort,
                         '₹${customer.defaultPricePerUnit!.toStringAsFixed(2)}'),
                 ]
               : [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
-                      'No default set. Staff Quick Delivery will ask each time.',
+                      l10n.noDefaultDeliveryHint,
                       style: AppTypography.bodySmall
                           .copyWith(color: AppColors.textHint),
                     ),
@@ -474,9 +481,9 @@ class _InfoTab extends StatelessWidget {
         if (customer.tierName != null) ...[
           const SizedBox(height: 20),
           _InfoSection(
-            title: 'Membership',
+            title: l10n.membership,
             children: [
-              _InfoRow('Tier', customer.tierName!),
+              _InfoRow(l10n.tierLabel, customer.tierName!),
             ],
           ),
         ],
@@ -502,11 +509,7 @@ class _InfoTab extends StatelessWidget {
   String _formatDate(String iso) {
     try {
       final dt = DateTime.parse(iso).toLocal();
-      final months = [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-      ];
-      return '${dt.day} ${months[dt.month - 1]} ${dt.year}';
+      return DateFormat('d MMM yyyy').format(dt);
     } catch (_) {
       return iso;
     }

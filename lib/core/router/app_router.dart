@@ -12,6 +12,7 @@ import '../../features/auth/presentation/screens/email_signup_screen.dart';
 import '../../features/auth/presentation/screens/otp_verify_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../features/vendor/presentation/bloc/vendor_bloc.dart';
 import '../../features/vendor/presentation/bloc/vendor_event.dart';
 import '../../features/vendor/presentation/screens/vendor_dashboard.dart';
@@ -148,8 +149,8 @@ class AppRouter {
   static const String vendorSchedule = '/vendor/schedule';
   static const String customerSchedule = '/customer/schedule';
 
-  // Routes accessible without authentication
-  static const _publicRoutes = {
+  // Screens that only exist inside the pre-login flow (language → OTP → signup).
+  static const _authFlowRoutes = {
     splash,
     languageSelection,
     onboarding,
@@ -160,33 +161,55 @@ class AppRouter {
     emailLogin,
     emailSignup,
     profileSetup,
-    locationPicker,
   };
+
+  /// Utility screens that are valid in BOTH auth states.
+  ///
+  /// The map picker is opened while signed out (profile setup / email signup)
+  /// and while signed in (Edit Profile). It must never be redirected: bouncing
+  /// an authenticated user off a *pushed* route lands on the vendor shell, and
+  /// go_router then emits two pages carrying the same key — which trips
+  /// `'!keyReservation.contains(key)'` in navigator.dart and shows the red
+  /// "Failed assertion" screen instead of the map.
+  static const _anyAuthStateRoutes = {locationPicker};
+
+  /// Pure redirect decision — kept separate from [router] so it can be tested
+  /// without spinning up DI, blocs or the whole screen tree.
+  static String? resolveRedirect({
+    required bool isAuthenticated,
+    required bool isUnauthenticated,
+    required bool isStaff,
+    required bool isVendor,
+    required String location,
+  }) {
+    if (_anyAuthStateRoutes.contains(location)) return null;
+
+    final isAuthFlow =
+        _authFlowRoutes.contains(location) || location.startsWith(profileSetup);
+
+    if (isAuthenticated && isAuthFlow) {
+      if (isStaff) return staffHome;
+      return isVendor ? vendorHome : customerHome;
+    }
+
+    if (isUnauthenticated && !isAuthFlow) return roleSelection;
+
+    return null; // no redirect
+  }
 
   static final GoRouter router = GoRouter(
     initialLocation: splash,
     refreshListenable: getIt<AuthStateNotifier>(),
     redirect: (context, state) {
       final authState = getIt<AuthStateNotifier>().authState;
-      final location = state.uri.path;
-      final isPublic =
-          _publicRoutes.contains(location) || location.startsWith(profileSetup);
-
-      if (authState is AuthAuthenticated) {
-        // Redirect authenticated users off any public/auth screen
-        if (isPublic) {
-          final user = authState.user;
-          if (user.isStaff) return staffHome;
-          return user.isVendor ? vendorHome : customerHome;
-        }
-      }
-
-      if (authState is AuthUnauthenticated) {
-        // Block protected routes for unauthenticated users
-        if (!isPublic) return roleSelection;
-      }
-
-      return null; // no redirect
+      final user = authState is AuthAuthenticated ? authState.user : null;
+      return resolveRedirect(
+        isAuthenticated: authState is AuthAuthenticated,
+        isUnauthenticated: authState is AuthUnauthenticated,
+        isStaff: user?.isStaff ?? false,
+        isVendor: user?.isVendor ?? false,
+        location: state.uri.path,
+      );
     },
     routes: [
       GoRoute(path: splash, builder: (context, state) => const SplashScreen()),
@@ -620,6 +643,7 @@ class _VendorMainWrapperState extends State<VendorMainWrapper>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocProvider.value(
       value: getIt<VendorBloc>(),
       child: Builder(
@@ -670,13 +694,19 @@ class _VendorMainWrapperState extends State<VendorMainWrapper>
             bottomNavigationBar: AppBottomNavBar(
               currentIndex: _calculateSelectedIndex(ctx),
               onTap: (index) => _onTap(ctx, index),
-              items: const [
-                AppNavItem(riveIcon: AppRiveIcon.home, label: 'Home'),
-                AppNavItem(riveIcon: AppRiveIcon.user, label: 'Staff'),
-                AppNavItem(riveIcon: AppRiveIcon.zap, label: 'Booking'),
-                AppNavItem(riveIcon: AppRiveIcon.clock, label: 'Schedule'),
-                AppNavItem(riveIcon: AppRiveIcon.stars, label: 'Reports'),
-                AppNavItem(riveIcon: AppRiveIcon.gear, label: 'Settings'),
+              items: [
+                AppNavItem(
+                    riveIcon: AppRiveIcon.home, label: l10n.navHome),
+                AppNavItem(
+                    riveIcon: AppRiveIcon.user, label: l10n.navStaff),
+                AppNavItem(
+                    riveIcon: AppRiveIcon.zap, label: l10n.navBooking),
+                AppNavItem(
+                    riveIcon: AppRiveIcon.clock, label: l10n.navSchedule),
+                AppNavItem(
+                    riveIcon: AppRiveIcon.stars, label: l10n.navReports),
+                AppNavItem(
+                    riveIcon: AppRiveIcon.gear, label: l10n.settings),
               ],
             ),
           );
@@ -769,6 +799,7 @@ class _CustomerMainWrapperState extends State<CustomerMainWrapper>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final location = GoRouterState.of(context).uri.path;
     final isHome = location == AppRouter.customerHome;
     final bottomInset = MediaQuery.of(context).padding.bottom;
@@ -813,12 +844,12 @@ class _CustomerMainWrapperState extends State<CustomerMainWrapper>
       bottomNavigationBar: AppBottomNavBar(
         currentIndex: _calculateSelectedIndex(context),
         onTap: (index) => _onTap(context, index),
-        items: const [
-          AppNavItem(riveIcon: AppRiveIcon.home, label: 'Home'),
-          AppNavItem(riveIcon: AppRiveIcon.message, label: 'My Khatas'),
-          AppNavItem(riveIcon: AppRiveIcon.zap, label: 'Bookings'),
-          AppNavItem(riveIcon: AppRiveIcon.clock, label: 'Schedule'),
-          AppNavItem(riveIcon: AppRiveIcon.user, label: 'Profile'),
+        items: [
+          AppNavItem(riveIcon: AppRiveIcon.home, label: l10n.navHome),
+          AppNavItem(riveIcon: AppRiveIcon.message, label: l10n.myKhatas),
+          AppNavItem(riveIcon: AppRiveIcon.zap, label: l10n.bookingsTab),
+          AppNavItem(riveIcon: AppRiveIcon.clock, label: l10n.navSchedule),
+          AppNavItem(riveIcon: AppRiveIcon.user, label: l10n.profile),
         ],
       ),
     );
@@ -884,10 +915,11 @@ void showCustomerAddVendorSheet(BuildContext context) {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Add a Vendor', style: AppTypography.h3),
+            Text(AppLocalizations.of(context)!.addAVendor,
+                style: AppTypography.h3),
             const SizedBox(height: 4),
             Text(
-              'Find by phone number or email',
+              AppLocalizations.of(context)!.findByPhoneOrEmail,
               style: AppTypography.bodySmall.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -897,20 +929,20 @@ void showCustomerAddVendorSheet(BuildContext context) {
               controller: identifierCtrl,
               keyboardType: TextInputType.text,
               autofocus: true,
-              decoration: const InputDecoration(
-                labelText: 'Phone or email',
-                hintText: '10-digit mobile or email address',
-                prefixIcon: Icon(Icons.storefront_outlined),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.phoneOrEmail,
+                hintText: AppLocalizations.of(context)!.phoneOrEmailHint,
+                prefixIcon: const Icon(Icons.storefront_outlined),
               ),
             ),
             const SizedBox(height: 14),
             TextField(
               controller: nicknameCtrl,
               textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                labelText: 'Nickname (optional)',
-                hintText: 'How you know this vendor',
-                prefixIcon: Icon(Icons.label_outline_rounded),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.nicknameOptional,
+                hintText: AppLocalizations.of(context)!.howYouKnowVendor,
+                prefixIcon: const Icon(Icons.label_outline_rounded),
               ),
             ),
             const SizedBox(height: 24),

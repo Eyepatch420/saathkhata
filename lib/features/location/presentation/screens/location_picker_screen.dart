@@ -502,12 +502,12 @@ class _LocationCard extends StatelessWidget {
             Row(
               children: [
                 _CoordChip(
-                  label: 'LAT',
+                  label: AppLocalizations.of(context)!.latLabel,
                   value: lat.toStringAsFixed(6),
                 ),
                 const SizedBox(width: 10),
                 _CoordChip(
-                  label: 'LNG',
+                  label: AppLocalizations.of(context)!.lngLabel,
                   value: lng.toStringAsFixed(6),
                 ),
               ],

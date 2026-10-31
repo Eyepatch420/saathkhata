@@ -113,7 +113,9 @@ class MembershipAppBarChip extends StatelessWidget {
                   if (current != null) ...[
                     const SizedBox(height: 6),
                     Text(
-                        '₹${current.plan.price.toStringAsFixed(0)} · ${current.daysLeft} days left',
+                        AppLocalizations.of(ctx)!.planPriceAndDaysLeft(
+                            current.plan.price.toStringAsFixed(0),
+                            current.daysLeft),
                         style: TextStyle(color: cs.onSurfaceVariant)),
                     const SizedBox(height: 10),
                     ...current.benefitUsage.map((b) => Padding(
@@ -127,7 +129,9 @@ class MembershipAppBarChip extends StatelessWidget {
                                   child: Text(b.label,
                                       style: TextStyle(color: cs.onSurface))),
                               if (b.hasQuota)
-                                Text('${b.used}/${b.quota}',
+                                Text(
+                                    AppLocalizations.of(ctx)!
+                                        .usedOfQuota(b.used, b.quota ?? 0),
                                     style: TextStyle(
                                         color: cs.onSurfaceVariant,
                                         fontWeight: FontWeight.w600)),

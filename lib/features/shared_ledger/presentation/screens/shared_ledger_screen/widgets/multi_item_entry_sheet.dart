@@ -315,7 +315,7 @@ class _ItemRowWidget extends StatelessWidget {
                   onChanged: (_) => onChanged(),
                   decoration: InputDecoration(
                     labelText: l10n.amountRequired,
-                    hintText: 'per unit',
+                    hintText: l10n.perUnitLabel,
                     prefixText: '₹ ',
                     isDense: true,
                     contentPadding: const EdgeInsets.symmetric(
@@ -365,7 +365,9 @@ class _ItemRowWidget extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              'Subtotal: ₹${row.subtotal.toStringAsFixed(2)}',
+              l10n.subtotalAmountLabel(
+                row.subtotal.toStringAsFixed(2),
+              ),
               style: AppTypography.bodySmall.copyWith(
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w600,

@@ -152,7 +152,7 @@ class _RequestBody extends StatelessWidget {
           // Timestamp
           Center(
             child: Text(
-              AppLocalizations.of(context)!.requestedTimeAgo(_timeAgo(request.createdAt)),
+              AppLocalizations.of(context)!.requestedTimeAgo(_timeAgo(context, request.createdAt)),
               style: AppTypography.bodySmall.copyWith(color: AppColors.textHint),
             ),
           ),
@@ -216,11 +216,12 @@ class _RequestBody extends StatelessWidget {
     );
   }
 
-  String _timeAgo(DateTime dt) {
+  String _timeAgo(BuildContext context, DateTime dt) {
     final diff = DateTime.now().difference(dt);
-    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
-    if (diff.inHours < 24) return '${diff.inHours}h ago';
-    return '${diff.inDays}d ago';
+    final l10n = AppLocalizations.of(context)!;
+    if (diff.inMinutes < 60) return l10n.minutesAgo(diff.inMinutes);
+    if (diff.inHours < 24) return l10n.hoursAgo(diff.inHours);
+    return l10n.daysAgo(diff.inDays);
   }
 }
 
@@ -268,7 +269,7 @@ class _VendorInfoCard extends StatelessWidget {
                     if (vendor.businessName != null &&
                         vendor.businessName != vendor.name)
                       Text(
-                        'by ${vendor.name}',
+                        AppLocalizations.of(context)!.byName(vendor.name),
                         style: AppTypography.bodySmall
                             .copyWith(color: AppColors.textSecondary),
                       ),

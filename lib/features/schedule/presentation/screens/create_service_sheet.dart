@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/localized_labels.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/schedule_model.dart';
 import '../../domain/repositories/schedule_repository.dart';
 import '../cubit/schedule_cubit.dart';
@@ -36,8 +38,6 @@ class _CreateServiceSheetState extends State<CreateServiceSheet> {
   final Set<int> _deliveryDays = {};
   bool _autoLedger = true;
 
-  static const _dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
   @override
   void dispose() {
     _nameCtrl.dispose();
@@ -59,6 +59,7 @@ class _CreateServiceSheetState extends State<CreateServiceSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final mq = MediaQuery.of(context);
     return Padding(
       // viewInsets clears the keyboard; viewPadding clears the gesture bar /
@@ -74,10 +75,10 @@ class _CreateServiceSheetState extends State<CreateServiceSheet> {
             children: [
               Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'New Service',
-                      style: TextStyle(
+                      l10n.newService,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -92,39 +93,42 @@ class _CreateServiceSheetState extends State<CreateServiceSheet> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _nameCtrl,
-                decoration: const InputDecoration(labelText: 'Service Name *'),
+                decoration:
+                    InputDecoration(labelText: l10n.serviceNameLabel),
                 validator: (v) =>
-                    v == null || v.trim().isEmpty ? 'Required' : null,
+                    v == null || v.trim().isEmpty ? l10n.required : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _descCtrl,
-                decoration: const InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(labelText: l10n.description),
                 maxLines: 2,
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Service Type',
-                style: TextStyle(fontWeight: FontWeight.w600),
+              Text(
+                l10n.serviceTypeLabel,
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 6),
               SegmentedButton<ServiceType>(
                 segments: ServiceType.values
-                    .map((t) => ButtonSegment(value: t, label: Text(t.label)))
+                    .map((t) =>
+                        ButtonSegment(value: t, label: Text(l10n.serviceTypeName(t))))
                     .toList(),
                 selected: {_serviceType},
                 onSelectionChanged: (s) =>
                     setState(() => _serviceType = s.first),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Schedule',
-                style: TextStyle(fontWeight: FontWeight.w600),
+              Text(
+                l10n.scheduleLabel,
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 6),
               SegmentedButton<ScheduleType>(
                 segments: ScheduleType.values
-                    .map((t) => ButtonSegment(value: t, label: Text(t.label)))
+                    .map((t) =>
+                        ButtonSegment(value: t, label: Text(l10n.scheduleTypeName(t))))
                     .toList(),
                 selected: {_scheduleType},
                 onSelectionChanged: (s) =>
@@ -132,9 +136,9 @@ class _CreateServiceSheetState extends State<CreateServiceSheet> {
               ),
               if (_scheduleType != ScheduleType.daily) ...[
                 const SizedBox(height: 12),
-                const Text(
-                  'Delivery Days',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                Text(
+                  l10n.deliveryDaysLabel,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 6),
                 Wrap(
@@ -142,7 +146,7 @@ class _CreateServiceSheetState extends State<CreateServiceSheet> {
                   children: List.generate(7, (i) {
                     final selected = _deliveryDays.contains(i);
                     return FilterChip(
-                      label: Text(_dayNames[i]),
+                      label: Text(l10n.weekdayShort(i)),
                       selected: selected,
                       onSelected: (v) {
                         setState(() {
@@ -163,14 +167,14 @@ class _CreateServiceSheetState extends State<CreateServiceSheet> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Items',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                  Text(
+                    l10n.itemsLabel,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   TextButton.icon(
                     onPressed: _addItem,
                     icon: const Icon(Icons.add, size: 16),
-                    label: const Text('Add Item'),
+                    label: Text(l10n.addItemLabel),
                   ),
                 ],
               ),
@@ -188,10 +192,10 @@ class _CreateServiceSheetState extends State<CreateServiceSheet> {
               const SizedBox(height: 12),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('Auto-create ledger entry'),
-                subtitle: const Text(
-                  'Add to khata automatically on delivery',
-                  style: TextStyle(fontSize: 12),
+                title: Text(l10n.autoCreateLedgerEntry),
+                subtitle: Text(
+                  l10n.addToKhataAutomatically,
+                  style: const TextStyle(fontSize: 12),
                 ),
                 value: _autoLedger,
                 onChanged: (v) => setState(() => _autoLedger = v),
@@ -222,9 +226,10 @@ class _CreateServiceSheetState extends State<CreateServiceSheet> {
                                 color: Colors.white,
                               ),
                             )
-                          : const Text(
-                              'Create Service',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                          : Text(
+                              l10n.createServiceButton,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                     ),
                   );
@@ -238,10 +243,11 @@ class _CreateServiceSheetState extends State<CreateServiceSheet> {
   }
 
   Future<void> _submit(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
     if (!_formKey.currentState!.validate()) return;
     if (_scheduleType != ScheduleType.daily && _deliveryDays.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Select at least one delivery day')),
+        SnackBar(content: Text(l10n.selectAtLeastOneDeliveryDay)),
       );
       return;
     }
@@ -253,8 +259,8 @@ class _CreateServiceSheetState extends State<CreateServiceSheet> {
       final price = double.tryParse(draft.priceCtrl.text.trim());
       if (name.isEmpty || unit.isEmpty || price == null || price < 0) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Fill in name, unit and price for every item'),
+          SnackBar(
+            content: Text(l10n.fillNameUnitPriceEveryItem),
           ),
         );
         return;
@@ -284,6 +290,7 @@ class _ItemRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -291,7 +298,7 @@ class _ItemRow extends StatelessWidget {
           flex: 3,
           child: TextFormField(
             controller: item.nameCtrl,
-            decoration: const InputDecoration(labelText: 'Item name'),
+            decoration: InputDecoration(labelText: l10n.itemNameLabel),
           ),
         ),
         const SizedBox(width: 8),
@@ -299,7 +306,7 @@ class _ItemRow extends StatelessWidget {
           flex: 2,
           child: TextFormField(
             controller: item.unitCtrl,
-            decoration: const InputDecoration(labelText: 'Unit'),
+            decoration: InputDecoration(labelText: l10n.unitLabel),
           ),
         ),
         const SizedBox(width: 8),
@@ -307,7 +314,7 @@ class _ItemRow extends StatelessWidget {
           flex: 2,
           child: TextFormField(
             controller: item.priceCtrl,
-            decoration: const InputDecoration(labelText: 'Price (₹)'),
+            decoration: InputDecoration(labelText: l10n.priceRupeeLabel),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
           ),
         ),

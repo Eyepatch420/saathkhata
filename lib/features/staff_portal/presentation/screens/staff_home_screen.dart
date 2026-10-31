@@ -20,15 +20,22 @@ class StaffHomeScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final authState = context.read<AuthBloc>().state;
     final user = authState is AuthAuthenticated ? authState.user : null;
+    final isStaff = user?.isStaff ?? false;
+    // `effectiveBusinessName` resolves to the OWNER VENDOR's business name for a
+    // staff login. It used to be the AppBar title, so a staff member saw the
+    // shop's name up top and assumed the wrong account had loaded. Lead with the
+    // signed-in person's own name and keep the business as the second line.
     final business = user?.effectiveBusinessName ?? 'SaathKhata';
+    final title = isStaff ? (user?.name ?? business) : business;
+    final subtitle = l10n.staffRoleSubtitle(isStaff ? business : (user?.name ?? ''));
 
     return Scaffold(
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(business, style: AppTypography.h3),
-            Text(l10n.staffRoleSubtitle(user?.name ?? ''),
+            Text(title, style: AppTypography.h3),
+            Text(subtitle,
                 style: AppTypography.bodySmall.copyWith(color: AppColors.primary)),
           ],
         ),
@@ -53,16 +60,16 @@ class StaffHomeScreen extends StatelessWidget {
                 children: [
                   _ActionButton(
                     icon: Icons.flash_on_rounded,
-                    label: 'Quick Delivery',
-                    subtitle: 'Pre-filled with customer defaults',
+                    label: l10n.staffQuickDelivery,
+                    subtitle: l10n.staffQuickDeliverySubtitle,
                     color: AppColors.primary,
                     onTap: () => context.push(AppRouter.staffQuickDelivery),
                   ),
                   const SizedBox(height: 14),
                   _ActionButton(
                     icon: Icons.shopping_bag_outlined,
-                    label: 'Orders',
-                    subtitle: 'Confirmed orders awaiting delivery',
+                    label: l10n.ordersTitle,
+                    subtitle: l10n.staffOrdersSubtitle,
                     color: const Color(0xFFFF6B35),
                     onTap: () => context.push(AppRouter.staffOrders),
                   ),

@@ -109,7 +109,8 @@ class _LedgerEntryCardState extends State<LedgerEntryCard> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
-                                '${entry.childCount} items',
+                                AppLocalizations.of(context)!
+                                    .itemsCountShort(entry.childCount),
                                 style: AppTypography.bodySmall.copyWith(
                                   fontSize: 10,
                                 ),
@@ -438,7 +439,8 @@ class _ChildEntryRow extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              child.description ?? 'Item',
+              child.description ??
+                  AppLocalizations.of(context)!.item,
               style: AppTypography.bodyMedium,
             ),
           ),
@@ -484,7 +486,10 @@ class _DeliveryChip extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           Text(
-            entry.deliveryLabel,
+            entry.deliveredByRole != null
+                ? AppLocalizations.of(context)!
+                    .deliveredByRoleLabel(entry.deliveredByRole!)
+                : AppLocalizations.of(context)!.deliveredOnlyLabel,
             style: AppTypography.bodySmall.copyWith(
               color: AppColors.success,
               fontWeight: FontWeight.w600,

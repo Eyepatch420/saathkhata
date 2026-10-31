@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../../../../core/constants/app_colors.dart';
+import '../../../../../../l10n/app_localizations.dart';
 
 /// Tappable row showing the selected entry date, with a "Past date" badge
 /// when [selectedDate] is before today. Used by both the single-entry and
@@ -15,8 +16,9 @@ class LedgerDatePickerRow extends StatelessWidget {
     required this.onTap,
   });
 
-  String _label() {
-    if (selectedDate == null) return 'Today';
+  String _label(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    if (selectedDate == null) return l10n.today;
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final d = DateTime(
@@ -24,8 +26,8 @@ class LedgerDatePickerRow extends StatelessWidget {
       selectedDate!.month,
       selectedDate!.day,
     );
-    if (d == today) return 'Today';
-    if (d == today.subtract(const Duration(days: 1))) return 'Yesterday';
+    if (d == today) return l10n.today;
+    if (d == today.subtract(const Duration(days: 1))) return l10n.yesterday;
     if (d.year == now.year) return DateFormat('EEE, d MMM').format(d);
     return DateFormat('d MMM yyyy').format(d);
   }
@@ -57,7 +59,7 @@ class LedgerDatePickerRow extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             Text(
-              _label(),
+              _label(context),
               style: TextStyle(
                 color: _isPast ? AppColors.primary : AppColors.textSecondary,
               ),
@@ -70,9 +72,10 @@ class LedgerDatePickerRow extends StatelessWidget {
                   color: Colors.orange.shade100,
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: const Text(
-                  'Past date',
-                  style: TextStyle(fontSize: 10, color: Colors.deepOrange),
+                child: Text(
+                  AppLocalizations.of(context)!.pastDateLabel,
+                  style: const TextStyle(
+                      fontSize: 10, color: Colors.deepOrange),
                 ),
               ),
             ],

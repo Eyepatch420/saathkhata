@@ -176,13 +176,16 @@ class _RequestCard extends StatelessWidget {
                         style: AppTypography.labelLarge
                             .copyWith(color: cs.onSurface)),
                     const SizedBox(height: 2),
-                    Text(_formatDate(request.createdAt),
+                    Text(_formatDate(context, request.createdAt),
                         style: TextStyle(
                             color: cs.onSurfaceVariant, fontSize: 12)),
                   ],
                 ),
               ),
-              _PlanBadge(name: plan?.name ?? 'Plan', color: planColor),
+              _PlanBadge(
+      name: plan?.name ?? AppLocalizations.of(context)!.planFallbackLabel,
+      color: planColor,
+    ),
             ],
           ),
           if (request.message != null && request.message!.isNotEmpty) ...[
@@ -248,14 +251,15 @@ class _RequestCard extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime dt) {
+  String _formatDate(BuildContext context, DateTime dt) {
     final now = DateTime.now();
     final diff = now.difference(dt);
+    final l10n = AppLocalizations.of(context)!;
     if (diff.inDays == 0) {
-      if (diff.inHours == 0) return '${diff.inMinutes}m ago';
-      return '${diff.inHours}h ago';
+      if (diff.inHours == 0) return l10n.minutesAgo(diff.inMinutes);
+      return l10n.hoursAgo(diff.inHours);
     }
-    if (diff.inDays == 1) return 'Yesterday';
+    if (diff.inDays == 1) return l10n.yesterday;
     return '${dt.day}/${dt.month}/${dt.year}';
   }
 }

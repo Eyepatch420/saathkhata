@@ -2837,4 +2837,900 @@ class AppLocalizationsMr extends AppLocalizations {
   @override
   String get deliveriesHint =>
       'Items delivered through orders. Tap an entry to see the items.';
+
+  @override
+  String get scheduledServicesTitle => 'Scheduled Services';
+
+  @override
+  String get servicesTab => 'Services';
+
+  @override
+  String get todaysDeliveriesTab => 'Today\'s Deliveries';
+
+  @override
+  String get newService => 'New Service';
+
+  @override
+  String get noServicesYet => 'No services yet';
+
+  @override
+  String get tapPlusToCreateService => 'Tap + to create a scheduled service';
+
+  @override
+  String subscriberCountLabel(int count) {
+    return '$count subs';
+  }
+
+  @override
+  String get noDeliveriesToday => 'No deliveries today';
+
+  @override
+  String get noDeliveriesMatchFilters => 'No deliveries match your filters';
+
+  @override
+  String get mySubscriptionsTitle => 'My Subscriptions';
+
+  @override
+  String get deliveriesTab => 'Deliveries';
+
+  @override
+  String get noActiveSubscriptions => 'No active subscriptions';
+
+  @override
+  String get noDeliveriesYet => 'No deliveries yet';
+
+  @override
+  String get serviceNameLabel => 'Service Name *';
+
+  @override
+  String get serviceTypeLabel => 'Service Type';
+
+  @override
+  String get scheduleLabel => 'Schedule';
+
+  @override
+  String get deliveryDaysLabel => 'Delivery Days';
+
+  @override
+  String get itemsLabel => 'Items';
+
+  @override
+  String get autoCreateLedgerEntry => 'Auto-create ledger entry';
+
+  @override
+  String get addToKhataAutomatically =>
+      'Add to khata automatically on delivery';
+
+  @override
+  String get createServiceButton => 'Create Service';
+
+  @override
+  String get selectAtLeastOneDeliveryDay => 'Select at least one delivery day';
+
+  @override
+  String get fillNameUnitPriceEveryItem =>
+      'Fill in name, unit and price for every item';
+
+  @override
+  String get itemNameLabel => 'Item name';
+
+  @override
+  String get priceRupeeLabel => 'Price (₹)';
+
+  @override
+  String get subscribersTitle => 'Subscribers';
+
+  @override
+  String get addCustomerButton => 'Add Customer';
+
+  @override
+  String get noSubscribersYet => 'No subscribers yet';
+
+  @override
+  String get deactivateServiceTitle => 'Deactivate Service';
+
+  @override
+  String get deactivateServiceMessage =>
+      'This will stop all future deliveries. Active subscriptions will be unaffected until manually removed.';
+
+  @override
+  String get typeLabel => 'Type';
+
+  @override
+  String get autoLedgerEntryLabel => 'Auto Ledger Entry';
+
+  @override
+  String get yesLabel => 'Yes';
+
+  @override
+  String get noLabel => 'No';
+
+  @override
+  String subscriptionStartsOn(String summary, String date) {
+    return '$summary · starts $date';
+  }
+
+  @override
+  String amountPerDelivery(String amount) {
+    return '₹$amount / delivery';
+  }
+
+  @override
+  String get pausedLabel => 'Paused';
+
+  @override
+  String get resumeLabel => 'Resume';
+
+  @override
+  String get pauseLabel => 'Pause';
+
+  @override
+  String get deliveryDetailsTitle => 'Delivery Details';
+
+  @override
+  String deliveryDueAt(String time) {
+    return 'Due at $time';
+  }
+
+  @override
+  String deliveryDeliveredAt(String time) {
+    return 'Delivered at $time';
+  }
+
+  @override
+  String deliveryDeliveredBy(String name) {
+    return 'Delivered by $name';
+  }
+
+  @override
+  String get deliveryPhotoTitle => 'Delivery Photo';
+
+  @override
+  String get skipDeliveryTitle => 'Skip Delivery';
+
+  @override
+  String get skipDeliveryMessage => 'Mark this delivery as skipped today?';
+
+  @override
+  String get confirmDeliveryButton => 'Confirm Delivery';
+
+  @override
+  String get couldNotConfirmDelivery => 'Could not confirm delivery';
+
+  @override
+  String get dateTimeLabel => 'Date & time';
+
+  @override
+  String get amountToAddToLedger => 'Amount to add to ledger';
+
+  @override
+  String get deliveryAutoLedgerNote =>
+      'This delivery will be added to the ledger automatically when confirmed — no need to add it again.';
+
+  @override
+  String get deliveryPhotoRequired => 'DELIVERY PHOTO (REQUIRED)';
+
+  @override
+  String get addSubscriberTitle => 'Add Subscriber';
+
+  @override
+  String get selectCustomerLabel => 'Select customer';
+
+  @override
+  String get selectACustomerHint => 'Select a customer';
+
+  @override
+  String get startDateLabel => 'Start Date';
+
+  @override
+  String get setQuantityForOneItem => 'Set a quantity for at least one item';
+
+  @override
+  String get customPriceQuestion => 'Custom price?';
+
+  @override
+  String get customPriceOptionalLabel => 'Custom Price (₹, optional)';
+
+  @override
+  String get allDeliveriesFilter => 'All deliveries';
+
+  @override
+  String get clearAllFilters => 'Clear all';
+
+  @override
+  String get locationPermissionDenied => 'Location permission denied';
+
+  @override
+  String get couldNotGetCurrentLocation => 'Couldn\'t get current location';
+
+  @override
+  String get filterDeliveriesTitle => 'Filter Deliveries';
+
+  @override
+  String get filterCustomerServiceName => 'CUSTOMER / SERVICE NAME';
+
+  @override
+  String get filterSearchByName => 'Search by name';
+
+  @override
+  String get filterAnyDate => 'Any date';
+
+  @override
+  String get filterRadiusFromLocation => 'RADIUS FROM MY LOCATION';
+
+  @override
+  String get applyFilterButton => 'Apply Filter';
+
+  @override
+  String withinKmLabel(String km) {
+    return 'Within $km km';
+  }
+
+  @override
+  String kmLabel(String km) {
+    return '$km km';
+  }
+
+  @override
+  String get serviceTypeProduct => 'Product';
+
+  @override
+  String get serviceTypeSession => 'Session';
+
+  @override
+  String get scheduleTypeDaily => 'Daily';
+
+  @override
+  String get scheduleTypeWeekly => 'Weekly';
+
+  @override
+  String get scheduleTypeCustomDays => 'Custom Days';
+
+  @override
+  String get deliveryStatusScheduled => 'Scheduled';
+
+  @override
+  String get deliveryStatusDelivered => 'Delivered';
+
+  @override
+  String get deliveryStatusSkipped => 'Skipped';
+
+  @override
+  String get deliveryStatusFailed => 'Failed';
+
+  @override
+  String get scheduleTypeCustom => 'Custom';
+
+  @override
+  String get orderStatusPending => 'Pending';
+
+  @override
+  String get orderStatusConfirmed => 'Confirmed';
+
+  @override
+  String get orderStatusRejected => 'Rejected';
+
+  @override
+  String get orderStatusDelivered => 'Delivered';
+
+  @override
+  String get orderStatusCancelled => 'Cancelled';
+
+  @override
+  String get weekdayShortSun => 'Sun';
+
+  @override
+  String get weekdayShortMon => 'Mon';
+
+  @override
+  String get weekdayShortTue => 'Tue';
+
+  @override
+  String get weekdayShortWed => 'Wed';
+
+  @override
+  String get weekdayShortThu => 'Thu';
+
+  @override
+  String get weekdayShortFri => 'Fri';
+
+  @override
+  String get weekdayShortSat => 'Sat';
+
+  @override
+  String subscriptionItemsAmount(String summary, String amount) {
+    return '$summary · ₹$amount';
+  }
+
+  @override
+  String subscriptionNextDelivery(String date) {
+    return 'Next: $date';
+  }
+
+  @override
+  String subscriptionDeliverySubtitle(String date, String summary) {
+    return '$date · $summary';
+  }
+
+  @override
+  String get statusLabel => 'Status';
+
+  @override
+  String get callLabel => 'Call';
+
+  @override
+  String get subscribeButton => 'Subscribe';
+
+  @override
+  String get invalidValueLabel => 'Invalid';
+
+  @override
+  String get resetLabel => 'Reset';
+
+  @override
+  String itemPriceWithUnit(String name, String unit, String price) {
+    return '$name ($unit) · ₹$price';
+  }
+
+  @override
+  String forCustomerName(String name) {
+    return 'for $name';
+  }
+
+  @override
+  String get deliveredByLabel => 'Delivered by';
+
+  @override
+  String get staffQuickDelivery => 'Quick Delivery';
+
+  @override
+  String get staffQuickDeliverySubtitle => 'Pre-filled with customer defaults';
+
+  @override
+  String get staffOrdersSubtitle => 'Confirmed orders awaiting delivery';
+
+  @override
+  String get noResults => 'No results';
+
+  @override
+  String get noDefaultSet => 'No default set';
+
+  @override
+  String get photoUploadFailedNoError => 'Photo upload failed';
+
+  @override
+  String get deliverAndCharge => 'Deliver & Charge';
+
+  @override
+  String staffPaySummary(String role, String salaryType, String amount) {
+    return '$role · $salaryType ₹$amount';
+  }
+
+  @override
+  String itemsCountShort(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items',
+      one: '1 item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String noteWithValue(String note) {
+    return 'Note: $note';
+  }
+
+  @override
+  String orderPlacedOn(String date) {
+    return 'Placed $date';
+  }
+
+  @override
+  String get couldNotAccessCamera =>
+      'Could not access camera. Check app permissions.';
+
+  @override
+  String get couldNotAccessGallery =>
+      'Could not access gallery. Check app permissions.';
+
+  @override
+  String amountAddedToCustomerDue(String amount) {
+    return '₹$amount will be added to the customer\'s due.';
+  }
+
+  @override
+  String moreItemsCount(int count) {
+    return '+ $count more';
+  }
+
+  @override
+  String orderTotalAmount(String amount) {
+    return 'Total ₹$amount';
+  }
+
+  @override
+  String get orderStatusLabelAll => 'All';
+
+  @override
+  String get minimumValueOne => 'Min 1';
+
+  @override
+  String planPricePerDuration(String price, int days) {
+    return '₹$price / $days days';
+  }
+
+  @override
+  String planDurationSuffix(int days) {
+    return ' / $days days';
+  }
+
+  @override
+  String planPriceAndDuration(String price, int days) {
+    return '₹$price · $days days';
+  }
+
+  @override
+  String benefitQuotaTimes(int quota) {
+    return '×$quota';
+  }
+
+  @override
+  String advanceAmountLabel(String amount) {
+    return 'Advance: ₹$amount';
+  }
+
+  @override
+  String advanceAmountSuffix(String amount) {
+    return ' · advance ₹$amount';
+  }
+
+  @override
+  String activeMembersCount(int count) {
+    return '$count active';
+  }
+
+  @override
+  String usedOfQuota(int used, int quota) {
+    return '$used/$quota';
+  }
+
+  @override
+  String daysLeftWithWarning(int count) {
+    return '${count}d left ⚠';
+  }
+
+  @override
+  String get aPlanLabel => 'a plan';
+
+  @override
+  String get planFallbackLabel => 'Plan';
+
+  @override
+  String planWithExpiry(String plan, String date) {
+    return '$plan · $date';
+  }
+
+  @override
+  String planPriceAndDaysLeft(String price, int days) {
+    return '₹$price · $days days left';
+  }
+
+  @override
+  String get ledgerPreferences => 'Ledger Preferences';
+
+  @override
+  String get autoConfirmEntries => 'Auto-Confirm Entries';
+
+  @override
+  String get doneLabel => 'Done';
+
+  @override
+  String get categoryShortDairy => 'Dairy';
+
+  @override
+  String get categoryShortPress => 'Press';
+
+  @override
+  String get categoryShortMaid => 'Maid';
+
+  @override
+  String get categoryShortNews => 'News';
+
+  @override
+  String get categoryShortWater => 'Water';
+
+  @override
+  String get categoryShortTiffin => 'Tiffin';
+
+  @override
+  String get categoryShortKirana => 'Kirana';
+
+  @override
+  String get categoryShortSalon => 'Salon';
+
+  @override
+  String get categoryShortLabour => 'Labour';
+
+  @override
+  String get categoryShortTransport => 'Transport';
+
+  @override
+  String get categoryShortGym => 'Gym';
+
+  @override
+  String categoryWithCount(String category, int count) {
+    return '$category ($count)';
+  }
+
+  @override
+  String pageIndexOfTotal(int index, int total) {
+    return '$index of $total';
+  }
+
+  @override
+  String get orderButtonLabel => 'Order';
+
+  @override
+  String get historyTab => 'History';
+
+  @override
+  String get duesTab => 'Dues';
+
+  @override
+  String get infoTab => 'Info';
+
+  @override
+  String get nameLabel => 'Name';
+
+  @override
+  String get yourNicknameLabel => 'Your nickname';
+
+  @override
+  String get linkedSinceLabel => 'Linked since';
+
+  @override
+  String get defaultDeliveryTitle => 'Default Delivery';
+
+  @override
+  String get editLabel => 'Edit';
+
+  @override
+  String get productLabel => 'Product';
+
+  @override
+  String get pricePerUnitShort => 'Price/unit';
+
+  @override
+  String get noDefaultDeliveryHint =>
+      'No default set. Staff Quick Delivery will ask each time.';
+
+  @override
+  String get tierLabel => 'Tier';
+
+  @override
+  String get newOrderForCustomerTooltip => 'New order for customer';
+
+  @override
+  String get viewMonthlyStatement => 'View Monthly Statement';
+
+  @override
+  String get customerDeliveriesHint =>
+      'Orders delivered to this customer. Tap an entry to see items.';
+
+  @override
+  String remindersSentTo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Reminders sent to $count customers',
+      one: 'Reminder sent to 1 customer',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get remindersNoOutstanding => 'No customers with outstanding balance';
+
+  @override
+  String get remindersFailed => 'Failed to send reminders. Please try again.';
+
+  @override
+  String get ordersSubtitle => 'View and manage customer orders';
+
+  @override
+  String get defaultDeliverySaved => 'Default delivery saved';
+
+  @override
+  String defaultDeliveryPrefillHint(String name) {
+    return 'Pre-fills staff Quick Delivery screen for $name';
+  }
+
+  @override
+  String get fullCreamMilkExample => 'e.g. Full Cream Milk';
+
+  @override
+  String get defaultQtyLabel => 'Default qty';
+
+  @override
+  String get unitExampleHint => 'L, kg…';
+
+  @override
+  String get saveDefaultsButton => 'Save Defaults';
+
+  @override
+  String daysAgo(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String byName(String name) {
+    return 'by $name';
+  }
+
+  @override
+  String get latLabel => 'LAT';
+
+  @override
+  String get lngLabel => 'LNG';
+
+  @override
+  String get noLinkedVendorsYet => 'No linked vendors yet';
+
+  @override
+  String get autoConfirmingVendorEntries => 'Auto-confirming vendor entries';
+
+  @override
+  String get manualConfirmationRequired => 'Manual confirmation required';
+
+  @override
+  String get updatePreferenceFailed => 'Failed to update preference';
+
+  @override
+  String get membershipsLabel => 'Memberships';
+
+  @override
+  String get membershipPlansSubtitle => 'Create and manage your plans';
+
+  @override
+  String get membersSubtitle => 'Active members, MRR, expiring soon';
+
+  @override
+  String get autoConfirmSettingsSubtitle =>
+      'Manage per-vendor auto-confirm settings';
+
+  @override
+  String pendingRequestsSummary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pending requests',
+      one: '1 pending request',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get totalBilledLabel => 'Total Billed';
+
+  @override
+  String get totalDuesLabel => 'Total Dues';
+
+  @override
+  String get netDueLabel => 'Net Due';
+
+  @override
+  String get noTransactionsThisMonth => 'No transactions this month';
+
+  @override
+  String get creditLabel => 'Credit';
+
+  @override
+  String get paymentLabel => 'Payment';
+
+  @override
+  String get entryTypeAdjustmentLabel => 'Adjustment';
+
+  @override
+  String get liveUpdatesOn => 'Live — real-time updates on';
+
+  @override
+  String get proofLocked => 'Proof Locked';
+
+  @override
+  String get paymentProofTitle => 'Payment Proof';
+
+  @override
+  String get couldNotLoadImage => 'Could not load image';
+
+  @override
+  String get generatingStatement => 'Generating statement…';
+
+  @override
+  String get failedToGeneratePdf => 'Failed to generate PDF';
+
+  @override
+  String get pastDateLabel => 'Past date';
+
+  @override
+  String get deliveriesOnly => 'Deliveries only';
+
+  @override
+  String get filterEntriesTitle => 'Filter Entries';
+
+  @override
+  String get dateRangeLabel => 'DATE RANGE';
+
+  @override
+  String get amountRangeLabel => 'AMOUNT RANGE';
+
+  @override
+  String get fromLabel => 'From';
+
+  @override
+  String get toLabel => 'To';
+
+  @override
+  String get minLabel => 'Min';
+
+  @override
+  String get maxLabel => 'Max';
+
+  @override
+  String filterStatusChip(String value) {
+    return 'Status: $value';
+  }
+
+  @override
+  String filterTypeChip(String value) {
+    return 'Type: $value';
+  }
+
+  @override
+  String fromDateLabel(String date) {
+    return 'From $date';
+  }
+
+  @override
+  String toDateLabel(String date) {
+    return 'To $date';
+  }
+
+  @override
+  String get loadMoreButton => 'Load more';
+
+  @override
+  String get perUnitLabel => 'per unit';
+
+  @override
+  String subtotalAmountLabel(String amount) {
+    return 'Subtotal: ₹$amount';
+  }
+
+  @override
+  String get amLabel => 'AM';
+
+  @override
+  String get pmLabel => 'PM';
+
+  @override
+  String get alreadyBookedLabel => 'Already Booked';
+
+  @override
+  String bookingDateAtTime(String date, String time) {
+    return '$date at $time';
+  }
+
+  @override
+  String confirmedCountLabel(int count) {
+    return '$count confirmed';
+  }
+
+  @override
+  String doneCountLabel(int count) {
+    return '$count done';
+  }
+
+  @override
+  String cancelledCountLabel(int count) {
+    return '$count cancelled';
+  }
+
+  @override
+  String bookingDateTimeShort(String date, String time) {
+    return '$date  •  $time';
+  }
+
+  @override
+  String bookingDateTimeWithService(String base, String service) {
+    return '$base  •  $service';
+  }
+
+  @override
+  String get deliveryAddressLabel => 'Delivery Address';
+
+  @override
+  String get emailOptionalLabel => 'Email (optional)';
+
+  @override
+  String get upiIdOptionalLabel => 'UPI ID (optional)';
+
+  @override
+  String get passwordOptionalHint => 'Confirm Password';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 8 characters';
+
+  @override
+  String get customCategoryOptionalLabel => 'Custom category (optional)';
+
+  @override
+  String get ayurvedicMedicineExample => 'e.g. Ayurvedic Medicine';
+
+  @override
+  String get customCategoryHelper => 'Add your own if not listed above';
+
+  @override
+  String get signUpEmailSubtitle => 'Sign up with your email address';
+
+  @override
+  String passwordWithMinHint(String label) {
+    return '$label (min 8 chars)';
+  }
+
+  @override
+  String customCategoryCountLabel(int count) {
+    return '$count/3';
+  }
+
+  @override
+  String get upiIdExampleHint => 'e.g. name@upi';
+
+  @override
+  String get businessCategoryGymFitness => 'Gym / Fitness';
+
+  @override
+  String get bulkChargePickOneItem =>
+      'This service has multiple items — pick one to charge';
+
+  @override
+  String pricePerUnitValue(String price, String unit) {
+    return '₹$price / $unit';
+  }
+
+  @override
+  String get navStaff => 'Staff';
+
+  @override
+  String get navBooking => 'Booking';
+
+  @override
+  String get navSchedule => 'Schedule';
+
+  @override
+  String get navReports => 'Reports';
+
+  @override
+  String get removeStaffTooltip => 'Remove staff';
+
+  @override
+  String get searchVendorsByCategoryHint =>
+      'Search vendors by name or category…';
+
+  @override
+  String latLngValue(String lat, String lng) {
+    return 'Lat $lat  ·  Lng $lng';
+  }
+
+  @override
+  String get tapToPickOnMap => 'Tap to pick on map';
+
+  @override
+  String deliveredByRoleLabel(String role) {
+    return 'Delivered by $role';
+  }
+
+  @override
+  String get deliveredOnlyLabel => 'Delivered';
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/localized_labels.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/schedule_model.dart';
 import '../../../shared_ledger/presentation/screens/shared_ledger_screen/widgets/attachment_section.dart';
 import '../cubit/schedule_cubit.dart';
@@ -17,6 +19,7 @@ class DeliveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isScheduled = delivery.status == DeliveryStatus.scheduled;
     // "Upcoming" = scheduled but not due yet per the service's delivery_time
     // (e.g. a 6pm delivery seen at 9am) — shown as pending, not actionable,
@@ -29,7 +32,9 @@ class DeliveryCard extends StatelessWidget {
       DeliveryStatus.skipped => AppColors.textSecondary,
       DeliveryStatus.failed => AppColors.error,
     };
-    final statusLabel = isUpcoming ? 'Upcoming' : delivery.status.label;
+    final statusLabel = isUpcoming
+        ? l10n.upcoming
+        : l10n.deliveryStatusName(delivery.status);
 
     return Card(
       elevation: 1,
@@ -96,7 +101,7 @@ class DeliveryCard extends StatelessWidget {
                     if (delivery.customerPhone != null)
                       _ContactChip(
                         icon: Icons.call_outlined,
-                        label: 'Call',
+                        label: l10n.callLabel,
                         onTap: () => _launch(
                           Uri(scheme: 'tel', path: delivery.customerPhone),
                         ),
@@ -131,7 +136,7 @@ class DeliveryCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      'Due at ${delivery.deliveryTime}',
+                      l10n.deliveryDueAt(delivery.deliveryTime ?? ''),
                       style: const TextStyle(
                         color: AppColors.textHint,
                         fontSize: 12,
@@ -156,7 +161,7 @@ class DeliveryCard extends StatelessWidget {
                       child: OutlinedButton.icon(
                         onPressed: () => _skip(context),
                         icon: const Icon(Icons.skip_next, size: 16),
-                        label: const Text('Skip'),
+                        label: Text(l10n.skip),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.textSecondary,
                         ),
@@ -167,7 +172,7 @@ class DeliveryCard extends StatelessWidget {
                       child: ElevatedButton.icon(
                         onPressed: () => _deliver(context),
                         icon: const Icon(Icons.check, size: 16),
-                        label: const Text('Delivered'),
+                        label: Text(l10n.deliveryStatusDelivered),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.success,
                           foregroundColor: Colors.white,
@@ -217,15 +222,16 @@ class DeliveryCard extends StatelessWidget {
   }
 
   void _skip(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Skip Delivery'),
-        content: const Text('Mark this delivery as skipped today?'),
+        title: Text(l10n.skipDeliveryTitle),
+        content: Text(l10n.skipDeliveryMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -233,7 +239,8 @@ class DeliveryCard extends StatelessWidget {
               context.read<DeliveriesCubit>().skip(delivery.id);
             },
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Skip', style: TextStyle(color: Colors.white)),
+            child: Text(l10n.skip,
+                style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),

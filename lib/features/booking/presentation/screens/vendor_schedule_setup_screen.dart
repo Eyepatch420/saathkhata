@@ -14,14 +14,12 @@ import '../bloc/booking_state.dart';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-String _to12h(String hhmm) {
-  final parts = hhmm.split(':');
-  int h = int.parse(parts[0]);
-  final m = parts[1];
-  final period = h < 12 ? 'AM' : 'PM';
-  if (h == 0) h = 12;
-  if (h > 12) h -= 12;
-  return '$h:$m $period';
+String _to12h(String hhmm, BuildContext context) {
+  final p = hhmm.split(':');
+  return MaterialLocalizations.of(context).formatTimeOfDay(
+    TimeOfDay(hour: int.parse(p[0]), minute: int.parse(p[1])),
+    alwaysUse24HourFormat: false,
+  );
 }
 
 /// Convert 12h TimeOfDay to 'HH:MM' 24h string
@@ -568,7 +566,8 @@ Future<int?> _showMergeConfirmDialog(BuildContext context, List<DaySlot> selecte
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l10n.confirmMergeMessage(_to12h(start), _to12h(end))),
+          Text(l10n.confirmMergeMessage(
+              _to12h(start, context), _to12h(end, context))),
           const SizedBox(height: 16),
           TextField(
             controller: controller,
@@ -694,7 +693,8 @@ class _SlotCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${_to12h(slot.startTime)} – ${_to12h(slot.endTime)}',
+                      '${_to12h(slot.startTime, context)} – '
+                      '${_to12h(slot.endTime, context)}',
                       style: AppTypography.labelLarge.copyWith(
                         color: isDisabled
                             ? colorScheme.onSurface.withValues(alpha: 0.4)
@@ -811,7 +811,9 @@ class _SlotCard extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         title: Text(l10n.deleteSlotTitle),
         content: Text(
-          l10n.deleteSlotConfirm('${_to12h(slot.startTime)} – ${_to12h(slot.endTime)}'),
+          l10n.deleteSlotConfirm(
+            '${_to12h(slot.startTime, context)} – '
+            '${_to12h(slot.endTime, context)}'),
         ),
         actions: [
           TextButton(
@@ -1202,10 +1204,6 @@ class _TimePickerButton extends StatelessWidget {
 
 // ─── Calendar mode: month grid ────────────────────────────────────────────────
 
-const _monthNames = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-];
 
 class _CalendarView extends StatelessWidget {
   final DateTime month; // any date within the displayed month
@@ -1242,7 +1240,7 @@ class _CalendarView extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  '${_monthNames[month.month - 1]} ${month.year}',
+                  DateFormat('MMMM yyyy').format(month),
                   textAlign: TextAlign.center,
                   style: AppTypography.h3,
                 ),

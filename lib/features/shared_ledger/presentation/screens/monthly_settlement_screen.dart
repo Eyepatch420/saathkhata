@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../shared/models/ledger_entry.dart';
 import '../bloc/ledger_bloc.dart';
@@ -57,12 +58,13 @@ class _MonthlySettlementScreenState extends State<MonthlySettlementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Monthly Statement'),
+            Text(l10n.monthlyStatementTitle),
             Text(
               widget.customerName,
               style: AppTypography.bodySmall
@@ -113,7 +115,9 @@ class _MonthlySettlementScreenState extends State<MonthlySettlementScreen> {
                   children: [
                     Expanded(
                       child: _SummaryCard(
-                        label: widget.isVendorView ? 'Total Billed' : 'Total Dues',
+                        label: widget.isVendorView
+                            ? l10n.totalBilledLabel
+                            : l10n.totalDuesLabel,
                         amount: credits,
                         color: AppColors.error,
                         icon: Icons.arrow_upward_rounded,
@@ -122,7 +126,7 @@ class _MonthlySettlementScreenState extends State<MonthlySettlementScreen> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: _SummaryCard(
-                        label: 'Payments',
+                        label: l10n.payments,
                         amount: payments,
                         color: AppColors.success,
                         icon: Icons.arrow_downward_rounded,
@@ -145,7 +149,7 @@ class _MonthlySettlementScreenState extends State<MonthlySettlementScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      netDue >= 0 ? 'Net Due' : 'Advance',
+                      netDue >= 0 ? l10n.netDueLabel : l10n.advanceSingle,
                       style: AppTypography.labelLarge,
                     ),
                     Text(
@@ -160,11 +164,11 @@ class _MonthlySettlementScreenState extends State<MonthlySettlementScreen> {
               const Divider(height: 1),
               // Entry list
               if (monthEntries.isEmpty)
-                const Expanded(
+                Expanded(
                   child: Center(
                     child: Text(
-                      'No transactions this month',
-                      style: TextStyle(color: AppColors.textHint),
+                      l10n.noTransactionsThisMonth,
+                      style: const TextStyle(color: AppColors.textHint),
                     ),
                   ),
                 )
@@ -277,6 +281,7 @@ class _SettlementEntryRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isCredit = entry.type == EntryType.credit;
     final color = isCredit ? AppColors.error : AppColors.success;
 
@@ -299,7 +304,7 @@ class _SettlementEntryRow extends StatelessWidget {
           Expanded(
             child: Text(
               entry.description ??
-                  (isCredit ? 'Credit' : 'Payment'),
+                  (isCredit ? l10n.creditLabel : l10n.paymentLabel),
               style: AppTypography.bodyMedium,
               overflow: TextOverflow.ellipsis,
             ),

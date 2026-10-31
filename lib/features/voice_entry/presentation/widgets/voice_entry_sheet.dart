@@ -268,7 +268,7 @@ class _ListeningCardState extends State<_ListeningCard>
           ),
           const SizedBox(height: 8),
           Text(
-            'Tap to stop',
+            AppLocalizations.of(context)!.tapToStop,
             style: AppTypography.bodySmall.copyWith(color: Colors.white38),
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../shared/models/link_model.dart';
 import '../../../../shared/widgets/app_toast.dart';
@@ -82,7 +83,7 @@ class _CustomerDefaultsSheetState extends State<CustomerDefaultsSheet> {
         Navigator.pop(context);
         AppToast.show(
           context,
-          'Default delivery saved',
+          AppLocalizations.of(context)!.defaultDeliverySaved,
           type: ToastType.success,
         );
         widget.onSaved?.call(
@@ -124,10 +125,11 @@ class _CustomerDefaultsSheetState extends State<CustomerDefaultsSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Default Delivery', style: AppTypography.h3),
+          Text(AppLocalizations.of(context)!.defaultDeliveryTitle,
+              style: AppTypography.h3),
           const SizedBox(height: 4),
           Text(
-            'Pre-fills staff Quick Delivery screen for $name',
+            AppLocalizations.of(context)!.defaultDeliveryPrefillHint(name),
             style: AppTypography.bodySmall.copyWith(
               color: AppColors.textSecondary,
             ),
@@ -135,10 +137,10 @@ class _CustomerDefaultsSheetState extends State<CustomerDefaultsSheet> {
           const SizedBox(height: 20),
           TextField(
             controller: _productCtrl,
-            decoration: const InputDecoration(
-              labelText: 'Product name',
-              prefixIcon: Icon(Icons.inventory_2_outlined),
-              hintText: 'e.g. Full Cream Milk',
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.productName,
+              prefixIcon: const Icon(Icons.inventory_2_outlined),
+              hintText: AppLocalizations.of(context)!.fullCreamMilkExample,
             ),
           ),
           const SizedBox(height: 12),
@@ -151,9 +153,10 @@ class _CustomerDefaultsSheetState extends State<CustomerDefaultsSheet> {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  decoration: const InputDecoration(
-                    labelText: 'Default qty',
-                    prefixIcon: Icon(Icons.numbers_rounded),
+                  decoration: InputDecoration(
+                    labelText:
+                        AppLocalizations.of(context)!.defaultQtyLabel,
+                    prefixIcon: const Icon(Icons.numbers_rounded),
                   ),
                 ),
               ),
@@ -161,9 +164,9 @@ class _CustomerDefaultsSheetState extends State<CustomerDefaultsSheet> {
               Expanded(
                 child: TextField(
                   controller: _unitCtrl,
-                  decoration: const InputDecoration(
-                    labelText: 'Unit',
-                    hintText: 'L, kg…',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.unit,
+                    hintText: AppLocalizations.of(context)!.unitExampleHint,
                   ),
                 ),
               ),
@@ -173,9 +176,9 @@ class _CustomerDefaultsSheetState extends State<CustomerDefaultsSheet> {
           TextField(
             controller: _priceCtrl,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: const InputDecoration(
-              labelText: 'Price per unit (₹)',
-              prefixIcon: Icon(Icons.currency_rupee_rounded),
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.pricePerUnit,
+              prefixIcon: const Icon(Icons.currency_rupee_rounded),
             ),
           ),
           const SizedBox(height: 24),
@@ -196,9 +199,9 @@ class _CustomerDefaultsSheetState extends State<CustomerDefaultsSheet> {
                         color: Colors.white,
                       ),
                     )
-                  : const Text(
-                      'Save Defaults',
-                      style: TextStyle(color: Colors.white),
+                  : Text(
+                      AppLocalizations.of(context)!.saveDefaultsButton,
+                      style: const TextStyle(color: Colors.white),
                     ),
             ),
           ),

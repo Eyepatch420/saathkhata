@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/localized_labels.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/order_model.dart';
 import '../bloc/order_bloc.dart';
@@ -40,6 +41,7 @@ class _CustomerOrdersScreenState extends State<CustomerOrdersScreen> {
       ),
       body: BlocBuilder<OrderBloc, OrderState>(
         builder: (context, state) {
+          final l10n = AppLocalizations.of(context)!;
           if (state is OrderLoading) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -52,7 +54,7 @@ class _CustomerOrdersScreenState extends State<CustomerOrdersScreen> {
             _ => <Order>[],
           };
           if (orders.isEmpty) {
-            return Center(child: Text(AppLocalizations.of(context)!.noOrdersYet));
+            return Center(child: Text(l10n.noOrdersYet));
           }
           return RefreshIndicator(
             onRefresh: () async =>
@@ -82,7 +84,7 @@ class _CustomerOrdersScreenState extends State<CustomerOrdersScreen> {
                         Row(
                           children: [
                             Text(
-                              '${order.items.length} item${order.items.length > 1 ? 's' : ''}',
+                              l10n.itemsCountShort(order.items.length),
                               style: const TextStyle(
                                   fontWeight: FontWeight.w600, fontSize: 15),
                             ),
@@ -96,7 +98,7 @@ class _CustomerOrdersScreenState extends State<CustomerOrdersScreen> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
-                                order.status.label,
+                                l10n.orderStatusName(order.status),
                                 style: TextStyle(
                                     color: _statusColor(order.status),
                                     fontSize: 12,
@@ -124,7 +126,7 @@ class _CustomerOrdersScreenState extends State<CustomerOrdersScreen> {
                         if (order.note != null) ...[
                           const SizedBox(height: 6),
                           Text(
-                            'Note: ${order.note}',
+                            l10n.noteWithValue(order.note!),
                             style: const TextStyle(
                                 color: AppColors.textSecondary,
                                 fontStyle: FontStyle.italic,
@@ -153,8 +155,9 @@ class _CustomerOrdersScreenState extends State<CustomerOrdersScreen> {
   String _formatDate(DateTime dt) {
     final now = DateTime.now();
     final diff = now.difference(dt);
-    if (diff.inDays == 0) return 'Today';
-    if (diff.inDays == 1) return 'Yesterday';
+    final l10n = AppLocalizations.of(context)!;
+    if (diff.inDays == 0) return l10n.today;
+    if (diff.inDays == 1) return l10n.yesterday;
     return '${dt.day}/${dt.month}/${dt.year}';
   }
 }

@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
+import '../../../../core/localization/localized_labels.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/schedule_model.dart';
 import '../../../shared_ledger/presentation/screens/shared_ledger_screen/widgets/attachment_section.dart';
 import '../cubit/schedule_cubit.dart';
@@ -26,6 +28,7 @@ class DeliveryDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isScheduled = delivery.status == DeliveryStatus.scheduled;
     final isUpcoming = isScheduled && !delivery.isDue;
     final statusColor = switch (delivery.status) {
@@ -35,10 +38,12 @@ class DeliveryDetailScreen extends StatelessWidget {
       DeliveryStatus.skipped => AppColors.textSecondary,
       DeliveryStatus.failed => AppColors.error,
     };
-    final statusLabel = isUpcoming ? 'Upcoming' : delivery.status.label;
+    final statusLabel = isUpcoming
+        ? l10n.upcoming
+        : l10n.deliveryStatusName(delivery.status);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Delivery Details')),
+      appBar: AppBar(title: Text(l10n.deliveryDetailsTitle)),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(16),
@@ -69,7 +74,7 @@ class DeliveryDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             _Section(
-              title: 'Customer',
+              title: l10n.customer,
               children: [
                 _DetailRow(
                   icon: Icons.person_outline,
@@ -102,7 +107,7 @@ class DeliveryDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             _Section(
-              title: 'Delivery',
+              title: l10n.deliveryLabel,
               children: [
                 _DetailRow(
                   icon: Icons.calendar_today_outlined,
@@ -113,7 +118,7 @@ class DeliveryDetailScreen extends StatelessWidget {
                 if (delivery.deliveryTime != null)
                   _DetailRow(
                     icon: Icons.schedule_rounded,
-                    label: 'Due at ${delivery.deliveryTime}',
+                    label: l10n.deliveryDueAt(delivery.deliveryTime!),
                   ),
                 for (final item in delivery.items.where((i) => i.quantity > 0))
                   _DetailRow(
@@ -129,13 +134,14 @@ class DeliveryDetailScreen extends StatelessWidget {
                 if (delivery.deliveredAt != null)
                   _DetailRow(
                     icon: Icons.check_circle_outline,
-                    label:
-                        'Delivered at ${DateFormat('d MMM, h:mm a').format(delivery.deliveredAt!)}',
+                    label: l10n.deliveryDeliveredAt(
+                      DateFormat('d MMM, h:mm a').format(delivery.deliveredAt!),
+                    ),
                   ),
                 if (delivery.deliveredByName != null)
                   _DetailRow(
                     icon: Icons.badge_outlined,
-                    label: 'Delivered by ${delivery.deliveredByName}',
+                    label: l10n.deliveryDeliveredBy(delivery.deliveredByName!),
                   ),
                 if (delivery.notes != null && delivery.notes!.isNotEmpty)
                   _DetailRow(icon: Icons.notes_rounded, label: delivery.notes!),
@@ -144,7 +150,7 @@ class DeliveryDetailScreen extends StatelessWidget {
             if (delivery.photoUrl != null) ...[
               const SizedBox(height: 20),
               _Section(
-                title: 'Delivery Photo',
+                title: l10n.deliveryPhotoTitle,
                 children: [
                   LedgerAttachmentSection(
                     attachmentUrl: delivery.photoUrl,
@@ -162,7 +168,7 @@ class DeliveryDetailScreen extends StatelessWidget {
                     child: OutlinedButton.icon(
                       onPressed: () => _skip(context),
                       icon: const Icon(Icons.skip_next, size: 16),
-                      label: const Text('Skip'),
+                      label: Text(l10n.skip),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.textSecondary,
                         padding: const EdgeInsets.symmetric(vertical: 14),
@@ -174,7 +180,7 @@ class DeliveryDetailScreen extends StatelessWidget {
                     child: ElevatedButton.icon(
                       onPressed: () => _deliver(context),
                       icon: const Icon(Icons.check, size: 16),
-                      label: const Text('Delivered'),
+                      label: Text(l10n.deliveryStatusDelivered),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.success,
                         foregroundColor: Colors.white,
@@ -211,15 +217,16 @@ class DeliveryDetailScreen extends StatelessWidget {
   }
 
   void _skip(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Skip Delivery'),
-        content: const Text('Mark this delivery as skipped today?'),
+        title: Text(l10n.skipDeliveryTitle),
+        content: Text(l10n.skipDeliveryMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -228,7 +235,8 @@ class DeliveryDetailScreen extends StatelessWidget {
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Skip', style: TextStyle(color: Colors.white)),
+            child: Text(l10n.skip,
+                style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),

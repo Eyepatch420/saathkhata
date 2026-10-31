@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/services/ledger_attachment_service.dart';
 import '../../../../shared/models/schedule_model.dart';
@@ -92,7 +93,7 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
     } else {
       AppToast.show(
         context,
-        'Could not confirm delivery',
+        AppLocalizations.of(context)!.couldNotConfirmDelivery,
         type: ToastType.error,
       );
     }
@@ -100,6 +101,7 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final delivery = widget.delivery;
     final authState = context.watch<AuthBloc>().state;
     final UserModel? me = authState is AuthAuthenticated
@@ -109,14 +111,14 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
     final vendorName = me?.effectiveBusinessName ?? '—';
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Confirm Delivery')),
+      appBar: AppBar(title: Text(l10n.confirmDeliveryButton)),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
             Text(delivery.serviceName, style: AppTypography.h2),
             Text(
-              'for ${delivery.customerName}',
+              l10n.forCustomerName(delivery.customerName),
               style: AppTypography.bodySmall.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -124,24 +126,24 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
             const SizedBox(height: 20),
             _ReadOnlyRow(
               icon: Icons.calendar_today_outlined,
-              label: 'Date & time',
+              label: l10n.dateTimeLabel,
               value: DateFormat(
                 'EEE, d MMM yyyy · h:mm a',
               ).format(DateTime.now()),
             ),
             _ReadOnlyRow(
               icon: Icons.person_outline,
-              label: 'Customer',
+              label: l10n.customer,
               value: delivery.customerName,
             ),
             _ReadOnlyRow(
               icon: Icons.badge_outlined,
-              label: 'Delivered by',
+              label: l10n.deliveredByLabel,
               value: staffName,
             ),
             _ReadOnlyRow(
               icon: Icons.storefront_outlined,
-              label: 'Vendor',
+              label: l10n.vendor,
               value: vendorName,
             ),
             for (final item in delivery.items.where((i) => i.quantity > 0))
@@ -153,7 +155,7 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
             if (delivery.totalAmount > 0)
               _ReadOnlyRow(
                 icon: Icons.currency_rupee_rounded,
-                label: 'Amount to add to ledger',
+                label: l10n.amountToAddToLedger,
                 value: '₹${delivery.totalAmount.toStringAsFixed(2)}',
               ),
             const SizedBox(height: 8),
@@ -163,14 +165,16 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
                 color: AppColors.primary.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.info_outline, size: 16, color: AppColors.primary),
-                  SizedBox(width: 8),
+                  const Icon(Icons.info_outline,
+                      size: 16, color: AppColors.primary),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'This delivery will be added to the ledger automatically when confirmed — no need to add it again.',
-                      style: TextStyle(fontSize: 12, color: AppColors.primary),
+                      l10n.deliveryAutoLedgerNote,
+                      style: const TextStyle(
+                          fontSize: 12, color: AppColors.primary),
                     ),
                   ),
                 ],
@@ -178,7 +182,7 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              'DELIVERY PHOTO (REQUIRED)',
+              l10n.deliveryPhotoRequired,
               style: AppTypography.bodySmall.copyWith(
                 color: AppColors.textHint,
                 fontWeight: FontWeight.w700,
@@ -193,7 +197,7 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
                     child: OutlinedButton.icon(
                       onPressed: () => _pickPhoto(ImageSource.camera),
                       icon: const Icon(Icons.camera_alt_rounded, size: 16),
-                      label: const Text('Camera'),
+                      label: Text(l10n.camera),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -201,7 +205,7 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
                     child: OutlinedButton.icon(
                       onPressed: () => _pickPhoto(ImageSource.gallery),
                       icon: const Icon(Icons.photo_library_rounded, size: 16),
-                      label: const Text('Gallery'),
+                      label: Text(l10n.gallery),
                     ),
                   ),
                 ],
@@ -265,9 +269,9 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
                           color: Colors.white,
                         ),
                       )
-                    : const Text(
-                        'Confirm Delivery',
-                        style: TextStyle(
+                    : Text(
+                        l10n.confirmDeliveryButton,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
