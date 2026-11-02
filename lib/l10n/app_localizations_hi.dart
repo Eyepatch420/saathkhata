@@ -138,13 +138,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get enterYourName => 'अपना नाम दर्ज करें';
 
   @override
-  String get egBusinessName => 'e.g. Krishna Dairy';
+  String get egBusinessName => 'जैसे: कृष्णा डेयरी';
 
   @override
-  String get selectCategory => 'Select Category';
+  String get selectCategory => 'श्रेणी चुनें';
 
   @override
-  String get enterAddress => 'Enter area or full address';
+  String get enterAddress => 'क्षेत्र या पूरा पता दर्ज करें';
 
   @override
   String get upiHint => 'yourname@upi';
@@ -239,6 +239,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get balanceSettled => 'चुकता';
 
   @override
+  String get balanceYouOweVendor => 'आप पर दुकानदार का बकाया है';
+
+  @override
+  String get balanceVendorOwesYou => 'दुकानदार पर आपका बकाया है';
+
+  @override
   String get ledgerInfoTitle => 'यह खाता कैसे काम करता है';
 
   @override
@@ -305,6 +311,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String entryFor(String name) {
     return '$name के लिए';
   }
+
+  @override
+  String get description => 'विवरण';
 
   @override
   String get descriptionOptional => 'विवरण (वैकल्पिक)';
@@ -903,7 +912,2827 @@ class AppLocalizationsHi extends AppLocalizations {
   String get accrueMonthSalaryTitle => 'माह की तनख्वाह जोड़ें';
 
   @override
+  String get removeStaffTitle => 'स्टाफ सदस्य हटाएं';
+
+  @override
+  String removeStaffConfirm(String name) {
+    return '$name को स्टाफ से हटाएं? उनका ऐप एक्सेस तुरंत रद्द हो जाएगा।';
+  }
+
+  @override
   String accrueMonthSalaryConfirm(String name, String amount) {
     return '$name के बकाया में इस महीने ₹$amount जोड़ें?';
   }
+
+  @override
+  String get accountInformation => 'खाता जानकारी';
+
+  @override
+  String get updateProfileDetails => 'अपना नाम, फ़ोटो और जानकारी अपडेट करें';
+
+  @override
+  String get updateAccountPassword => 'अपना खाता पासवर्ड अपडेट करें';
+
+  @override
+  String get deleteAccount => 'खाता हटाएं';
+
+  @override
+  String get deleteAccountSubtitle => 'खाता और सारा डेटा स्थायी रूप से हटाएं';
+
+  @override
+  String get deleteAccountConfirmation => 'खाता हटाएं?';
+
+  @override
+  String get deleteAccountConfirmationMessage =>
+      'यह आपका खाता और सारा डेटा स्थायी रूप से हटा देगा। यह कार्रवाई पूर्ववत नहीं होगी।';
+
+  @override
+  String get deleteAccountStaffWarning =>
+      'यह आपका खाता स्थायी रूप से हटा देगा। यह पूर्ववत नहीं होगा।';
+
+  @override
+  String get deleteAccountStrongWarning =>
+      'Deleting your account is permanent and cannot be undone. Please read carefully before continuing:';
+
+  @override
+  String get deleteAccountWarningLoginRemoved =>
+      'You will immediately lose the ability to log in.';
+
+  @override
+  String get deleteAccountWarningIrreversible =>
+      'This action cannot be reversed — there is no way to recover your account afterward.';
+
+  @override
+  String get deleteAccountWarningRecordsKept =>
+      'Your ledger entries, payments, delivery proofs and statements are kept for financial record-keeping and legal/audit purposes — they are never deleted.';
+
+  @override
+  String get deleteAccountWarningVendorBlockers =>
+      'You must settle all outstanding balances, remove or pay staff, and resolve pending orders/deliveries and subscriptions before you can delete your account.';
+
+  @override
+  String get deleteAccountWarningStaffBlockers =>
+      'You must have no unpaid salary, outstanding advance, or unfinished assigned work before you can delete your account.';
+
+  @override
+  String get deleteAccountWarningCustomerBlockers =>
+      'You must settle all outstanding balances and have no active orders before you can delete your account.';
+
+  @override
+  String get iUnderstandContinue => 'I Understand, Continue';
+
+  @override
+  String get deleteAccountTypeToConfirmTitle => 'Type DELETE to confirm';
+
+  @override
+  String get deleteAccountTypeToConfirmMessage =>
+      'To confirm you want to permanently delete your account, type DELETE below.';
+
+  @override
+  String get deleteAccountEnterOtpTitle => 'Enter OTP';
+
+  @override
+  String get deleteAccountEnterOtpMessage =>
+      'We sent a 6-digit OTP to your registered phone number. Enter it to confirm account deletion.';
+
+  @override
+  String get deleteAccountEnterPasswordTitle => 'Enter your password';
+
+  @override
+  String get deleteAccountEnterPasswordMessage =>
+      'Enter your account password to confirm account deletion.';
+
+  @override
+  String get deleteAccountBlockedTitle => 'Can\'t Delete Account Yet';
+
+  @override
+  String get deleteAccountBlockedMessage =>
+      'Please resolve the following before deleting your account:';
+
+  @override
+  String get deleteForever => 'हमेशा के लिए हटाएं';
+
+  @override
+  String get delete => 'हटाएं';
+
+  @override
+  String get readTermsOfService => 'हमारी सेवा शर्तें पढ़ें';
+
+  @override
+  String get privacyPolicyDescription => 'हम आपका डेटा कैसे संभालते हैं';
+
+  @override
+  String get confirmLogout => 'क्या आप वाकई लॉगआउट करना चाहते हैं?';
+
+  @override
+  String get membershipTiers => 'सदस्यता स्तर';
+
+  @override
+  String get membershipTiersDescription =>
+      'स्तरों का नाम बदलें और सदस्य छूट सेट करें';
+
+  @override
+  String get logIn => 'लॉगिन करें';
+
+  @override
+  String get enterPhoneNumberToContinue =>
+      'जारी रखने के लिए फ़ोन नंबर दर्ज करें';
+
+  @override
+  String get havingTrouble => 'कोई समस्या है?';
+
+  @override
+  String get useEmailInstead => 'ईमेल से लॉगिन करें →';
+
+  @override
+  String get logInWithEmail => 'ईमेल से लॉगिन करें';
+
+  @override
+  String get emailPlaceholder => 'you@example.com';
+
+  @override
+  String get enterYourPassword => 'पासवर्ड दर्ज करें';
+
+  @override
+  String get takePhoto => 'फ़ोटो लें';
+
+  @override
+  String get chooseFromGallery => 'गैलरी से चुनें';
+
+  @override
+  String get removePhoto => 'फ़ोटो हटाएं';
+
+  @override
+  String get tapToAddProfilePhoto => 'प्रोफ़ाइल फ़ोटो जोड़ने के लिए टैप करें';
+
+  @override
+  String get camera => 'कैमरा';
+
+  @override
+  String get gallery => 'गैलरी';
+
+  @override
+  String get add => 'जोड़ें';
+
+  @override
+  String get addUpiId => 'UPI आईडी जोड़ें';
+
+  @override
+  String get save => 'सेव करें';
+
+  @override
+  String get close => 'बंद करें';
+
+  @override
+  String get ok => 'ठीक है';
+
+  @override
+  String get remove => 'हटाएं';
+
+  @override
+  String get approve => 'स्वीकृत करें';
+
+  @override
+  String get decline => 'अस्वीकार करें';
+
+  @override
+  String get none => 'कोई नहीं';
+
+  @override
+  String get percent => 'प्रतिशत';
+
+  @override
+  String get profile => 'प्रोफ़ाइल';
+
+  @override
+  String get paymentVerification => 'भुगतान सत्यापन';
+
+  @override
+  String get verifyingPayment => 'भुगतान सत्यापित हो रहा है';
+
+  @override
+  String get paymentConfirmedExclamation => 'भुगतान की पुष्टि!';
+
+  @override
+  String get verificationTimedOut => 'सत्यापन समय समाप्त';
+
+  @override
+  String get goBack => 'वापस जाएं';
+
+  @override
+  String get payDues => 'बकाया चुकाएं';
+
+  @override
+  String get skipForNow => 'अभी छोड़ें';
+
+  @override
+  String get allDone => 'सब हो गया!';
+
+  @override
+  String get noUpcomingAppointments => 'कोई आगामी अपॉइंटमेंट नहीं';
+
+  @override
+  String get myPay => 'मेरा वेतन';
+
+  @override
+  String get myPaymentQr => 'मेरा भुगतान QR';
+
+  @override
+  String get showMyQr => 'मेरा QR दिखाएं';
+
+  @override
+  String get noPaymentsYet => 'अभी तक कोई भुगतान नहीं';
+
+  @override
+  String get paymentHistory => 'भुगतान इतिहास';
+
+  @override
+  String get paymentHistory6Months => 'भुगतान इतिहास (6 महीने)';
+
+  @override
+  String get connectionRequest => 'कनेक्शन अनुरोध';
+
+  @override
+  String get vendorWantsToConnect => 'एक विक्रेता जुड़ना चाहता है';
+
+  @override
+  String get acceptRequest => 'स्वीकार करें';
+
+  @override
+  String get declineRequest => 'अस्वीकार करें';
+
+  @override
+  String get messageLabel => 'संदेश';
+
+  @override
+  String get sendRequest => 'अनुरोध भेजें';
+
+  @override
+  String get requestSentNotification =>
+      'अनुरोध भेज दिया! उन्हें सूचित किया जाएगा।';
+
+  @override
+  String get awaitingAcceptance => 'स्वीकृति की प्रतीक्षा';
+
+  @override
+  String get addAVendor => 'विक्रेता जोड़ें';
+
+  @override
+  String get findByPhoneOrEmail => 'फ़ोन नंबर या ईमेल से खोजें';
+
+  @override
+  String get phoneOrEmail => 'फ़ोन या ईमेल';
+
+  @override
+  String get phoneOrEmailHint => '10 अंक मोबाइल या ईमेल पता';
+
+  @override
+  String get nicknameOptional => 'उपनाम (वैकल्पिक)';
+
+  @override
+  String get howYouKnowVendor => 'आप इस विक्रेता को कैसे जानते हैं';
+
+  @override
+  String get bookingNoteExample => 'जैसे: आज अतिरिक्त दूध चाहिए';
+
+  @override
+  String get confirmLocation => 'स्थान की पुष्टि करें';
+
+  @override
+  String get moveMapToSelectLocation => 'स्थान चुनने के लिए मैप हिलाएं';
+
+  @override
+  String get searchPlaceHint => 'कोई स्थान खोजें…';
+
+  @override
+  String get mapAttribution => '© OpenStreetMap contributors';
+
+  @override
+  String get searchVendorsHint => 'विक्रेता खोजें…';
+
+  @override
+  String get somethingWentWrong => 'कुछ गलत हुआ';
+
+  @override
+  String get payViaUpi => 'UPI से भुगतान';
+
+  @override
+  String get connectWithVendor => 'जुड़ें';
+
+  @override
+  String get requestConnection => 'कनेक्शन अनुरोध';
+
+  @override
+  String get addVendor => 'विक्रेता जोड़ें';
+
+  @override
+  String get noOutstandingBalances => 'कोई बकाया शेष नहीं';
+
+  @override
+  String get allCustomersSettledUp => 'सभी ग्राहकों का हिसाब बराबर है।';
+
+  @override
+  String get nothingCollectedToday => 'आज कुछ नहीं उगाया';
+
+  @override
+  String get paymentsWillAppearHere => 'आज प्राप्त भुगतान यहाँ दिखेंगे।';
+
+  @override
+  String get customerReport => 'ग्राहक रिपोर्ट';
+
+  @override
+  String get overview => 'अवलोकन';
+
+  @override
+  String get tapToStop => 'रोकने के लिए टैप करें';
+
+  @override
+  String get itemName => 'वस्तु का नाम';
+
+  @override
+  String get itemNameExample => 'जैसे: दूध';
+
+  @override
+  String get unitPrice => 'प्रति इकाई मूल्य ₹';
+
+  @override
+  String get deliverTo => 'डिलीवरी करें';
+
+  @override
+  String get bulkCharge => 'बल्क चार्ज';
+
+  @override
+  String get newProduct => 'नया उत्पाद';
+
+  @override
+  String get editProduct => 'उत्पाद संपादित करें';
+
+  @override
+  String get newProductService => 'नया उत्पाद / सेवा';
+
+  @override
+  String get updateProductDetails => 'नाम, इकाई या मूल्य अपडेट करें';
+
+  @override
+  String get defineProduct => 'बताएं आप क्या बेचते हैं और उसकी कीमत';
+
+  @override
+  String get productName => 'उत्पाद का नाम';
+
+  @override
+  String get productNameExample => 'जैसे: सुबह का दूध';
+
+  @override
+  String get unit => 'इकाई';
+
+  @override
+  String get unitExample => 'लीटर / किलो / टुकड़ा';
+
+  @override
+  String get pricePerUnit => 'प्रति इकाई मूल्य (₹)';
+
+  @override
+  String get deleteProduct => 'उत्पाद हटाएं';
+
+  @override
+  String get deleteProductConfirmation => 'उत्पाद हटाएं?';
+
+  @override
+  String removeProductConfirmation(String name) {
+    return '\"$name\" को उत्पाद सूची से हटाएं?';
+  }
+
+  @override
+  String get noProductsYet => 'अभी तक कोई उत्पाद नहीं';
+
+  @override
+  String get addFirstProduct => 'पहला उत्पाद जोड़ें';
+
+  @override
+  String setPriceToChargeTitle(String name) {
+    return 'Set a price for $name';
+  }
+
+  @override
+  String get setPriceToChargeSubtitle =>
+      'This service has no unit or price set yet. Add them to charge customers for it.';
+
+  @override
+  String get setPrice => 'Set Price';
+
+  @override
+  String get renameTier => 'स्तर का नाम बदलें';
+
+  @override
+  String get tierName => 'स्तर का नाम';
+
+  @override
+  String tierLevel(int level) {
+    return 'स्तर $level';
+  }
+
+  @override
+  String get memberDiscount => 'सदस्य छूट';
+
+  @override
+  String discountFor(String tier) {
+    return '$tier के लिए छूट';
+  }
+
+  @override
+  String get flatAmount => 'फ्लैट ₹';
+
+  @override
+  String get discountPercent => 'छूट %';
+
+  @override
+  String get discountAmount => 'छूट राशि (₹)';
+
+  @override
+  String get percentExample => 'जैसे: 5';
+
+  @override
+  String get amountExample => 'जैसे: 50';
+
+  @override
+  String get maxDiscountPerDue => 'अधिकतम छूट प्रति बकाया (₹) — वैकल्पिक';
+
+  @override
+  String get maxDiscountExample => 'जैसे: 100 (सीमा नहीं चाहिए तो खाली छोड़ें)';
+
+  @override
+  String get saveDiscount => 'छूट सेव करें';
+
+  @override
+  String get membership => 'सदस्यता';
+
+  @override
+  String get setTier => 'सेट करें';
+
+  @override
+  String get changeTier => 'बदलें';
+
+  @override
+  String get applyMembership => 'लागू करें';
+
+  @override
+  String get removeMembership => 'सदस्यता हटाएं';
+
+  @override
+  String get removeLedgerConfirmation => 'खाता हटाएं?';
+
+  @override
+  String get exportStatement => 'स्टेटमेंट एक्सपोर्ट करें';
+
+  @override
+  String get appAccess => 'ऐप एक्सेस';
+
+  @override
+  String get invalidPhoneNumber =>
+      'सही 10 अंकों का भारतीय मोबाइल नंबर दर्ज करें';
+
+  @override
+  String get enterAll6Digits => 'सभी 6 अंक दर्ज करें';
+
+  @override
+  String enterAllDigits(int count) {
+    return 'Enter all $count digits';
+  }
+
+  @override
+  String get invalidEmailAddress => 'सही ईमेल पता दर्ज करें';
+
+  @override
+  String get passwordRequired => 'पासवर्ड दर्ज करें';
+
+  @override
+  String get nameRequired => 'नाम जरूरी है';
+
+  @override
+  String get required => 'जरूरी';
+
+  @override
+  String get invalidUpiFormat => 'UPI आईडी का फॉर्मेट गलत है (जैसे: name@upi)';
+
+  @override
+  String get upiIdAlreadyAdded => 'यह UPI आईडी पहले से जुड़ी है';
+
+  @override
+  String get verifyButton => 'सत्यापित करें';
+
+  @override
+  String get createAccountButton => 'खाता बनाएं';
+
+  @override
+  String get phonePlaceholder => 'XXXXX XXXXX';
+
+  @override
+  String get enterPassword => 'पासवर्ड दर्ज करें';
+
+  @override
+  String get mobileNumberLabel => 'मोबाइल नंबर';
+
+  @override
+  String get personalInfo => 'व्यक्तिगत जानकारी';
+
+  @override
+  String get businessInfo => 'व्यवसाय की जानकारी';
+
+  @override
+  String get enterOtpTitle => 'OTP दर्ज करें';
+
+  @override
+  String get sentToLabel => 'भेजा गया';
+
+  @override
+  String get noOtpReceived => 'OTP नहीं मिला?';
+
+  @override
+  String get resendOtp => 'OTP दोबारा भेजें';
+
+  @override
+  String get uploadingPhotoLabel => 'फ़ोटो अपलोड हो रही है...';
+
+  @override
+  String get phoneNumberLabel => 'फ़ोन नंबर';
+
+  @override
+  String get iAmA => 'मैं एक हूँ';
+
+  @override
+  String get dualRoleExplanation =>
+      'आप मुख्यतः विक्रेता अनुभव का उपयोग करेंगे। आपका ग्राहक खाता अलग से एक्सेस किया जा सकता है।';
+
+  @override
+  String get profileSavedPhotoFailed =>
+      'प्रोफ़ाइल सेव हुई — फ़ोटो अभी अपलोड नहीं हो सकी';
+
+  @override
+  String get profileUpdatedSuccess => 'प्रोफ़ाइल सफलतापूर्वक अपडेट हुई';
+
+  @override
+  String get addUpiIdTitle => 'UPI आईडी जोड़ें';
+
+  @override
+  String get upiIdHint => 'yourname@upi';
+
+  @override
+  String get cancelButton => 'रद्द करें';
+
+  @override
+  String get primaryUpiInfo => 'मुख्य UPI आईडी';
+
+  @override
+  String get primaryUpiDescription =>
+      'मुख्य आईडी ग्राहकों के साथ भुगतान के लिए साझा होती है। मुख्य बदलने के लिए स्टार पर टैप करें।';
+
+  @override
+  String upiIdCounter(int count, int max) {
+    return '$count / $max UPI आईडी';
+  }
+
+  @override
+  String get primaryUpiIdTooltip => 'मुख्य UPI आईडी';
+
+  @override
+  String get setAsPrimaryTooltip => 'मुख्य के रूप में सेट करें';
+
+  @override
+  String get primaryLabel => 'मुख्य';
+
+  @override
+  String get removeButtonLabel => 'हटाएं';
+
+  @override
+  String get noUpiIdsEmpty => 'अभी कोई UPI आईडी नहीं';
+
+  @override
+  String get upiEmptyDescription =>
+      '5 तक UPI आईडी जोड़ें। मुख्य आईडी ग्राहकों को भुगतान के लिए साझा होगी।';
+
+  @override
+  String get changePasswordSubtitle =>
+      'अपना मौजूदा पासवर्ड और नया पासवर्ड दर्ज करें।';
+
+  @override
+  String get alreadyHaveAccount => 'पहले से खाता है?';
+
+  @override
+  String get goBackButton => 'वापस जाएं';
+
+  @override
+  String get saveButton => 'सेव करें';
+
+  @override
+  String get language => 'भाषा';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageHindi => 'हिंदी';
+
+  @override
+  String get languageBengali => 'বাংলা';
+
+  @override
+  String get languageMarathi => 'मराठी';
+
+  @override
+  String get languageTamil => 'தமிழ்';
+
+  @override
+  String get languageTelugu => 'తెలుగు';
+
+  @override
+  String get languageKannada => 'ಕನ್ನಡ';
+
+  @override
+  String get languageGujarati => 'ગુજરાતી';
+
+  @override
+  String get languagePunjabi => 'ਪੰਜਾਬੀ';
+
+  @override
+  String get languageMalayalam => 'മലയാളം';
+
+  @override
+  String get languageBhojpuri => 'भोजपुरी';
+
+  @override
+  String get languageMaithili => 'मैथिली';
+
+  @override
+  String get needPasswordForEmail =>
+      'इसे इस्तेमाल करने के लिए आपके खाते में पासवर्ड होना जरूरी है।\nसेटिंग्स → पासवर्ड बदलें से सेट करें।';
+
+  @override
+  String get usePhoneInstead => 'फ़ोन नंबर से लॉगिन करें →';
+
+  @override
+  String get sessionExpiredVerifyPhoneAgain =>
+      'सत्र समाप्त हो गया। कृपया फ़ोन दोबारा सत्यापित करें।';
+
+  @override
+  String get upiIdsSavedSuccessfully => 'UPI आईडी सफलतापूर्वक सेव हुई';
+
+  @override
+  String get chooseYourLanguageHindi => 'आपकी भाषा चुनें';
+
+  @override
+  String get unknownLanguage => 'अज्ञात';
+
+  @override
+  String get businessCategoryMilkDairy => 'दूध / डेयरी';
+
+  @override
+  String get businessCategoryPressDhobi => 'प्रेस / धोबी';
+
+  @override
+  String get businessCategoryMaidCook => 'बाई / कुक';
+
+  @override
+  String get businessCategoryNewspaper => 'अखबार';
+
+  @override
+  String get businessCategoryWaterCan => 'वाटर कैन';
+
+  @override
+  String get businessCategoryTiffinFood => 'टिफ़िन / खाना';
+
+  @override
+  String get businessCategoryKiranaGrocery => 'किराना / ग्रोसरी';
+
+  @override
+  String get businessCategorySalonParlour => 'सैलून / पार्लर';
+
+  @override
+  String get businessCategoryConstructionLabour => 'निर्माण मजदूर';
+
+  @override
+  String get businessCategoryTransportAuto => 'ट्रांसपोर्ट / ऑटो';
+
+  @override
+  String get businessCategoryOther => 'अन्य';
+
+  @override
+  String get bookAnAppointment => 'अपॉइंटमेंट बुक करें';
+
+  @override
+  String get noSlotsAvailable => 'कोई स्लॉट उपलब्ध नहीं';
+
+  @override
+  String get trySelectingDifferentDate => 'कोई अलग तारीख चुनें';
+
+  @override
+  String get availableSlots => 'उपलब्ध स्लॉट';
+
+  @override
+  String get bookingConfirmedToast => 'बुकिंग कन्फर्म हुई!';
+
+  @override
+  String get date => 'तारीख';
+
+  @override
+  String get time => 'समय';
+
+  @override
+  String get notesOptional => 'नोट (वैकल्पिक)';
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes मिनट';
+  }
+
+  @override
+  String get saveChanges => 'बदलाव सेव करें';
+
+  @override
+  String get saveProduct => 'उत्पाद सेव करें';
+
+  @override
+  String get editProductMenuItem => 'उत्पाद संपादित करें';
+
+  @override
+  String get deleteProductMenuItem => 'उत्पाद हटाएं';
+
+  @override
+  String get noProductsYetDescription =>
+      'जो सामान आप बेचते हैं — दूध, पनीर आदि — एक बार दर्ज करें, फिर रोज काम में लें।';
+
+  @override
+  String get selectProductToAssignQty =>
+      'मात्रा तय करने के लिए ऊपर से उत्पाद चुनें';
+
+  @override
+  String get noCustomersLinked => 'अभी कोई ग्राहक नहीं जुड़ा';
+
+  @override
+  String get chargeAll => 'सभी को चार्ज करें';
+
+  @override
+  String chargedSuccessfully(int count) {
+    return '$count ग्राहक को चार्ज किया गया';
+  }
+
+  @override
+  String chargedSuccessfullyPlural(int count) {
+    return '$count ग्राहकों को चार्ज किया गया';
+  }
+
+  @override
+  String chargedPartial(int ok, int fail) {
+    return '$ok चार्ज हुए, $fail विफल';
+  }
+
+  @override
+  String bulkSummaryLine(int count, String qty, String unit) {
+    return '$count ग्राहक  •  $qty $unit';
+  }
+
+  @override
+  String bulkSummaryLinePlural(int count, String qty, String unit) {
+    return '$count ग्राहक  •  $qty $unit';
+  }
+
+  @override
+  String totalAmount(String amount) {
+    return '₹$amount कुल';
+  }
+
+  @override
+  String appointmentNext(String vendorName, String date, String time) {
+    return 'अगला: $vendorName · $date को $time बजे';
+  }
+
+  @override
+  String get outstandingShortLabel => 'बकाया';
+
+  @override
+  String payViaUpiAmount(String amount) {
+    return '₹$amount UPI से चुकाएं';
+  }
+
+  @override
+  String paymentSummarySkipped(int count, int skipped) {
+    return '$count विक्रेताओं को भुगतान हुआ, $skipped छोड़े।';
+  }
+
+  @override
+  String paymentSummarySkippedSingular(int count, int skipped) {
+    return '$count विक्रेता को भुगतान हुआ, $skipped छोड़े।';
+  }
+
+  @override
+  String paymentSummaryComplete(int count) {
+    return 'सभी $count विक्रेताओं को भुगतान हुआ।';
+  }
+
+  @override
+  String paymentSummaryCompleteSingular(int count) {
+    return 'सभी $count विक्रेता को भुगतान हुआ।';
+  }
+
+  @override
+  String get tapToAcceptOrDecline => 'स्वीकार या अस्वीकार करने के लिए टैप करें';
+
+  @override
+  String get helpSupportContactPrefix =>
+      'किसी भी सहायता के लिए हमसे संपर्क करें:';
+
+  @override
+  String get supportEmail => 'igurus@info.in';
+
+  @override
+  String get bookButton => 'बुक करें';
+
+  @override
+  String waitingForVendorAcceptance(String name) {
+    return '$name के स्वीकार करने का इंतज़ार है।';
+  }
+
+  @override
+  String get vendorWantsToConnectAsCustomer => 'एक विक्रेता जुड़ना चाहता है';
+
+  @override
+  String get vendorWantsToConnectDesc =>
+      'वे आपको ग्राहक के रूप में जोड़ना और आपका खाता ट्रैक करना चाहते हैं।';
+
+  @override
+  String get someoneWantsToConnect => 'कोई जुड़ना चाहता है';
+
+  @override
+  String get someoneWantsToConnectDesc =>
+      'उन्हें आपके खाते में ग्राहक के रूप में जोड़ा जाएगा।';
+
+  @override
+  String requestedTimeAgo(String time) {
+    return '$time पहले अनुरोध किया';
+  }
+
+  @override
+  String connectedVendorLinked(String name) {
+    return 'जुड़ गए! $name अब आपके खाते से जुड़ा है।';
+  }
+
+  @override
+  String requestDeclinedFrom(String name) {
+    return '$name का अनुरोध अस्वीकार किया।';
+  }
+
+  @override
+  String connectedCustomerLinked(String name) {
+    return 'जुड़ गए! $name अब आपके व्यवसाय से जुड़ा है।';
+  }
+
+  @override
+  String get processing => 'प्रोसेस हो रहा है…';
+
+  @override
+  String get retryButton => 'फिर प्रयास करें';
+
+  @override
+  String get memberDiscountDescription =>
+      'इस स्तर के सदस्यों को उनके बकाये पर यह छूट मिलेगी।';
+
+  @override
+  String get discountValueInvalid => '0 से अधिक की वैध राशि दर्ज करें';
+
+  @override
+  String get percentageExceedsMax => 'प्रतिशत 100 से अधिक नहीं हो सकता';
+
+  @override
+  String levelLabel(int level) {
+    return 'स्तर $level';
+  }
+
+  @override
+  String get rename => 'नाम बदलें';
+
+  @override
+  String get membershipLabel => 'सदस्यता';
+
+  @override
+  String get noMembership => 'कोई सदस्यता नहीं';
+
+  @override
+  String get applyForMembership => 'सदस्यता के लिए आवेदन करें';
+
+  @override
+  String get setMembershipTier => 'सदस्यता स्तर सेट करें';
+
+  @override
+  String get chooseTierToRequestFromVendor =>
+      'विक्रेता से अनुरोध के लिए स्तर चुनें';
+
+  @override
+  String chooseTierFor(String customerName) {
+    return '$customerName के लिए स्तर चुनें';
+  }
+
+  @override
+  String get setButton => 'सेट करें';
+
+  @override
+  String get changeButton => 'बदलें';
+
+  @override
+  String get applyButton => 'लागू करें';
+
+  @override
+  String get approveButton => 'मंजूर करें';
+
+  @override
+  String customerRequestedTier(String customerName, String tierName) {
+    return '$customerName ने $tierName मांगा';
+  }
+
+  @override
+  String requestedTierAwaiting(String tierName) {
+    return '$tierName का अनुरोध — स्वीकृति बाकी';
+  }
+
+  @override
+  String get verificationConnecting => 'बैंक से जोड़ रहे हैं…';
+
+  @override
+  String get verificationVerifying => 'लेनदेन सत्यापित हो रहा है…';
+
+  @override
+  String get verificationWaiting => 'पुष्टि का इंतज़ार है…';
+
+  @override
+  String get verificationAlmostThere => 'बस थोड़ा और…';
+
+  @override
+  String get verificationDoNotClose => 'यह स्क्रीन बंद न करें';
+
+  @override
+  String verificationElapsed(int seconds) {
+    return '${seconds}s  •  यह स्क्रीन बंद न करें';
+  }
+
+  @override
+  String txnLabel(String txnId) {
+    return 'Txn: $txnId';
+  }
+
+  @override
+  String paidAmountToRecipient(String amount, String name) {
+    return '₹$amount $name को भुगतान हुआ';
+  }
+
+  @override
+  String get verificationTimeoutBody =>
+      '30 सेकंड में भुगतान की पुष्टि नहीं हो सकी। आपके खाते से पैसे नहीं कटे होंगे — दोबारा प्रयास से पहले बैंक स्टेटमेंट जांचें।';
+
+  @override
+  String get ifDebitedContactSupport =>
+      'कटे हों तो Txn ID के साथ सपोर्ट से संपर्क करें।';
+
+  @override
+  String get thisMonthSubtitle => 'इस महीने';
+
+  @override
+  String get billedNet => 'बिल (नेट)';
+
+  @override
+  String get exclDisputed => 'विवादित छोड़कर';
+
+  @override
+  String get receivedLabel => 'प्राप्त';
+
+  @override
+  String get paymentsAndAdj => 'भुगतान और समायोजन';
+
+  @override
+  String get currentBalance => 'मौजूदा शेष';
+
+  @override
+  String paymentCount(int count) {
+    return '$count भुगतान';
+  }
+
+  @override
+  String paymentCountPlural(int count) {
+    return '$count भुगतान';
+  }
+
+  @override
+  String customersCount(int count) {
+    return '$count ग्राहक';
+  }
+
+  @override
+  String get rankedByOutstanding => 'बकाया राशि के अनुसार क्रम';
+
+  @override
+  String collectedThisMonth(String amount) {
+    return '₹$amount इस महीने';
+  }
+
+  @override
+  String collectedThisMonthShort(String amount) {
+    return '₹$amount इस मो.';
+  }
+
+  @override
+  String get categoryAll => 'सभी';
+
+  @override
+  String get findVendorsNearYou => 'अपने पास विक्रेता खोजें';
+
+  @override
+  String get searchByNameOrCategory =>
+      'नाम, व्यवसाय के नाम से खोजें,\nया ऊपर से श्रेणी चुनें।';
+
+  @override
+  String noResultsForQuery(String query) {
+    return '\"$query\" के लिए कोई नतीजा नहीं।\nकोई अलग नाम या श्रेणी आज़माएं।';
+  }
+
+  @override
+  String get addressLabel => 'पता';
+
+  @override
+  String get emailLabel => 'ईमेल';
+
+  @override
+  String get upiLabel => 'UPI';
+
+  @override
+  String get upiIdLabel => 'UPI आईडी';
+
+  @override
+  String get upiEmailLabel => 'UPI / ईमेल';
+
+  @override
+  String get couldNotLoadRetry =>
+      'लोड नहीं हो सका — दोबारा प्रयास के लिए टैप करें';
+
+  @override
+  String labelCopied(String label) {
+    return '$label कॉपी हुआ!';
+  }
+
+  @override
+  String get upiIdCopied => 'UPI आईडी कॉपी हुई!';
+
+  @override
+  String get requestSentButton => 'अनुरोध भेजा';
+
+  @override
+  String get alreadyConnected => 'पहले से जुड़े हैं';
+
+  @override
+  String get sendingEllipsis => 'भेज रहे हैं…';
+
+  @override
+  String get sendConnectionRequest => 'कनेक्शन अनुरोध भेजें';
+
+  @override
+  String get copyUpiIdToPay => 'भुगतान के लिए UPI आईडी कॉपी करें';
+
+  @override
+  String requestSentToVendor(String name) {
+    return 'अनुरोध भेजा! $name को सूचित किया जाएगा।';
+  }
+
+  @override
+  String byOwnerName(String name) {
+    return '$name द्वारा';
+  }
+
+  @override
+  String get logOut => 'लॉगआउट';
+
+  @override
+  String get confirmLogoutTitle => 'लॉगआउट';
+
+  @override
+  String get areYouSureLogout => 'क्या आप वाकई लॉगआउट करना चाहते हैं?';
+
+  @override
+  String get showQrToCollect =>
+      'सीधे भुगतान पाने के लिए यह QR ग्राहक को दिखाएं।';
+
+  @override
+  String get uploadQr => 'QR अपलोड करें';
+
+  @override
+  String get replaceQr => 'बदलें';
+
+  @override
+  String get qrUploaded => 'QR अपलोड हुआ';
+
+  @override
+  String scanToPayName(String name) {
+    return '$name को स्कैन करके चुकाएं';
+  }
+
+  @override
+  String get salarySingle => 'वेतन';
+
+  @override
+  String get advanceSingle => 'अग्रिम';
+
+  @override
+  String get customersTitle => 'ग्राहक';
+
+  @override
+  String balanceDue(String balance) {
+    return '₹$balance बकाया';
+  }
+
+  @override
+  String get recordDeliveryTooltip => 'डिलीवरी दर्ज करें';
+
+  @override
+  String get viewLedgerTooltip => 'खाता देखें';
+
+  @override
+  String staffRoleSubtitle(String name) {
+    return 'स्टाफ · $name';
+  }
+
+  @override
+  String get recordDelivery => 'उधार दिया';
+
+  @override
+  String get recordDeliverySubtitle => 'ग्राहक ने सामान लिया — खाते में जोड़ें';
+
+  @override
+  String get collectPayment => 'पैसा मिला';
+
+  @override
+  String get collectPaymentSubtitle => 'ग्राहक ने भुगतान किया — खाते से घटाएं';
+
+  @override
+  String get viewAll2 => 'सभी देखें';
+
+  @override
+  String get noCustomersStaff => 'अभी कोई ग्राहक नहीं';
+
+  @override
+  String get myVendorsSection => 'मेरे विक्रेता';
+
+  @override
+  String get shopsYouBuyFrom => 'जिन दुकानों से आप खरीदते हैं';
+
+  @override
+  String get awaitingAcceptanceTitle => 'स्वीकृति बाकी';
+
+  @override
+  String get customersHaventConfirmed => 'इन ग्राहकों ने अभी पुष्टि नहीं की';
+
+  @override
+  String get pendingBadge => 'लंबित';
+
+  @override
+  String get notifyCustomersWithDues => 'बकाया ग्राहकों को सूचित करें';
+
+  @override
+  String get linkANewCustomer => 'नया ग्राहक जोड़ें';
+
+  @override
+  String get dailyCharge => 'रोज़ का चार्ज';
+
+  @override
+  String get dailyChargeSubtitle =>
+      'मात्रा सेट करें और एक साथ सभी को चार्ज करें';
+
+  @override
+  String get findByPhoneOrEmailHint => 'फ़ोन नंबर या ईमेल से खोजें';
+
+  @override
+  String get phoneOrEmailLabel => 'फ़ोन या ईमेल';
+
+  @override
+  String get phoneMobileOrEmail => '10 अंकों का मोबाइल या ईमेल पता';
+
+  @override
+  String get nicknameOptionalLabel => 'उपनाम (वैकल्पिक)';
+
+  @override
+  String get howYouKnowCustomer => 'आप इस ग्राहक को कैसे जानते हैं';
+
+  @override
+  String get requestSentWillBeNotified =>
+      'अनुरोध भेजा! पुष्टि के लिए उन्हें सूचित किया जाएगा।';
+
+  @override
+  String get outstandingTitle => 'बकाया';
+
+  @override
+  String customersWithDues(int count) {
+    return '$count+ ग्राहकों का बकाया';
+  }
+
+  @override
+  String get dueLabel => 'बकाया';
+
+  @override
+  String get collectedTodayTitle => 'आज का संग्रह';
+
+  @override
+  String paymentsCountSubtitle(int count) {
+    return '$count+ भुगतान';
+  }
+
+  @override
+  String get noPaymentsYetSubtitle => 'अभी कोई भुगतान नहीं';
+
+  @override
+  String removeLedgerVendorContent(String name) {
+    return 'इससे $name के साथ आपका लिंक निष्क्रिय हो जाएगा। दोनों पक्षों का साझा खाते तक एक्सेस हट जाएगा।';
+  }
+
+  @override
+  String removeLedgerCustomerContent(String name) {
+    return 'इससे $name के साथ आपका कनेक्शन हट जाएगा।';
+  }
+
+  @override
+  String get offlineUpdatesPaused => 'ऑफलाइन — अपडेट रुके हैं';
+
+  @override
+  String get exportStatementTitle => 'स्टेटमेंट एक्सपोर्ट करें';
+
+  @override
+  String get chooseExportDateRange =>
+      'PDF में शामिल करने के लिए तारीख की सीमा चुनें।';
+
+  @override
+  String get last7DaysRange => 'पिछले 7 दिनों की एंट्री';
+
+  @override
+  String get last30DaysRange => 'पिछले 30 दिनों की एंट्री';
+
+  @override
+  String get last3MonthsRange => 'पिछले 3 महीनों की एंट्री';
+
+  @override
+  String get completeLedgerHistory => 'पूरा खाता इतिहास';
+
+  @override
+  String appAccessActive(String phone) {
+    return 'सक्रिय · $phone';
+  }
+
+  @override
+  String get appAccessDisabled => 'अक्षम';
+
+  @override
+  String appAccessGranted(String name, String phone) {
+    return '$name अब $phone से लॉगिन कर सकते हैं';
+  }
+
+  @override
+  String appAccessRevoked(String name) {
+    return '$name का ऐप एक्सेस रद्द किया';
+  }
+
+  @override
+  String appAccessDescription(String name, String phone) {
+    return 'चालू होने पर, $name अपने नंबर ($phone) से लॉगिन करके डिलीवरी और भुगतान दर्ज कर सकते हैं और अपना QR दिखा सकते हैं — लेकिन उपस्थिति नहीं बदल सकते, ग्राहक नहीं जोड़ सकते, या बाकी स्टाफ को नहीं देख सकते।';
+  }
+
+  @override
+  String get paymentHistoryTitle => 'भुगतान इतिहास';
+
+  @override
+  String get couldNotLoadPaymentHistory => 'भुगतान इतिहास लोड नहीं हो सका';
+
+  @override
+  String get voicePleaseCheck => 'कृपया जांचें';
+
+  @override
+  String get navHome => 'होम';
+
+  @override
+  String get qty => 'मात्रा';
+
+  @override
+  String totalRupees(String amount) {
+    return 'कुल: ₹$amount';
+  }
+
+  @override
+  String get selectCustomerFirst => 'पहले ग्राहक चुनें';
+
+  @override
+  String get enterValidAmount => 'सही राशि दर्ज करें';
+
+  @override
+  String get addsCredit => 'ग्राहक ने सामान लिया — खाते में जोड़ें';
+
+  @override
+  String get recordsCash => 'ग्राहक ने भुगतान किया — खाते से घटाएं';
+
+  @override
+  String deliveryRecordedFor(String name) {
+    return '$name की डिलीवरी दर्ज हुई';
+  }
+
+  @override
+  String paymentCollectedFrom(String name) {
+    return '$name से भुगतान मिला';
+  }
+
+  @override
+  String get manageSchedule => 'शेड्यूल प्रबंधित करें';
+
+  @override
+  String get bookingsTab => 'बुकिंग';
+
+  @override
+  String get bySlotTab => 'स्लॉट अनुसार';
+
+  @override
+  String get scheduleSaved => 'शेड्यूल सेव हुआ!';
+
+  @override
+  String get addSlot => 'स्लॉट जोड़ें';
+
+  @override
+  String noSlotsForDay(String day) {
+    return '$day के लिए कोई स्लॉट नहीं';
+  }
+
+  @override
+  String get tapAddSlotHint =>
+      'अपनी उपलब्धता सेट करने के लिए \"स्लॉट जोड़ें\" दबाएं';
+
+  @override
+  String get slotAvailable => 'उपलब्ध';
+
+  @override
+  String get slotsFull => 'स्लॉट भरा';
+
+  @override
+  String get slotFullHint => 'इस स्लॉट को पूरा भरा मार्क करें';
+
+  @override
+  String get enableSlotFirst => 'पहले स्लॉट चालू करें';
+
+  @override
+  String get deleteSlotTitle => 'स्लॉट हटाएं';
+
+  @override
+  String deleteSlotConfirm(String time) {
+    return '$time का स्लॉट हटाएं?';
+  }
+
+  @override
+  String get endTimeAfterStart => 'समाप्ति समय शुरुआत के बाद होना चाहिए';
+
+  @override
+  String get slotOverlaps => 'यह स्लॉट किसी मौजूदा स्लॉट से टकराता है';
+
+  @override
+  String get addTimeSlot => 'समय स्लॉट जोड़ें';
+
+  @override
+  String get editTimeSlot => 'समय स्लॉट संपादित करें';
+
+  @override
+  String get selectTimeHint =>
+      '12-घंटे फॉर्मेट में शुरुआत और समाप्ति समय चुनें';
+
+  @override
+  String get startLabel => 'शुरुआत';
+
+  @override
+  String get endLabel => 'समाप्ति';
+
+  @override
+  String get update => 'अपडेट करें';
+
+  @override
+  String get notifTabAll => 'सभी';
+
+  @override
+  String get notifTabBookings => 'बुकिंग';
+
+  @override
+  String get noBookingNotifications => 'कोई बुकिंग सूचना नहीं';
+
+  @override
+  String get noBookingNotificationsSubtitle =>
+      'बुकिंग अनुरोध और अपडेट यहाँ दिखेंगे';
+
+  @override
+  String get bookingPillLabel => 'बुकिंग';
+
+  @override
+  String get slotDetailTitle => 'स्लॉट विवरण';
+
+  @override
+  String bookingsCount(int count) {
+    return '$count बुकिंग';
+  }
+
+  @override
+  String bookingsCountPlural(int count) {
+    return '$count बुकिंग';
+  }
+
+  @override
+  String pendingCountLabel(int count) {
+    return '$count लंबित';
+  }
+
+  @override
+  String slotTimeRange(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String get keepButton => 'रखें';
+
+  @override
+  String get deleteButton => 'हटाएं';
+
+  @override
+  String get weeklyTemplateTab => 'Weekly Template';
+
+  @override
+  String get calendarTab => 'Calendar';
+
+  @override
+  String get usingWeeklyTemplate => 'Using weekly template';
+
+  @override
+  String get customForThisDate => 'Custom for this date';
+
+  @override
+  String get closedBadge => 'Closed';
+
+  @override
+  String get markAsClosed => 'Mark as closed';
+
+  @override
+  String get revertToTemplate => 'Revert to template';
+
+  @override
+  String get replicateToButton => 'Replicate to…';
+
+  @override
+  String get replicateTargetWeek => 'Week';
+
+  @override
+  String get replicateTargetMonth => 'Month';
+
+  @override
+  String get replicateTargetMultipleMonths => 'Multiple Months';
+
+  @override
+  String get replicateMonthsCount => 'Number of months';
+
+  @override
+  String get replicateStartDateLabel => 'Start date';
+
+  @override
+  String get applyReplicateButton => 'Apply';
+
+  @override
+  String replicateResultToast(int applied, int skipped, int failed) {
+    return 'Applied to $applied dates, skipped $skipped already customized, $failed failed';
+  }
+
+  @override
+  String get selectModeButton => 'Select';
+
+  @override
+  String get cancelSelectButton => 'Cancel';
+
+  @override
+  String get mergeSlotsButton => 'Merge';
+
+  @override
+  String get mergeNotContiguousHint =>
+      'Selected slots must be contiguous (touching or overlapping) to merge';
+
+  @override
+  String get mergedCapacityLabel => 'Merged capacity';
+
+  @override
+  String get confirmMergeTitle => 'Merge slots?';
+
+  @override
+  String confirmMergeMessage(String start, String end) {
+    return 'This will merge the selected slots into $start – $end.';
+  }
+
+  @override
+  String get capacityLabel => 'Capacity';
+
+  @override
+  String get duplicateSlotExists =>
+      'A slot with the exact same start and end time already exists';
+
+  @override
+  String bookedOfCapacity(int count, int capacity) {
+    return '$count/$capacity booked';
+  }
+
+  @override
+  String overCapacityWarning(int count) {
+    return 'Over capacity by $count';
+  }
+
+  @override
+  String get noSlotsVendorMayBeClosed =>
+      'No slots available — vendor may be closed on this date';
+
+  @override
+  String get revertedToTemplateToast => 'Reverted to weekly template';
+
+  @override
+  String get dateSavedToast => 'Saved custom slots for this date';
+
+  @override
+  String get dateClosedToast => 'Date marked as closed';
+
+  @override
+  String get mergeSucceededToast => 'Slots merged — tap Save to apply';
+
+  @override
+  String get membershipPlansTitle => 'सदस्यता प्लान';
+
+  @override
+  String get newPlanButton => 'नया प्लान';
+
+  @override
+  String get deletePlanTitle => 'प्लान हटाएं?';
+
+  @override
+  String deletePlanConfirm(String name) {
+    return '\"$name\" हटा दिया जाएगा। यह पूर्ववत नहीं होगा।';
+  }
+
+  @override
+  String get inactiveLabel => 'निष्क्रिय';
+
+  @override
+  String get noBenefitsAdded => 'कोई लाभ नहीं जोड़ा गया।';
+
+  @override
+  String get noMembershipPlans => 'अभी कोई सदस्यता प्लान नहीं';
+
+  @override
+  String get tapNewPlanHint => 'पहला प्लान बनाने के लिए \"नया प्लान\" दबाएं।';
+
+  @override
+  String get membershipRequestsTitle => 'सदस्यता अनुरोध';
+
+  @override
+  String get noPendingRequests => 'कोई लंबित अनुरोध नहीं';
+
+  @override
+  String get customersCanApplyHint =>
+      'ग्राहक अपनी खाता स्क्रीन से\nसदस्यता के लिए आवेदन कर सकते हैं।';
+
+  @override
+  String get membersTitle => 'सदस्य';
+
+  @override
+  String get noMembersYet => 'अभी कोई सदस्य नहीं';
+
+  @override
+  String get activeStat => 'सक्रिय';
+
+  @override
+  String get mrrStat => 'MRR';
+
+  @override
+  String get expiringStat => 'समाप्त होने वाले';
+
+  @override
+  String get allPlansFilter => 'सभी प्लान';
+
+  @override
+  String daysLeft(int count) {
+    return '$countदिन बाकी';
+  }
+
+  @override
+  String daysLeftFull(int count) {
+    return '$count दिन';
+  }
+
+  @override
+  String get planNameLabel => 'प्लान का नाम';
+
+  @override
+  String get planNameHint => 'जैसे: गोल्ड मेंबरशिप';
+
+  @override
+  String get durationDaysLabel => 'अवधि (दिन)';
+
+  @override
+  String get priceRupeesLabel => 'कीमत ₹';
+
+  @override
+  String get addBenefitButton => 'लाभ जोड़ें';
+
+  @override
+  String get customLabel => 'कस्टम';
+
+  @override
+  String get customAdvanceLabel => 'कस्टम अग्रिम ₹';
+
+  @override
+  String get benefitLabel => 'लाभ';
+
+  @override
+  String get benefitHint => 'जैसे: 4 बाल कटाई';
+
+  @override
+  String get planDetailsSection => 'प्लान विवरण';
+
+  @override
+  String get benefitsSection => 'लाभ';
+
+  @override
+  String get advanceRequiredSection => 'जरूरी अग्रिम';
+
+  @override
+  String get editPlanTitle => 'प्लान संपादित करें';
+
+  @override
+  String get createPlanTitle => 'सदस्यता प्लान बनाएं';
+
+  @override
+  String get publishPlanButton => 'प्लान प्रकाशित करें';
+
+  @override
+  String get planUpdatedToast => 'प्लान अपडेट हुआ';
+
+  @override
+  String get planPublishedToast => 'प्लान प्रकाशित हुआ';
+
+  @override
+  String vendorPlansTitle(String vendorName) {
+    return '$vendorName · प्लान';
+  }
+
+  @override
+  String get noPlansAvailable => 'अभी कोई प्लान उपलब्ध नहीं';
+
+  @override
+  String get vendorNoPlansHint =>
+      'इस विक्रेता ने कोई सदस्यता प्लान नहीं बनाया।';
+
+  @override
+  String applyForPlan(String planName) {
+    return '$planName के लिए आवेदन करें';
+  }
+
+  @override
+  String get messageToVendorOptional => 'विक्रेता को संदेश (वैकल्पिक)';
+
+  @override
+  String get messageToVendorHint =>
+      'जैसे: कृपया मुझे इस महीने के लिए दर्ज करें';
+
+  @override
+  String get sendRequestButton => 'अनुरोध भेजें';
+
+  @override
+  String get activeLabel => 'सक्रिय';
+
+  @override
+  String get noAdditionalBenefits => 'कोई अतिरिक्त लाभ नहीं';
+
+  @override
+  String get currentPlanLabel => 'मौजूदा प्लान';
+
+  @override
+  String get requestPendingLabel => 'अनुरोध लंबित';
+
+  @override
+  String get applyLabel => 'आवेदन करें';
+
+  @override
+  String requestSentToName(String name) {
+    return '$name को अनुरोध भेजा';
+  }
+
+  @override
+  String get membershipDialogTitle => 'सदस्यता';
+
+  @override
+  String pendingPlanPrefix(String planName) {
+    return 'लंबित: $planName';
+  }
+
+  @override
+  String enrollCustomer(String name) {
+    return '$name को दर्ज करें';
+  }
+
+  @override
+  String get choosePlanHint => 'सदस्यता शुरू करने के लिए प्लान चुनें।';
+
+  @override
+  String get noActivePlansHint =>
+      'कोई सक्रिय प्लान नहीं। पहले सदस्यता → प्लान में बनाएं।';
+
+  @override
+  String get enrollLabel => 'दर्ज करें';
+
+  @override
+  String get changeLabel => 'बदलें';
+
+  @override
+  String get usedLabel => 'इस्तेमाल हुआ';
+
+  @override
+  String get useLabel => 'इस्तेमाल करें';
+
+  @override
+  String get decreaseLabel => 'Decrease usage count';
+
+  @override
+  String daysLeftLabel(int count) {
+    return '$count दिन बाकी';
+  }
+
+  @override
+  String get orderPlacedSuccess => 'ऑर्डर सफलतापूर्वक दिया गया!';
+
+  @override
+  String orderFromVendor(String vendorName) {
+    return '$vendorName से ऑर्डर';
+  }
+
+  @override
+  String get addItemButton => 'आइटम जोड़ें';
+
+  @override
+  String get orderNoteOptional => 'ऑर्डर नोट (वैकल्पिक)';
+
+  @override
+  String get totalLabel => 'कुल';
+
+  @override
+  String get placeOrderButton => 'ऑर्डर दें';
+
+  @override
+  String get itemNameRequired => 'आइटम का नाम *';
+
+  @override
+  String get unitLabel => 'इकाई';
+
+  @override
+  String get unitHint => 'kg, L…';
+
+  @override
+  String get unitPriceLabel => 'इकाई ₹';
+
+  @override
+  String itemNumber(int number) {
+    return 'आइटम $number';
+  }
+
+  @override
+  String subtotalLabel(String amount) {
+    return 'उप-कुल: ₹$amount';
+  }
+
+  @override
+  String get orderDetailsTitle => 'ऑर्डर विवरण';
+
+  @override
+  String get proofPhotoLabel => 'प्रमाण फ़ोटो';
+
+  @override
+  String get tapToViewFullScreen => 'पूर्ण स्क्रीन में देखने के लिए टैप करें';
+
+  @override
+  String get rejectButton => 'अस्वीकार करें';
+
+  @override
+  String get confirmButton => 'पुष्टि करें';
+
+  @override
+  String get markAsDeliveredButton => 'डिलीवर हुआ मार्क करें';
+
+  @override
+  String get confirmDeliveryTitle => 'डिलीवरी की पुष्टि करें';
+
+  @override
+  String get deliveryNoteOptional => 'डिलीवरी नोट (वैकल्पिक)';
+
+  @override
+  String get retakeLabel => 'दोबारा लें';
+
+  @override
+  String photoUploadFailed(String error) {
+    return 'फ़ोटो अपलोड विफल: $error';
+  }
+
+  @override
+  String get orderNoteLabel => 'ऑर्डर नोट';
+
+  @override
+  String get customerLabel => 'ग्राहक';
+
+  @override
+  String get ordersTitle => 'ऑर्डर';
+
+  @override
+  String get noOrdersYet => 'अभी कोई ऑर्डर नहीं';
+
+  @override
+  String get markDeliveredButton => 'डिलीवर हुआ मार्क करें';
+
+  @override
+  String get myOrdersTitle => 'मेरे ऑर्डर';
+
+  @override
+  String get deliverButton => 'डिलीवर करें';
+
+  @override
+  String get noPendingDeliveries => 'कोई लंबित डिलीवरी नहीं';
+
+  @override
+  String get deliveriesTitle => 'डिलीवरी';
+
+  @override
+  String get monthlyStatementTitle => 'मासिक स्टेटमेंट';
+
+  @override
+  String get deliveryProofLabel => 'डिलीवरी प्रमाण';
+
+  @override
+  String get replacePhotoButton => 'फ़ोटो बदलें';
+
+  @override
+  String get attachProofButton => 'प्रमाण जोड़ें';
+
+  @override
+  String get uploadingLabel => 'अपलोड हो रहा है...';
+
+  @override
+  String get proofLockedHint => 'यह प्रमाण लॉक है और बदला नहीं जा सकता';
+
+  @override
+  String get proofAttachedToast => 'प्रमाण जोड़ा गया';
+
+  @override
+  String itemLabel(int number) {
+    return 'आइटम $number';
+  }
+
+  @override
+  String get amountRequired => 'राशि *';
+
+  @override
+  String get addItemLabel => 'आइटम जोड़ें';
+
+  @override
+  String get totalAmountLabel => 'कुल';
+
+  @override
+  String get deactivate => 'निष्क्रिय करें';
+
+  @override
+  String get activate => 'सक्रिय करें';
+
+  @override
+  String get activeStatLabel => 'सक्रिय';
+
+  @override
+  String get mrrStatLabel => 'MRR';
+
+  @override
+  String get expiringStatLabel => 'समाप्त होने वाले';
+
+  @override
+  String get closeLabel => 'बंद करें';
+
+  @override
+  String pendingPlanLabel(String name) {
+    return 'लंबित: $name';
+  }
+
+  @override
+  String customerRequestedPlan(String customer, String plan) {
+    return '$customer ने $plan मांगा';
+  }
+
+  @override
+  String itemsCount(int count) {
+    return 'आइटम ($count)';
+  }
+
+  @override
+  String get deliveryLabel => 'डिलीवरी';
+
+  @override
+  String markedDeliveredBy(String role) {
+    return '$role द्वारा डिलीवर हुआ मार्क किया';
+  }
+
+  @override
+  String get deliveriesHint =>
+      'ऑर्डर के जरिए डिलीवर हुए आइटम। एंट्री टैप करके आइटम देखें।';
+
+  @override
+  String get scheduledServicesTitle => 'Scheduled Services';
+
+  @override
+  String get servicesTab => 'Services';
+
+  @override
+  String get todaysDeliveriesTab => 'Today\'s Deliveries';
+
+  @override
+  String get newService => 'New Service';
+
+  @override
+  String get noServicesYet => 'No services yet';
+
+  @override
+  String get tapPlusToCreateService => 'Tap + to create a scheduled service';
+
+  @override
+  String subscriberCountLabel(int count) {
+    return '$count subs';
+  }
+
+  @override
+  String get noDeliveriesToday => 'No deliveries today';
+
+  @override
+  String get noDeliveriesMatchFilters => 'No deliveries match your filters';
+
+  @override
+  String get mySubscriptionsTitle => 'My Subscriptions';
+
+  @override
+  String get deliveriesTab => 'Deliveries';
+
+  @override
+  String get noActiveSubscriptions => 'No active subscriptions';
+
+  @override
+  String get noDeliveriesYet => 'No deliveries yet';
+
+  @override
+  String get serviceNameLabel => 'Service Name *';
+
+  @override
+  String get serviceTypeLabel => 'Service Type';
+
+  @override
+  String get scheduleLabel => 'Schedule';
+
+  @override
+  String get deliveryDaysLabel => 'Delivery Days';
+
+  @override
+  String get itemsLabel => 'Items';
+
+  @override
+  String get autoCreateLedgerEntry => 'Auto-create ledger entry';
+
+  @override
+  String get addToKhataAutomatically =>
+      'Add to khata automatically on delivery';
+
+  @override
+  String get createServiceButton => 'Create Service';
+
+  @override
+  String get selectAtLeastOneDeliveryDay => 'Select at least one delivery day';
+
+  @override
+  String get fillNameUnitPriceEveryItem =>
+      'Fill in name, unit and price for every item';
+
+  @override
+  String get itemNameLabel => 'Item name';
+
+  @override
+  String get priceRupeeLabel => 'Price (₹)';
+
+  @override
+  String get subscribersTitle => 'Subscribers';
+
+  @override
+  String get addCustomerButton => 'Add Customer';
+
+  @override
+  String get noSubscribersYet => 'No subscribers yet';
+
+  @override
+  String get deactivateServiceTitle => 'Deactivate Service';
+
+  @override
+  String get deactivateServiceMessage =>
+      'This will stop all future deliveries. Active subscriptions will be unaffected until manually removed.';
+
+  @override
+  String get typeLabel => 'Type';
+
+  @override
+  String get autoLedgerEntryLabel => 'Auto Ledger Entry';
+
+  @override
+  String get yesLabel => 'Yes';
+
+  @override
+  String get noLabel => 'No';
+
+  @override
+  String subscriptionStartsOn(String summary, String date) {
+    return '$summary · starts $date';
+  }
+
+  @override
+  String amountPerDelivery(String amount) {
+    return '₹$amount / delivery';
+  }
+
+  @override
+  String get pausedLabel => 'Paused';
+
+  @override
+  String get resumeLabel => 'Resume';
+
+  @override
+  String get pauseLabel => 'Pause';
+
+  @override
+  String get deliveryDetailsTitle => 'Delivery Details';
+
+  @override
+  String deliveryDueAt(String time) {
+    return 'Due at $time';
+  }
+
+  @override
+  String deliveryDeliveredAt(String time) {
+    return 'Delivered at $time';
+  }
+
+  @override
+  String deliveryDeliveredBy(String name) {
+    return 'Delivered by $name';
+  }
+
+  @override
+  String get deliveryPhotoTitle => 'Delivery Photo';
+
+  @override
+  String get skipDeliveryTitle => 'Skip Delivery';
+
+  @override
+  String get skipDeliveryMessage => 'Mark this delivery as skipped today?';
+
+  @override
+  String get confirmDeliveryButton => 'Confirm Delivery';
+
+  @override
+  String get couldNotConfirmDelivery => 'Could not confirm delivery';
+
+  @override
+  String get dateTimeLabel => 'Date & time';
+
+  @override
+  String get amountToAddToLedger => 'Amount to add to ledger';
+
+  @override
+  String get deliveryAutoLedgerNote =>
+      'This delivery will be added to the ledger automatically when confirmed — no need to add it again.';
+
+  @override
+  String get deliveryPhotoRequired => 'DELIVERY PHOTO (REQUIRED)';
+
+  @override
+  String get addSubscriberTitle => 'Add Subscriber';
+
+  @override
+  String get selectCustomerLabel => 'Select customer';
+
+  @override
+  String get selectACustomerHint => 'Select a customer';
+
+  @override
+  String get startDateLabel => 'Start Date';
+
+  @override
+  String get setQuantityForOneItem => 'Set a quantity for at least one item';
+
+  @override
+  String get customPriceQuestion => 'Custom price?';
+
+  @override
+  String get customPriceOptionalLabel => 'Custom Price (₹, optional)';
+
+  @override
+  String get allDeliveriesFilter => 'All deliveries';
+
+  @override
+  String get clearAllFilters => 'Clear all';
+
+  @override
+  String get locationPermissionDenied => 'Location permission denied';
+
+  @override
+  String get couldNotGetCurrentLocation => 'Couldn\'t get current location';
+
+  @override
+  String get filterDeliveriesTitle => 'Filter Deliveries';
+
+  @override
+  String get filterCustomerServiceName => 'CUSTOMER / SERVICE NAME';
+
+  @override
+  String get filterSearchByName => 'Search by name';
+
+  @override
+  String get filterAnyDate => 'Any date';
+
+  @override
+  String get filterRadiusFromLocation => 'RADIUS FROM MY LOCATION';
+
+  @override
+  String get applyFilterButton => 'Apply Filter';
+
+  @override
+  String withinKmLabel(String km) {
+    return 'Within $km km';
+  }
+
+  @override
+  String kmLabel(String km) {
+    return '$km km';
+  }
+
+  @override
+  String get serviceTypeProduct => 'Product';
+
+  @override
+  String get serviceTypeSession => 'Session';
+
+  @override
+  String get scheduleTypeDaily => 'Daily';
+
+  @override
+  String get scheduleTypeWeekly => 'Weekly';
+
+  @override
+  String get scheduleTypeCustomDays => 'Custom Days';
+
+  @override
+  String get deliveryStatusScheduled => 'Scheduled';
+
+  @override
+  String get deliveryStatusDelivered => 'Delivered';
+
+  @override
+  String get deliveryStatusSkipped => 'Skipped';
+
+  @override
+  String get deliveryStatusFailed => 'Failed';
+
+  @override
+  String get scheduleTypeCustom => 'Custom';
+
+  @override
+  String get orderStatusPending => 'Pending';
+
+  @override
+  String get orderStatusConfirmed => 'Confirmed';
+
+  @override
+  String get orderStatusRejected => 'Rejected';
+
+  @override
+  String get orderStatusDelivered => 'Delivered';
+
+  @override
+  String get orderStatusCancelled => 'Cancelled';
+
+  @override
+  String get weekdayShortSun => 'Sun';
+
+  @override
+  String get weekdayShortMon => 'Mon';
+
+  @override
+  String get weekdayShortTue => 'Tue';
+
+  @override
+  String get weekdayShortWed => 'Wed';
+
+  @override
+  String get weekdayShortThu => 'Thu';
+
+  @override
+  String get weekdayShortFri => 'Fri';
+
+  @override
+  String get weekdayShortSat => 'Sat';
+
+  @override
+  String subscriptionItemsAmount(String summary, String amount) {
+    return '$summary · ₹$amount';
+  }
+
+  @override
+  String subscriptionNextDelivery(String date) {
+    return 'Next: $date';
+  }
+
+  @override
+  String subscriptionDeliverySubtitle(String date, String summary) {
+    return '$date · $summary';
+  }
+
+  @override
+  String get statusLabel => 'Status';
+
+  @override
+  String get callLabel => 'Call';
+
+  @override
+  String get subscribeButton => 'Subscribe';
+
+  @override
+  String get invalidValueLabel => 'Invalid';
+
+  @override
+  String get resetLabel => 'Reset';
+
+  @override
+  String itemPriceWithUnit(String name, String unit, String price) {
+    return '$name ($unit) · ₹$price';
+  }
+
+  @override
+  String forCustomerName(String name) {
+    return 'for $name';
+  }
+
+  @override
+  String get deliveredByLabel => 'Delivered by';
+
+  @override
+  String get staffQuickDelivery => 'Quick Delivery';
+
+  @override
+  String get staffQuickDeliverySubtitle => 'Pre-filled with customer defaults';
+
+  @override
+  String get staffOrdersSubtitle => 'Confirmed orders awaiting delivery';
+
+  @override
+  String get noResults => 'No results';
+
+  @override
+  String get noDefaultSet => 'No default set';
+
+  @override
+  String get photoUploadFailedNoError => 'Photo upload failed';
+
+  @override
+  String get deliverAndCharge => 'Deliver & Charge';
+
+  @override
+  String staffPaySummary(String role, String salaryType, String amount) {
+    return '$role · $salaryType ₹$amount';
+  }
+
+  @override
+  String itemsCountShort(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items',
+      one: '1 item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String noteWithValue(String note) {
+    return 'Note: $note';
+  }
+
+  @override
+  String orderPlacedOn(String date) {
+    return 'Placed $date';
+  }
+
+  @override
+  String get couldNotAccessCamera =>
+      'Could not access camera. Check app permissions.';
+
+  @override
+  String get couldNotAccessGallery =>
+      'Could not access gallery. Check app permissions.';
+
+  @override
+  String amountAddedToCustomerDue(String amount) {
+    return '₹$amount will be added to the customer\'s due.';
+  }
+
+  @override
+  String moreItemsCount(int count) {
+    return '+ $count more';
+  }
+
+  @override
+  String orderTotalAmount(String amount) {
+    return 'Total ₹$amount';
+  }
+
+  @override
+  String get orderStatusLabelAll => 'All';
+
+  @override
+  String get minimumValueOne => 'Min 1';
+
+  @override
+  String planPricePerDuration(String price, int days) {
+    return '₹$price / $days days';
+  }
+
+  @override
+  String planDurationSuffix(int days) {
+    return ' / $days days';
+  }
+
+  @override
+  String planPriceAndDuration(String price, int days) {
+    return '₹$price · $days days';
+  }
+
+  @override
+  String benefitQuotaTimes(int quota) {
+    return '×$quota';
+  }
+
+  @override
+  String advanceAmountLabel(String amount) {
+    return 'Advance: ₹$amount';
+  }
+
+  @override
+  String advanceAmountSuffix(String amount) {
+    return ' · advance ₹$amount';
+  }
+
+  @override
+  String activeMembersCount(int count) {
+    return '$count active';
+  }
+
+  @override
+  String usedOfQuota(int used, int quota) {
+    return '$used/$quota';
+  }
+
+  @override
+  String daysLeftWithWarning(int count) {
+    return '${count}d left ⚠';
+  }
+
+  @override
+  String get aPlanLabel => 'a plan';
+
+  @override
+  String get planFallbackLabel => 'Plan';
+
+  @override
+  String planWithExpiry(String plan, String date) {
+    return '$plan · $date';
+  }
+
+  @override
+  String planPriceAndDaysLeft(String price, int days) {
+    return '₹$price · $days days left';
+  }
+
+  @override
+  String get ledgerPreferences => 'Ledger Preferences';
+
+  @override
+  String get autoConfirmEntries => 'Auto-Confirm Entries';
+
+  @override
+  String get doneLabel => 'Done';
+
+  @override
+  String get categoryShortDairy => 'Dairy';
+
+  @override
+  String get categoryShortPress => 'Press';
+
+  @override
+  String get categoryShortMaid => 'Maid';
+
+  @override
+  String get categoryShortNews => 'News';
+
+  @override
+  String get categoryShortWater => 'Water';
+
+  @override
+  String get categoryShortTiffin => 'Tiffin';
+
+  @override
+  String get categoryShortKirana => 'Kirana';
+
+  @override
+  String get categoryShortSalon => 'Salon';
+
+  @override
+  String get categoryShortLabour => 'Labour';
+
+  @override
+  String get categoryShortTransport => 'Transport';
+
+  @override
+  String get categoryShortGym => 'Gym';
+
+  @override
+  String categoryWithCount(String category, int count) {
+    return '$category ($count)';
+  }
+
+  @override
+  String pageIndexOfTotal(int index, int total) {
+    return '$index of $total';
+  }
+
+  @override
+  String get orderButtonLabel => 'Order';
+
+  @override
+  String get historyTab => 'History';
+
+  @override
+  String get duesTab => 'Dues';
+
+  @override
+  String get infoTab => 'Info';
+
+  @override
+  String get nameLabel => 'Name';
+
+  @override
+  String get yourNicknameLabel => 'Your nickname';
+
+  @override
+  String get linkedSinceLabel => 'Linked since';
+
+  @override
+  String get defaultDeliveryTitle => 'Default Delivery';
+
+  @override
+  String get editLabel => 'Edit';
+
+  @override
+  String get productLabel => 'Product';
+
+  @override
+  String get pricePerUnitShort => 'Price/unit';
+
+  @override
+  String get noDefaultDeliveryHint =>
+      'No default set. Staff Quick Delivery will ask each time.';
+
+  @override
+  String get tierLabel => 'Tier';
+
+  @override
+  String get newOrderForCustomerTooltip => 'New order for customer';
+
+  @override
+  String get viewMonthlyStatement => 'View Monthly Statement';
+
+  @override
+  String get customerDeliveriesHint =>
+      'Orders delivered to this customer. Tap an entry to see items.';
+
+  @override
+  String remindersSentTo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Reminders sent to $count customers',
+      one: 'Reminder sent to 1 customer',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get remindersNoOutstanding => 'No customers with outstanding balance';
+
+  @override
+  String get remindersFailed => 'Failed to send reminders. Please try again.';
+
+  @override
+  String get ordersSubtitle => 'View and manage customer orders';
+
+  @override
+  String get defaultDeliverySaved => 'Default delivery saved';
+
+  @override
+  String defaultDeliveryPrefillHint(String name) {
+    return 'Pre-fills staff Quick Delivery screen for $name';
+  }
+
+  @override
+  String get fullCreamMilkExample => 'e.g. Full Cream Milk';
+
+  @override
+  String get defaultQtyLabel => 'Default qty';
+
+  @override
+  String get unitExampleHint => 'L, kg…';
+
+  @override
+  String get saveDefaultsButton => 'Save Defaults';
+
+  @override
+  String daysAgo(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String byName(String name) {
+    return 'by $name';
+  }
+
+  @override
+  String get latLabel => 'LAT';
+
+  @override
+  String get lngLabel => 'LNG';
+
+  @override
+  String get noLinkedVendorsYet => 'No linked vendors yet';
+
+  @override
+  String get autoConfirmingVendorEntries => 'Auto-confirming vendor entries';
+
+  @override
+  String get manualConfirmationRequired => 'Manual confirmation required';
+
+  @override
+  String get updatePreferenceFailed => 'Failed to update preference';
+
+  @override
+  String get membershipsLabel => 'Memberships';
+
+  @override
+  String get membershipPlansSubtitle => 'Create and manage your plans';
+
+  @override
+  String get membersSubtitle => 'Active members, MRR, expiring soon';
+
+  @override
+  String get autoConfirmSettingsSubtitle =>
+      'Manage per-vendor auto-confirm settings';
+
+  @override
+  String pendingRequestsSummary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pending requests',
+      one: '1 pending request',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get totalBilledLabel => 'Total Billed';
+
+  @override
+  String get totalDuesLabel => 'Total Dues';
+
+  @override
+  String get netDueLabel => 'Net Due';
+
+  @override
+  String get noTransactionsThisMonth => 'No transactions this month';
+
+  @override
+  String get creditLabel => 'Credit';
+
+  @override
+  String get paymentLabel => 'Payment';
+
+  @override
+  String get entryTypeAdjustmentLabel => 'Adjustment';
+
+  @override
+  String get liveUpdatesOn => 'Live — real-time updates on';
+
+  @override
+  String get proofLocked => 'Proof Locked';
+
+  @override
+  String get paymentProofTitle => 'Payment Proof';
+
+  @override
+  String get couldNotLoadImage => 'Could not load image';
+
+  @override
+  String get generatingStatement => 'Generating statement…';
+
+  @override
+  String get failedToGeneratePdf => 'Failed to generate PDF';
+
+  @override
+  String get pastDateLabel => 'Past date';
+
+  @override
+  String get deliveriesOnly => 'Deliveries only';
+
+  @override
+  String get filterEntriesTitle => 'Filter Entries';
+
+  @override
+  String get dateRangeLabel => 'DATE RANGE';
+
+  @override
+  String get amountRangeLabel => 'AMOUNT RANGE';
+
+  @override
+  String get fromLabel => 'From';
+
+  @override
+  String get toLabel => 'To';
+
+  @override
+  String get minLabel => 'Min';
+
+  @override
+  String get maxLabel => 'Max';
+
+  @override
+  String filterStatusChip(String value) {
+    return 'Status: $value';
+  }
+
+  @override
+  String filterTypeChip(String value) {
+    return 'Type: $value';
+  }
+
+  @override
+  String fromDateLabel(String date) {
+    return 'From $date';
+  }
+
+  @override
+  String toDateLabel(String date) {
+    return 'To $date';
+  }
+
+  @override
+  String get loadMoreButton => 'Load more';
+
+  @override
+  String get perUnitLabel => 'per unit';
+
+  @override
+  String subtotalAmountLabel(String amount) {
+    return 'Subtotal: ₹$amount';
+  }
+
+  @override
+  String get amLabel => 'AM';
+
+  @override
+  String get pmLabel => 'PM';
+
+  @override
+  String get alreadyBookedLabel => 'Already Booked';
+
+  @override
+  String bookingDateAtTime(String date, String time) {
+    return '$date at $time';
+  }
+
+  @override
+  String confirmedCountLabel(int count) {
+    return '$count confirmed';
+  }
+
+  @override
+  String doneCountLabel(int count) {
+    return '$count done';
+  }
+
+  @override
+  String cancelledCountLabel(int count) {
+    return '$count cancelled';
+  }
+
+  @override
+  String bookingDateTimeShort(String date, String time) {
+    return '$date  •  $time';
+  }
+
+  @override
+  String bookingDateTimeWithService(String base, String service) {
+    return '$base  •  $service';
+  }
+
+  @override
+  String get deliveryAddressLabel => 'Delivery Address';
+
+  @override
+  String get emailOptionalLabel => 'Email (optional)';
+
+  @override
+  String get upiIdOptionalLabel => 'UPI ID (optional)';
+
+  @override
+  String get passwordOptionalHint => 'Confirm Password';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 8 characters';
+
+  @override
+  String get customCategoryOptionalLabel => 'Custom category (optional)';
+
+  @override
+  String get ayurvedicMedicineExample => 'e.g. Ayurvedic Medicine';
+
+  @override
+  String get customCategoryHelper => 'Add your own if not listed above';
+
+  @override
+  String get signUpEmailSubtitle => 'Sign up with your email address';
+
+  @override
+  String passwordWithMinHint(String label) {
+    return '$label (min 8 chars)';
+  }
+
+  @override
+  String customCategoryCountLabel(int count) {
+    return '$count/3';
+  }
+
+  @override
+  String get upiIdExampleHint => 'e.g. name@upi';
+
+  @override
+  String get businessCategoryGymFitness => 'Gym / Fitness';
+
+  @override
+  String get bulkChargePickOneItem =>
+      'This service has multiple items — pick one to charge';
+
+  @override
+  String pricePerUnitValue(String price, String unit) {
+    return '₹$price / $unit';
+  }
+
+  @override
+  String get navStaff => 'Staff';
+
+  @override
+  String get navBooking => 'Booking';
+
+  @override
+  String get navSchedule => 'Schedule';
+
+  @override
+  String get navReports => 'Reports';
+
+  @override
+  String get removeStaffTooltip => 'Remove staff';
+
+  @override
+  String get searchVendorsByCategoryHint =>
+      'Search vendors by name or category…';
+
+  @override
+  String latLngValue(String lat, String lng) {
+    return 'Lat $lat  ·  Lng $lng';
+  }
+
+  @override
+  String get tapToPickOnMap => 'Tap to pick on map';
+
+  @override
+  String deliveredByRoleLabel(String role) {
+    return 'Delivered by $role';
+  }
+
+  @override
+  String get deliveredOnlyLabel => 'Delivered';
 }

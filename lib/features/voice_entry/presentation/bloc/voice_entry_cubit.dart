@@ -43,8 +43,15 @@ class VoiceEntryCubit extends Cubit<VoiceEntryState> {
         localeId: localeId,
         onResult: (text, isFinal) {
           _lastWords = text;
-          if (state is VoiceListening) emit(VoiceListening(text));
+          if (state is VoiceListening) {
+            emit(VoiceListening(text, soundLevel: (state as VoiceListening).soundLevel));
+          }
           if (isFinal) _parse(text);
+        },
+        onSoundLevel: (level) {
+          if (state is VoiceListening) {
+            emit(VoiceListening((state as VoiceListening).partial, soundLevel: level));
+          }
         },
       );
     } catch (e) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/router/app_router.dart';
 import '../../features/search/presentation/screens/vendor_search_screen.dart';
@@ -68,7 +69,8 @@ class SearchBarPill extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Search vendors by name or category…',
+                    AppLocalizations.of(context)!
+                        .searchVendorsByCategoryHint,
                     style: AppTypography.bodyMedium
                         .copyWith(color: AppColors.textHint),
                     overflow: TextOverflow.ellipsis,

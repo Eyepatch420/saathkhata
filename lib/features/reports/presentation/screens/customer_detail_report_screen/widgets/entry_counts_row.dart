@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../../core/constants/app_colors.dart';
 import '../../../../../../core/constants/app_typography.dart';
+import '../../../../../../l10n/app_localizations.dart';
 
 class EntryCountsRow extends StatelessWidget {
   final int pending;
@@ -25,13 +26,11 @@ class EntryCountsRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _CountChip(label: 'Pending', count: pending, color: Colors.orange),
+          _CountChip(label: AppLocalizations.of(context)!.statusPending, count: pending, color: Colors.orange),
           _VerticalDivider(),
-          _CountChip(
-              label: 'Confirmed', count: confirmed, color: AppColors.success),
+          _CountChip(label: AppLocalizations.of(context)!.statusConfirmed, count: confirmed, color: AppColors.success),
           _VerticalDivider(),
-          _CountChip(
-              label: 'Disputed', count: disputed, color: AppColors.error),
+          _CountChip(label: AppLocalizations.of(context)!.statusDisputed, count: disputed, color: AppColors.error),
         ],
       ),
     );

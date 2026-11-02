@@ -4,6 +4,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/report_models.dart';
 import '../../domain/repositories/vendor_repository.dart';
 
@@ -85,14 +86,15 @@ class _OutstandingListScreenState extends State<OutstandingListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Outstanding'),
+            Text(l10n.outstandingTitle),
             Text(
-              '${_items.isEmpty ? '' : '${_items.length}+ '}customers with dues',
+              _items.isEmpty ? '' : l10n.customersWithDues(_items.length),
               style: AppTypography.bodySmall.copyWith(color: AppColors.error),
             ),
           ],
@@ -103,6 +105,7 @@ class _OutstandingListScreenState extends State<OutstandingListScreen> {
   }
 
   Widget _buildBody() {
+    final l10n = AppLocalizations.of(context)!;
     if (_initialLoad && _isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -114,7 +117,7 @@ class _OutstandingListScreenState extends State<OutstandingListScreen> {
           children: [
             Text(_error!, style: AppTypography.bodyMedium.copyWith(color: AppColors.error)),
             const SizedBox(height: 16),
-            ElevatedButton(onPressed: _refresh, child: const Text('Retry')),
+            ElevatedButton(onPressed: _refresh, child: Text(l10n.retryButton)),
           ],
         ),
       );
@@ -127,9 +130,9 @@ class _OutstandingListScreenState extends State<OutstandingListScreen> {
           children: [
             Icon(Icons.check_circle_outline_rounded, size: 64, color: AppColors.success),
             const SizedBox(height: 16),
-            Text('No outstanding balances', style: AppTypography.h3),
+            Text(l10n.noOutstandingBalances, style: AppTypography.h3),
             const SizedBox(height: 8),
-            Text('All customers are settled up.', style: AppTypography.bodySmall),
+            Text(l10n.allCustomersSettledUp, style: AppTypography.bodySmall),
           ],
         ),
       );
@@ -162,6 +165,7 @@ class _OutstandingTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final surface = Theme.of(context).colorScheme.surface;
     return InkWell(
       onTap: () => context.push(
@@ -206,7 +210,7 @@ class _OutstandingTile extends StatelessWidget {
                   style: AppTypography.labelLarge.copyWith(color: AppColors.error),
                 ),
                 Text(
-                  'due',
+                  l10n.dueLabel,
                   style: AppTypography.bodySmall.copyWith(color: AppColors.textHint),
                 ),
               ],

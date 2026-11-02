@@ -1,4 +1,5 @@
 enum LinkRequestStatus { pending, accepted, declined }
+enum LinkRequestInitiator { customer, vendor }
 
 LinkRequestStatus _statusFromJson(String s) {
   return switch (s) {
@@ -8,10 +9,14 @@ LinkRequestStatus _statusFromJson(String s) {
   };
 }
 
+LinkRequestInitiator _initiatorFromJson(String? s) {
+  return s == 'vendor' ? LinkRequestInitiator.vendor : LinkRequestInitiator.customer;
+}
+
 class LinkRequestUserBrief {
   final String id;
   final String name;
-  final String email;
+  final String? email;
   final String? mobile;
   final String? profilePhotoUrl;
   final String? businessName;
@@ -20,7 +25,7 @@ class LinkRequestUserBrief {
   const LinkRequestUserBrief({
     required this.id,
     required this.name,
-    required this.email,
+    this.email,
     this.mobile,
     this.profilePhotoUrl,
     this.businessName,
@@ -31,7 +36,7 @@ class LinkRequestUserBrief {
     return LinkRequestUserBrief(
       id: json['id'] as String,
       name: json['name'] as String,
-      email: json['email'] as String,
+      email: json['email'] as String?,
       mobile: json['mobile'] as String?,
       profilePhotoUrl: json['profilePhotoUrl'] as String?,
       businessName: json['businessName'] as String?,
@@ -49,6 +54,7 @@ class LinkRequestUserBrief {
 class LinkRequestModel {
   final String id;
   final LinkRequestStatus status;
+  final LinkRequestInitiator initiatedBy;
   final String? message;
   final DateTime? respondedAt;
   final DateTime createdAt;
@@ -58,6 +64,7 @@ class LinkRequestModel {
   const LinkRequestModel({
     required this.id,
     required this.status,
+    this.initiatedBy = LinkRequestInitiator.customer,
     this.message,
     this.respondedAt,
     required this.createdAt,
@@ -69,6 +76,7 @@ class LinkRequestModel {
     return LinkRequestModel(
       id: json['id'] as String,
       status: _statusFromJson(json['status'] as String),
+      initiatedBy: _initiatorFromJson(json['initiatedBy'] as String?),
       message: json['message'] as String?,
       respondedAt: json['respondedAt'] != null
           ? DateTime.parse(json['respondedAt'] as String)

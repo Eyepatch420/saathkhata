@@ -1,18 +1,35 @@
 import '../../../../shared/models/booking_model.dart';
 
 abstract class BookingRepository {
-  /// GET /api/v1/bookings?date=YYYY-MM-DD  (vendor view)
   Future<List<BookingModel>> getVendorBookings(String date);
-
-  /// GET /api/v1/bookings  (customer view — all own bookings)
   Future<List<BookingModel>> getCustomerBookings();
-
-  /// GET /api/v1/bookings/slots?vendorId=...&date=YYYY-MM-DD
   Future<List<AppointmentSlot>> getAvailableSlots(String vendorId, String date);
-
-  /// POST /api/v1/bookings
   Future<BookingModel> createBooking(BookingModel booking);
-
-  /// PATCH /api/v1/bookings/:bookingId/status
   Future<BookingModel> updateBookingStatus(String bookingId, BookingStatus status);
+  Future<BookingConfig> saveBookingConfig(BookingConfig config);
+  Future<BookingConfig?> getBookingConfig();
+  Future<BookingConfig> toggleSlotFull({
+    required int dayOfWeek,
+    required String startTime,
+    required bool isFull,
+  });
+
+  // ─── Per-date overrides / capacity / replicate / merge ─────────────────────
+  Future<DateSlotOverride> getDateSlots(String date);
+  Future<DateSlotOverride> saveDateSlots(String date, List<DaySlot> slots);
+  Future<DateSlotOverride> setDateClosed(String date, bool closed);
+  Future<DateSlotOverride> deleteDateSlots(String date);
+  Future<ReplicateResult> replicateSlots({
+    String? sourceDate,
+    int? sourceDayOfWeek,
+    required String targetType,
+    required String startDate,
+    int? monthsCount,
+  });
+  Future<DateSlotOverride> mergeSlots({
+    String? date,
+    int? dayOfWeek,
+    required List<int> slotIndexes,
+    int? mergedCapacity,
+  });
 }

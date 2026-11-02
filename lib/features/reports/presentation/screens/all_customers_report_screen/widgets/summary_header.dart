@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../../core/constants/app_colors.dart';
 import '../../../../../../core/constants/app_typography.dart';
+import '../../../../../../l10n/app_localizations.dart';
 import '../../../../../../shared/models/report_models.dart';
 
 class CustomersSummaryHeader extends StatelessWidget {
@@ -28,11 +29,11 @@ class CustomersSummaryHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${customers.length} customers',
+                  AppLocalizations.of(context)!.customersCount(customers.length),
                   style: AppTypography.labelLarge,
                 ),
                 Text(
-                  'Ranked by outstanding balance',
+                  AppLocalizations.of(context)!.rankedByOutstanding,
                   style: AppTypography.bodySmall
                       .copyWith(color: AppColors.textHint),
                 ),
@@ -48,7 +49,7 @@ class CustomersSummaryHeader extends StatelessWidget {
                     .copyWith(color: AppColors.error),
               ),
               Text(
-                '₹${totalCollected.toStringAsFixed(0)} this month',
+                AppLocalizations.of(context)!.collectedThisMonth(totalCollected.toStringAsFixed(0)),
                 style: AppTypography.bodySmall
                     .copyWith(color: AppColors.success),
               ),

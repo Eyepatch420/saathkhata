@@ -48,15 +48,17 @@ class SpeechService {
     }
   }
 
-  /// Starts listening. [onResult] fires with partial and final transcripts;
-  /// [onFinal] fires once with the final transcript when recognition settles.
+  /// Starts listening. [onResult] fires with partial and final transcripts.
+  /// [onSoundLevel] fires with mic amplitude in dB (roughly -2 to +10).
   Future<void> listen({
     required String? localeId,
     required void Function(String text, bool isFinal) onResult,
+    void Function(double level)? onSoundLevel,
   }) async {
     await _stt.listen(
       onResult: (SpeechRecognitionResult r) =>
           onResult(r.recognizedWords, r.finalResult),
+      onSoundLevelChange: onSoundLevel,
       listenOptions: SpeechListenOptions(
         localeId: localeId,
         listenFor: const Duration(seconds: 30),

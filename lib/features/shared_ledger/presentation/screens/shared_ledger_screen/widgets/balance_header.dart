@@ -39,11 +39,19 @@ class LedgerBalanceHeader extends StatelessWidget {
           allEntries = state.entries;
         }
 
-        final balanceLabel = balance > 0
-            ? l10n.balanceCustomerOwes
-            : balance < 0
-            ? l10n.balanceYouOwe
-            : l10n.balanceSettled;
+        // balance > 0: customer owes vendor. balance < 0: vendor owes customer.
+        final String balanceLabel;
+        final Color balanceColor;
+        if (balance == 0) {
+          balanceLabel = l10n.balanceSettled;
+          balanceColor = AppColors.success;
+        } else if (isVendorView) {
+          balanceLabel = balance > 0 ? l10n.balanceCustomerOwes : l10n.balanceYouOwe;
+          balanceColor = balance > 0 ? AppColors.error : AppColors.success;
+        } else {
+          balanceLabel = balance > 0 ? l10n.balanceYouOweVendor : l10n.balanceVendorOwesYou;
+          balanceColor = balance > 0 ? AppColors.error : AppColors.success;
+        }
 
         return Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
@@ -62,16 +70,12 @@ class LedgerBalanceHeader extends StatelessWidget {
                   Text(l10n.totalBalance, style: AppTypography.bodySmall),
                   const SizedBox(height: 4),
                   Text(
-                    '₹${balance.toStringAsFixed(0)}',
-                    style: AppTypography.h1.copyWith(
-                      color: balance > 0 ? AppColors.error : AppColors.success,
-                    ),
+                    '₹${balance.abs().toStringAsFixed(0)}',
+                    style: AppTypography.h1.copyWith(color: balanceColor),
                   ),
                   Text(
                     balanceLabel,
-                    style: AppTypography.bodySmall.copyWith(
-                      color: balance > 0 ? AppColors.error : AppColors.success,
-                    ),
+                    style: AppTypography.bodySmall.copyWith(color: balanceColor),
                   ),
                 ],
               ),
@@ -104,7 +108,8 @@ class LedgerBalanceHeader extends StatelessWidget {
     final authState = context.read<AuthBloc>().state;
     if (authState is! AuthAuthenticated) return;
 
-    AppToast.show(context, 'Generating statement…', type: ToastType.info);
+    AppToast.show(context, AppLocalizations.of(context)!.generatingStatement,
+        type: ToastType.info);
 
     try {
       await LedgerStatementService.generateAndShare(
@@ -116,7 +121,8 @@ class LedgerBalanceHeader extends StatelessWidget {
       );
     } catch (e) {
       if (context.mounted) {
-        AppToast.show(context, 'Failed to generate PDF', type: ToastType.error);
+        AppToast.show(context, AppLocalizations.of(context)!.failedToGeneratePdf,
+            type: ToastType.error);
       }
     }
   }

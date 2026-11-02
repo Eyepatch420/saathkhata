@@ -64,7 +64,7 @@ class _PaymentsContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(context).viewPadding.bottom + 96),
+      padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(context).padding.bottom + 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -198,7 +198,7 @@ class _QuickPayCard extends StatelessWidget {
                     AppRouter.upiPayment,
                     extra: {
                       'amount': 0.0,
-                      'recipientName': 'Vendor',
+                      'recipientName': l10n.vendor,
                       'upiId': null,
                     },
                   ),

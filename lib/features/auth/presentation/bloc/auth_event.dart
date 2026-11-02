@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../data/models/user_model.dart';
+import '../../domain/otp_send_origin.dart';
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -12,51 +13,131 @@ class AuthCheckStatusRequested extends AuthEvent {
   const AuthCheckStatusRequested();
 }
 
-class AuthLoginRequested extends AuthEvent {
-  final String email;
-  final String password;
+// ─── OTP flow ─────────────────────────────────────────────────────────────────
 
-  /// The role the user selected on the role-selection screen ('vendor' or 'customer').
-  /// Sent directly to the backend — the server looks up the account that matches
-  /// (email, role) and returns a 401 if no such account exists.
-  final String role;
+class AuthOtpSendRequested extends AuthEvent {
+  final String phone;
 
-  const AuthLoginRequested({
-    required this.email,
-    required this.password,
-    required this.role,
+  /// Which screen asked for the code. The OTP screen sets [OtpSendOrigin.resend]
+  /// so its own request cannot be mistaken for the number screen's first send.
+  final OtpSendOrigin origin;
+
+  const AuthOtpSendRequested({
+    required this.phone,
+    this.origin = OtpSendOrigin.phoneEntry,
   });
 
   @override
-  List<Object?> get props => [email, password, role];
+  List<Object?> get props => [phone, origin];
 }
 
-class AuthSignupRequested extends AuthEvent {
-  final String name;
-  final String email;
-  final String password;
+class AuthOtpVerifyRequested extends AuthEvent {
+  final String phone;
+  final String otp;
   final String role;
-  final String? mobile;
+
+  /// Which challenge this code belongs to, as returned by `AuthOtpSent`.
+  /// Null for callers that predate the challenge contract.
+  final String? challengeId;
+
+  const AuthOtpVerifyRequested({
+    required this.phone,
+    required this.otp,
+    required this.role,
+    this.challengeId,
+  });
+
+  @override
+  List<Object?> get props => [phone, otp, role, challengeId];
+}
+
+// ─── Signup (OTP-based — no password) ────────────────────────────────────────
+
+class AuthSignupRequested extends AuthEvent {
+  final String signupToken;
+  final String name;
+  final String role;
+  final String? email;
   final String? upiId;
   final String? businessName;
   final String? businessCategory;
+  final List<String>? businessCategories;
   final String? businessAddress;
+  final double? customerLatitude;
+  final double? customerLongitude;
+  final String? customerAddress;
 
   const AuthSignupRequested({
+    required this.signupToken,
     required this.name,
-    required this.email,
-    required this.password,
     required this.role,
-    this.mobile,
+    this.email,
     this.upiId,
     this.businessName,
     this.businessCategory,
+    this.businessCategories,
     this.businessAddress,
+    this.customerLatitude,
+    this.customerLongitude,
+    this.customerAddress,
   });
 
   @override
-  List<Object?> get props => [name, email, role];
+  List<Object?> get props => [signupToken, name, role];
 }
+
+// ─── Email signup (no OTP required) ──────────────────────────────────────────
+
+class AuthEmailSignupRequested extends AuthEvent {
+  final String email;
+  final String password;
+  final String name;
+  final String role;
+  final String? upiId;
+  final String? businessName;
+  final String? businessCategory;
+  final List<String>? businessCategories;
+  final String? businessAddress;
+  final double? customerLatitude;
+  final double? customerLongitude;
+  final String? customerAddress;
+
+  const AuthEmailSignupRequested({
+    required this.email,
+    required this.password,
+    required this.name,
+    required this.role,
+    this.upiId,
+    this.businessName,
+    this.businessCategory,
+    this.businessCategories,
+    this.businessAddress,
+    this.customerLatitude,
+    this.customerLongitude,
+    this.customerAddress,
+  });
+
+  @override
+  List<Object?> get props => [email, name, role];
+}
+
+// ─── Email + password login ───────────────────────────────────────────────────
+
+class AuthEmailLoginRequested extends AuthEvent {
+  final String email;
+  final String password;
+  final String role;
+  const AuthEmailLoginRequested({
+    required this.email,
+    required this.password,
+    required this.role,
+  });
+
+  @override
+  List<Object?> get props => [email, role];
+}
+
+// ─── Other ────────────────────────────────────────────────────────────────────
 
 class AuthLogoutRequested extends AuthEvent {
   const AuthLogoutRequested();
@@ -68,7 +149,11 @@ class AuthProfileUpdateRequested extends AuthEvent {
   final String? upiId;
   final String? businessName;
   final String? businessCategory;
+  final List<String>? businessCategories;
   final String? businessAddress;
+  final double? customerLatitude;
+  final double? customerLongitude;
+  final String? customerAddress;
 
   const AuthProfileUpdateRequested({
     this.name,
@@ -76,20 +161,31 @@ class AuthProfileUpdateRequested extends AuthEvent {
     this.upiId,
     this.businessName,
     this.businessCategory,
+    this.businessCategories,
     this.businessAddress,
+    this.customerLatitude,
+    this.customerLongitude,
+    this.customerAddress,
   });
 
   @override
   List<Object?> get props =>
-      [name, mobile, upiId, businessName, businessCategory, businessAddress];
+      [name, mobile, upiId, businessName, businessCategory, businessAddress,
+       customerLatitude, customerLongitude, customerAddress];
 }
 
-/// Lightweight event: used after a direct API call succeeds to sync
-/// the in-memory bloc state without re-triggering the full update flow.
 class AuthUserUpdated extends AuthEvent {
   final UserModel user;
   const AuthUserUpdated(this.user);
 
   @override
   List<Object?> get props => [user];
+}
+
+/// Dispatched only after the server has confirmed the account was deleted
+/// (see the delete-account confirmation flow, which calls the repository
+/// directly so it can show blocker/OTP errors without disturbing global
+/// auth state). This event just clears the local session.
+class AuthDeleteAccountRequested extends AuthEvent {
+  const AuthDeleteAccountRequested();
 }

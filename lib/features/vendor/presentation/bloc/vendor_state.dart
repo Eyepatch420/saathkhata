@@ -16,6 +16,7 @@ enum RemindAllStatus { idle, loading, success, failure }
 
 class VendorLoaded extends VendorState {
   final List<CustomerLinkItem> customers;
+  final List<VendorLinkItem> myVendors;
   final double totalOutstanding;
   final double todayCollection;
   final RemindAllStatus remindAllStatus;
@@ -23,6 +24,7 @@ class VendorLoaded extends VendorState {
 
   const VendorLoaded({
     required this.customers,
+    required this.myVendors,
     required this.totalOutstanding,
     required this.todayCollection,
     this.remindAllStatus = RemindAllStatus.idle,
@@ -31,6 +33,7 @@ class VendorLoaded extends VendorState {
 
   VendorLoaded copyWith({
     List<CustomerLinkItem>? customers,
+    List<VendorLinkItem>? myVendors,
     double? totalOutstanding,
     double? todayCollection,
     RemindAllStatus? remindAllStatus,
@@ -38,6 +41,7 @@ class VendorLoaded extends VendorState {
   }) =>
       VendorLoaded(
         customers: customers ?? this.customers,
+        myVendors: myVendors ?? this.myVendors,
         totalOutstanding: totalOutstanding ?? this.totalOutstanding,
         todayCollection: todayCollection ?? this.todayCollection,
         remindAllStatus: remindAllStatus ?? this.remindAllStatus,
@@ -46,7 +50,7 @@ class VendorLoaded extends VendorState {
 
   @override
   List<Object?> get props =>
-      [customers, totalOutstanding, todayCollection, remindAllStatus, remindAllQueued];
+      [customers, myVendors, totalOutstanding, todayCollection, remindAllStatus, remindAllQueued];
 }
 
 class VendorError extends VendorState {

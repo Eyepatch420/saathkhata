@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
+import '../../domain/models/members_dashboard.dart';
+import '../../domain/models/membership_plan.dart';
 import '../../domain/models/membership_request.dart';
 import '../../domain/models/membership_status.dart';
-import '../../domain/models/membership_tier.dart';
 import '../../domain/repositories/membership_repository.dart';
 
 class MembershipRepositoryImpl implements MembershipRepository {
@@ -11,14 +12,16 @@ class MembershipRepositoryImpl implements MembershipRepository {
 
   MembershipRepositoryImpl(this._api);
 
+  // ─── Plans ──────────────────────────────────────────────────────────────────
+
   @override
-  Future<List<MembershipTier>> getTiers() async {
+  Future<List<MembershipPlan>> getPlans() async {
     try {
-      final response = await _api.get(ApiEndpoints.membershipTiers);
+      final response = await _api.get(ApiEndpoints.membershipPlans);
       final data = ApiClient.extractData(response);
-      final list = (data['tiers'] as List?) ?? [];
+      final list = (data['plans'] as List?) ?? [];
       return list
-          .map((e) => MembershipTier.fromJson(e as Map<String, dynamic>))
+          .map((e) => MembershipPlan.fromJson(e as Map<String, dynamic>))
           .toList();
     } on DioException catch (e) {
       throw Exception(ApiClient.extractErrorMessage(e));
@@ -26,34 +29,110 @@ class MembershipRepositoryImpl implements MembershipRepository {
   }
 
   @override
-  Future<MembershipTier> updateTier(
-    String tierId, {
-    String? name,
-    DiscountType? discountType,
-    double? discountValue,
-    double? discountCap,
-    bool clearCap = false,
+  Future<MembershipPlan> createPlan({
+    required String name,
+    required int durationDays,
+    required double price,
+    double advanceRequired = 0,
+    required List<PlanBenefit> benefits,
   }) async {
     try {
-      final body = <String, dynamic>{};
-      if (name != null) body['name'] = name;
-      if (discountType != null) body['discountType'] = discountType.toJson();
-      if (discountValue != null) body['discountValue'] = discountValue;
-      // clearCap sends explicit null; otherwise only send when a value is given.
-      if (clearCap) {
-        body['discountCap'] = null;
-      } else if (discountCap != null) {
-        body['discountCap'] = discountCap;
-      }
-      final response = await _api.patch(
-        ApiEndpoints.updateMembershipTier(tierId),
-        data: body,
+      final response = await _api.post(
+        ApiEndpoints.membershipPlans,
+        data: {
+          'name': name,
+          'durationDays': durationDays,
+          'price': price,
+          'advanceRequired': advanceRequired,
+          'benefits': benefits.map((b) => b.toJson()).toList(),
+        },
       );
-      return MembershipTier.fromJson(ApiClient.extractData(response));
+      return MembershipPlan.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {
       throw Exception(ApiClient.extractErrorMessage(e));
     }
   }
+
+  @override
+  Future<MembershipPlan> updatePlan(
+    String planId, {
+    String? name,
+    int? durationDays,
+    double? price,
+    double? advanceRequired,
+    bool? isActive,
+    List<PlanBenefit>? benefits,
+  }) async {
+    try {
+      final body = <String, dynamic>{};
+      if (name != null) body['name'] = name;
+      if (durationDays != null) body['durationDays'] = durationDays;
+      if (price != null) body['price'] = price;
+      if (advanceRequired != null) body['advanceRequired'] = advanceRequired;
+      if (isActive != null) body['isActive'] = isActive;
+      if (benefits != null) {
+        body['benefits'] = benefits.map((b) => b.toJson()).toList();
+      }
+      final response = await _api.patch(
+        ApiEndpoints.membershipPlanById(planId),
+        data: body,
+      );
+      return MembershipPlan.fromJson(ApiClient.extractData(response));
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<void> deletePlan(String planId) async {
+    try {
+      await _api.delete(ApiEndpoints.membershipPlanById(planId));
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  // ─── Members dashboard ──────────────────────────────────────────────────────
+
+  @override
+  Future<MembersDashboard> getMembersDashboard() async {
+    try {
+      final response = await _api.get(ApiEndpoints.membersDashboard);
+      return MembersDashboard.fromJson(ApiClient.extractData(response));
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<CustomerMembership> useBenefit(
+      String membershipId, String benefitId) async {
+    try {
+      final response = await _api.post(
+        ApiEndpoints.useBenefit(membershipId),
+        data: {'benefitId': benefitId},
+      );
+      return CustomerMembership.fromJson(ApiClient.extractData(response));
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<CustomerMembership> decrementBenefit(
+      String membershipId, String benefitId) async {
+    try {
+      final response = await _api.post(
+        ApiEndpoints.decrementBenefit(membershipId),
+        data: {'benefitId': benefitId},
+      );
+      return CustomerMembership.fromJson(ApiClient.extractData(response));
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  // ─── Per-link status ────────────────────────────────────────────────────────
 
   @override
   Future<MembershipStatus> getStatus(String linkId) async {
@@ -66,26 +145,28 @@ class MembershipRepositoryImpl implements MembershipRepository {
   }
 
   @override
-  Future<MembershipStatus> assignTier(String linkId, String? tierId) async {
+  Future<CustomerMembership> enroll(String linkId, String planId) async {
     try {
-      final response = await _api.patch(
-        ApiEndpoints.assignMembership(linkId),
-        data: {'tierId': tierId},
+      final response = await _api.post(
+        ApiEndpoints.enrollMember(linkId),
+        data: {'planId': planId},
       );
-      return MembershipStatus.fromJson(ApiClient.extractData(response));
+      return CustomerMembership.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {
       throw Exception(ApiClient.extractErrorMessage(e));
     }
   }
 
+  // ─── Customer apply ─────────────────────────────────────────────────────────
+
   @override
-  Future<MembershipRequest> requestTier(
+  Future<MembershipRequest> requestPlan(
     String linkId,
-    String tierId, {
+    String planId, {
     String? message,
   }) async {
     try {
-      final body = <String, dynamic>{'tierId': tierId};
+      final body = <String, dynamic>{'planId': planId};
       if (message != null && message.isNotEmpty) body['message'] = message;
       final response = await _api.post(
         ApiEndpoints.requestMembership(linkId),
@@ -96,6 +177,8 @@ class MembershipRepositoryImpl implements MembershipRepository {
       throw Exception(ApiClient.extractErrorMessage(e));
     }
   }
+
+  // ─── Requests ───────────────────────────────────────────────────────────────
 
   @override
   Future<List<MembershipRequest>> getPendingRequests() async {

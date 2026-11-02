@@ -3,6 +3,7 @@ import '../../../../../../features/link_requests/domain/models/link_request_mode
 import '../../../../../../../core/constants/app_colors.dart';
 import '../../../../../../../core/constants/app_typography.dart';
 import '../../../../../../../core/utils/app_logger.dart';
+import '../../../../../../../l10n/app_localizations.dart';
 
 class CustomerInfoCard extends StatelessWidget {
   final LinkRequestUserBrief customer;
@@ -37,11 +38,13 @@ class CustomerInfoCard extends StatelessWidget {
                   children: [
                     Text(customer.name, style: AppTypography.h3),
                     const SizedBox(height: 4),
-                    Text(
-                      customer.email,
-                      style: AppTypography.bodySmall
-                          .copyWith(color: AppColors.textSecondary),
-                    ),
+                    if (customer.email != null) ...[
+                      Text(
+                        customer.email!,
+                        style: AppTypography.bodySmall
+                            .copyWith(color: AppColors.textSecondary),
+                      ),
+                    ],
                     if (customer.mobile != null) ...[
                       const SizedBox(height: 2),
                       Text(
@@ -70,7 +73,7 @@ class CustomerInfoCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Message',
+                    AppLocalizations.of(context)!.messageLabel,
                     style: AppTypography.bodySmall
                         .copyWith(color: AppColors.textHint),
                   ),

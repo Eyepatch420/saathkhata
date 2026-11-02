@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../../core/constants/app_colors.dart';
 import '../../../../../../core/constants/app_typography.dart';
 import '../../../../../../core/router/app_router.dart';
+import '../../../../../../l10n/app_localizations.dart';
 import '../../../../../../shared/models/report_models.dart';
 
 class CustomerReportTile extends StatelessWidget {
@@ -64,7 +65,7 @@ class CustomerReportTile extends StatelessWidget {
                 ),
                 if (customer.collectedThisMonth > 0)
                   Text(
-                    '₹${customer.collectedThisMonth.toStringAsFixed(0)} this mo.',
+                    AppLocalizations.of(context)!.collectedThisMonthShort(customer.collectedThisMonth.toStringAsFixed(0)),
                     style: AppTypography.bodySmall
                         .copyWith(color: AppColors.success),
                   ),

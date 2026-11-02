@@ -11,7 +11,8 @@ class LanguageSelectionScreen extends StatefulWidget {
   const LanguageSelectionScreen({super.key});
 
   @override
-  State<LanguageSelectionScreen> createState() => _LanguageSelectionScreenState();
+  State<LanguageSelectionScreen> createState() =>
+      _LanguageSelectionScreenState();
 }
 
 class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
@@ -34,6 +35,24 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
   ];
 
   String? _selectedCode;
+
+  String _getLocalizedLanguageName(String code, AppLocalizations l10n) {
+    return switch (code) {
+      'en' => l10n.languageEnglish,
+      'hi' => l10n.languageHindi,
+      'bn' => l10n.languageBengali,
+      'mr' => l10n.languageMarathi,
+      'ta' => l10n.languageTamil,
+      'te' => l10n.languageTelugu,
+      'kn' => l10n.languageKannada,
+      'gu' => l10n.languageGujarati,
+      'pa' => l10n.languagePunjabi,
+      'ml' => l10n.languageMalayalam,
+      'bho' => l10n.languageBhojpuri,
+      'mai' => l10n.languageMaithili,
+      _ => l10n.unknownLanguage,
+    };
+  }
 
   @override
   void didChangeDependencies() {
@@ -65,7 +84,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
               const SizedBox(height: 20),
               Text(l10n.chooseLanguage, style: AppTypography.h1),
               Text(
-                'आपकी भाषा चुनें',
+                l10n.chooseYourLanguageHindi,
                 style: AppTypography.h3.copyWith(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.normal,
@@ -88,9 +107,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       onTap: () {
                         setState(() => _selectedCode = lang['code']);
                         // Apply locale immediately so the app reacts globally.
-                        context
-                            .read<LocaleProvider>()
-                            .setLocale(Locale(lang['locale']!));
+                        context.read<LocaleProvider>().setLocale(
+                          Locale(lang['locale']!),
+                        );
                       },
                       borderRadius: BorderRadius.circular(12),
                       child: Container(
@@ -100,7 +119,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                               : Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: isSelected ? AppColors.primary : AppColors.divider,
+                            color: isSelected
+                                ? AppColors.primary
+                                : AppColors.divider,
                             width: isSelected ? 2 : 1,
                           ),
                         ),
@@ -115,7 +136,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                               ),
                             ),
                             Text(
-                              lang['name']!,
+                              _getLocalizedLanguageName(lang['code']!, l10n),
                               style: AppTypography.bodySmall.copyWith(
                                 color: isSelected
                                     ? AppColors.primary.withValues(alpha: 0.7)
@@ -138,10 +159,13 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       : () => context.go(AppRouter.onboarding),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
-                    disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.3),
+                    disabledBackgroundColor: AppColors.primary.withValues(
+                      alpha: 0.3,
+                    ),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   child: Text(
                     l10n.continueButton,

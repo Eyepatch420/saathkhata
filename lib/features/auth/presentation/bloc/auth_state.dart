@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../data/models/user_model.dart';
+import '../../domain/otp_send_origin.dart';
 
 abstract class AuthState extends Equatable {
   const AuthState();
@@ -18,7 +19,6 @@ class AuthLoading extends AuthState {
 
 class AuthAuthenticated extends AuthState {
   final UserModel user;
-
   const AuthAuthenticated(this.user);
 
   @override
@@ -32,8 +32,61 @@ class AuthUnauthenticated extends AuthState {
 class AuthError extends AuthState {
   final String message;
 
-  const AuthError(this.message);
+  /// Stable server error code (e.g. `OTP_INVALID`, `OTP_LOCKED`), when the
+  /// failure came from the API. UI decisions should key off this, not [message].
+  final String? code;
+
+  /// Present on rate-limited responses so the UI can show the real wait.
+  final int? retryAfterSeconds;
+
+  const AuthError(this.message, {this.code, this.retryAfterSeconds});
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, code, retryAfterSeconds];
+}
+
+// OTP send succeeded — navigate to OTP input screen
+class AuthOtpSent extends AuthState {
+  final String phone;
+
+  /// Server-authoritative cool-down before another send is allowed.
+  final int resendAfterSeconds;
+
+  /// How many digits the provider issued (UDO = 5). Drives the OTP input boxes.
+  final int codeLength;
+
+  /// Which screen requested this code; only that screen may react to it.
+  final OtpSendOrigin origin;
+
+  /// The challenge to verify. Kept for the whole authentication lifecycle so a
+  /// verify, a resend or a second device can never settle the wrong challenge.
+  final String? challengeId;
+
+  /// True when the server reused an existing challenge instead of sending an SMS
+  /// (the user went Back, or another device requested the code). Navigation and
+  /// the countdown behave identically — the code is already on the phone.
+  final bool resumed;
+
+  const AuthOtpSent({
+    required this.phone,
+    this.resendAfterSeconds = 60,
+    this.codeLength = 5,
+    this.origin = OtpSendOrigin.phoneEntry,
+    this.challengeId,
+    this.resumed = false,
+  });
+
+  @override
+  List<Object?> get props =>
+      [phone, resendAfterSeconds, codeLength, origin, challengeId, resumed];
+}
+
+// OTP verified for a NEW user — navigate to ProfileSetupScreen with signupToken
+class AuthOtpVerifiedNewUser extends AuthState {
+  final String phone;
+  final String signupToken;
+  const AuthOtpVerifiedNewUser({required this.phone, required this.signupToken});
+
+  @override
+  List<Object?> get props => [phone, signupToken];
 }

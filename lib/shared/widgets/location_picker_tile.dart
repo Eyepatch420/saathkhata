@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../l10n/app_localizations.dart';
 import '../../shared/models/location_model.dart';
 
 /// Tappable tile that shows a picked location or prompts the user to pick one.
@@ -9,14 +10,14 @@ class LocationPickerTile extends StatelessWidget {
   final LocationData? location;
   final bool enabled;
   final VoidCallback onTap;
-  final String label;
+  final String? label;
 
   const LocationPickerTile({
     super.key,
     required this.location,
     required this.onTap,
     this.enabled = true,
-    this.label = 'Business Address',
+    this.label,
   });
 
   @override
@@ -25,7 +26,10 @@ class LocationPickerTile extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppTypography.labelLarge),
+        Text(
+          label ?? AppLocalizations.of(context)!.businessAddress,
+          style: AppTypography.labelLarge,
+        ),
         const SizedBox(height: 8),
         InkWell(
           onTap: enabled ? onTap : null,
@@ -64,15 +68,17 @@ class LocationPickerTile extends StatelessWidget {
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              'Lat ${location!.lat.toStringAsFixed(5)}  ·  '
-                              'Lng ${location!.lng.toStringAsFixed(5)}',
+                              AppLocalizations.of(context)!.latLngValue(
+                                location!.lat.toStringAsFixed(5),
+                                location!.lng.toStringAsFixed(5),
+                              ),
                               style: AppTypography.bodySmall
                                   .copyWith(color: AppColors.textHint),
                             ),
                           ],
                         )
                       : Text(
-                          'Tap to pick on map',
+                          AppLocalizations.of(context)!.tapToPickOnMap,
                           style: AppTypography.bodyMedium
                               .copyWith(color: AppColors.textHint),
                         ),

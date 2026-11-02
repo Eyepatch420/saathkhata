@@ -3,6 +3,7 @@ import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../../domain/repositories/staff_repository.dart';
 import '../../../../shared/models/staff_model.dart';
+import '../../../staff_portal/domain/models/staff_self.dart';
 
 class StaffRepositoryImpl implements StaffRepository {
   final ApiClient _api;
@@ -169,6 +170,42 @@ class StaffRepositoryImpl implements StaffRepository {
     try {
       final response = await _api.post(ApiEndpoints.staffAccrue(staffId));
       return StaffModel.fromJson(ApiClient.extractData(response));
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<List<StaffPayTransaction>> getSalaryHistory(String staffId) async {
+    try {
+      final response = await _api.get(ApiEndpoints.staffSalaryHistory(staffId));
+      // `data` is a JSON array, so we can't use extractData (which casts to Map).
+      final list = (response.data as Map<String, dynamic>)['data'] as List;
+      return list
+          .map((e) => StaffPayTransaction.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<StaffModel> setAppAccess(String staffId, bool canLogin) async {
+    try {
+      final response = await _api.patch(
+        ApiEndpoints.staffAccess(staffId),
+        data: {'canLogin': canLogin},
+      );
+      return StaffModel.fromJson(ApiClient.extractData(response));
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<void> deleteStaff(String staffId) async {
+    try {
+      await _api.delete(ApiEndpoints.staffById(staffId));
     } on DioException catch (e) {
       throw Exception(ApiClient.extractErrorMessage(e));
     }

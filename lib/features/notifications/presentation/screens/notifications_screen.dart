@@ -13,14 +13,14 @@ import '../../../../shared/widgets/error_state_widget.dart';
 import '../bloc/notification_bloc.dart';
 import '../bloc/notification_event.dart';
 import '../bloc/notification_state.dart';
+import '../../../customer/presentation/bloc/customer_bloc.dart';
+import '../../../customer/presentation/bloc/customer_event.dart';
 
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Use the singleton NotificationBloc from DI so the badge count on dashboards
-    // stays in sync with what's shown in this screen.
     return BlocProvider.value(
       value: getIt<NotificationBloc>()..add(LoadNotifications()),
       child: const _NotificationsView(),
@@ -28,14 +28,33 @@ class NotificationsScreen extends StatelessWidget {
   }
 }
 
-class _NotificationsView extends StatelessWidget {
+class _NotificationsView extends StatefulWidget {
   const _NotificationsView();
+
+  @override
+  State<_NotificationsView> createState() => _NotificationsViewState();
+}
+
+class _NotificationsViewState extends State<_NotificationsView>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-
       appBar: AppBar(
         title: Text(l10n.notifications),
         actions: [
@@ -43,8 +62,9 @@ class _NotificationsView extends StatelessWidget {
             builder: (context, state) {
               if (state is NotificationLoaded && state.unreadCount > 0) {
                 return TextButton(
-                  onPressed: () =>
-                      context.read<NotificationBloc>().add(MarkAllNotificationsRead()),
+                  onPressed: () => context
+                      .read<NotificationBloc>()
+                      .add(MarkAllNotificationsRead()),
                   child: Text(
                     l10n.markAllRead,
                     style: AppTypography.bodySmall.copyWith(color: AppColors.primary),
@@ -55,32 +75,52 @@ class _NotificationsView extends StatelessWidget {
             },
           ),
         ],
+        bottom: TabBar(
+          controller: _tabController,
+          labelColor: AppColors.primary,
+          unselectedLabelColor: AppColors.textHint,
+          indicatorColor: AppColors.primary,
+          tabs: [
+            Tab(text: l10n.notifTabAll),
+            Tab(text: l10n.notifTabBookings),
+          ],
+        ),
       ),
-      body: SafeArea(child: BlocBuilder<NotificationBloc, NotificationState>(
-        builder: (context, state) {
-          if (state is NotificationLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state is NotificationError) {
-            return ErrorStateWidget(
-              message: state.message,
-              onRetry: () =>
-                  context.read<NotificationBloc>().add(LoadNotifications()),
-            );
-          }
-          if (state is NotificationLoaded) {
-            if (state.notifications.isEmpty) {
-              return EmptyStateWidget(
-                icon: Icons.notifications_none_rounded,
-                title: l10n.noNotificationsTitle,
-                subtitle: l10n.noNotificationsSubtitle,
+      body: SafeArea(
+        child: BlocBuilder<NotificationBloc, NotificationState>(
+          builder: (context, state) {
+            if (state is NotificationLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state is NotificationError) {
+              return ErrorStateWidget(
+                message: state.message,
+                onRetry: () =>
+                    context.read<NotificationBloc>().add(LoadNotifications()),
               );
             }
-            return _NotificationsList(notifications: state.notifications);
-          }
-          return const SizedBox();
-        },
-      ),
+            if (state is NotificationLoaded) {
+              return TabBarView(
+                controller: _tabController,
+                children: [
+                  _NotificationsList(notifications: state.notifications),
+                  _NotificationsList(
+                    notifications: state.notifications
+                        .where((n) =>
+                            n.type == NotificationType.bookingRequested ||
+                            n.type == NotificationType.bookingConfirmed ||
+                            n.type == NotificationType.bookingCancelled)
+                        .toList(),
+                    emptyIcon: Icons.calendar_today_rounded,
+                    emptyTitle: AppLocalizations.of(context)!.noBookingNotifications,
+                    emptySubtitle: AppLocalizations.of(context)!.noBookingNotificationsSubtitle,
+                  ),
+                ],
+              );
+            }
+            return const SizedBox();
+          },
+        ),
       ),
     );
   }
@@ -88,11 +128,28 @@ class _NotificationsView extends StatelessWidget {
 
 class _NotificationsList extends StatelessWidget {
   final List<AppNotification> notifications;
-  const _NotificationsList({required this.notifications});
+  final IconData emptyIcon;
+  final String emptyTitle;
+  final String emptySubtitle;
+
+  const _NotificationsList({
+    required this.notifications,
+    this.emptyIcon = Icons.notifications_none_rounded,
+    this.emptyTitle = '',
+    this.emptySubtitle = '',
+  });
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    if (notifications.isEmpty) {
+      return EmptyStateWidget(
+        icon: emptyIcon,
+        title: emptyTitle.isNotEmpty ? emptyTitle : l10n.noNotificationsTitle,
+        subtitle: emptySubtitle.isNotEmpty ? emptySubtitle : l10n.noNotificationsSubtitle,
+      );
+    }
+
     final grouped = _groupByDate(notifications, l10n);
     final dates = grouped.keys.toList();
 
@@ -150,29 +207,48 @@ class _NotificationCard extends StatelessWidget {
   const _NotificationCard({required this.notification});
 
   void _handleTap(BuildContext context) {
+    // Capture router before any state changes that could trigger a rebuild
+    final router = GoRouter.of(context);
+    final data = notification.data;
+
     if (!notification.isRead) {
       context.read<NotificationBloc>().add(MarkNotificationRead(notification.id));
     }
-    final data = notification.data;
+
     switch (notification.type) {
+      case NotificationType.bookingRequested:
+        router.push(AppRouter.vendorBookings);
+      case NotificationType.bookingConfirmed:
+      case NotificationType.bookingCancelled:
+        router.push(AppRouter.customerBookings);
       case NotificationType.linkRequestReceived:
-        // Vendor taps → go to approval screen
         final requestId = data?['requestId'] as String?;
         if (requestId != null) {
-          context.push(AppRouter.linkRequestDetail, extra: requestId);
+          router.push(AppRouter.linkRequestDetail, extra: requestId);
+        }
+      case NotificationType.vendorLinkRequestReceived:
+        final requestId = data?['requestId'] as String?;
+        if (requestId != null) {
+          router.push(AppRouter.customerLinkRequestDetail, extra: requestId);
         }
       case NotificationType.linkRequestAccepted:
-      case NotificationType.linkRequestDeclined:
-        // Customer taps → no specific deep-link yet, just mark read
-        break;
+        getIt<CustomerBloc>().add(LoadCustomerDashboard());
+      case NotificationType.entryAutoConfirmed:
+        final linkId = data?['linkId'] as String?;
+        if (linkId != null) {
+          router.push(AppRouter.sharedLedger, extra: linkId);
+        }
       default:
-        // Ledger/payment notifications — no deep-link for now
         break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isBooking = notification.type == NotificationType.bookingRequested ||
+        notification.type == NotificationType.bookingConfirmed ||
+        notification.type == NotificationType.bookingCancelled;
+
     return GestureDetector(
       onTap: () => _handleTap(context),
       child: Container(
@@ -239,12 +315,34 @@ class _NotificationCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  Text(
-                    _formatTime(notification.createdAt, AppLocalizations.of(context)!),
-                    style: AppTypography.bodySmall.copyWith(
-                      fontSize: 11,
-                      color: AppColors.textHint,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        _formatTime(notification.createdAt, AppLocalizations.of(context)!),
+                        style: AppTypography.bodySmall.copyWith(
+                          fontSize: 11,
+                          color: AppColors.textHint,
+                        ),
+                      ),
+                      if (isBooking) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: _iconColor(notification.type).withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            AppLocalizations.of(context)!.bookingPillLabel,
+                            style: AppTypography.bodySmall.copyWith(
+                              fontSize: 10,
+                              color: _iconColor(notification.type),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                 ],
               ),
@@ -261,22 +359,28 @@ class _NotificationCard extends StatelessWidget {
         return Icons.add_circle_outline_rounded;
       case NotificationType.entryConfirmed:
         return Icons.check_circle_outline_rounded;
+      case NotificationType.entryAutoConfirmed:
+        return Icons.check_circle_outline_rounded;
       case NotificationType.entryDisputed:
         return Icons.warning_amber_rounded;
       case NotificationType.paymentReceived:
         return Icons.payments_rounded;
-      case NotificationType.salaryPaid:
-        return Icons.account_balance_wallet_rounded;
-      case NotificationType.bookingConfirmed:
+      case NotificationType.bookingRequested:
         return Icons.calendar_today_rounded;
+      case NotificationType.bookingConfirmed:
+        return Icons.event_available_rounded;
       case NotificationType.bookingCancelled:
         return Icons.event_busy_rounded;
       case NotificationType.reminderDue:
         return Icons.notifications_active_rounded;
       case NotificationType.monthlySummary:
         return Icons.bar_chart_rounded;
+      case NotificationType.salaryPaid:
+        return Icons.account_balance_wallet_rounded;
       case NotificationType.linkRequestReceived:
         return Icons.person_add_rounded;
+      case NotificationType.vendorLinkRequestReceived:
+        return Icons.storefront_rounded;
       case NotificationType.linkRequestAccepted:
         return Icons.handshake_rounded;
       case NotificationType.linkRequestDeclined:
@@ -287,6 +391,8 @@ class _NotificationCard extends StatelessWidget {
         return Icons.workspace_premium_rounded;
       case NotificationType.membershipRequestDeclined:
         return Icons.do_not_disturb_on_rounded;
+      case NotificationType.staffDeleted:
+        return Icons.person_remove_alt_1_rounded;
     }
   }
 
@@ -296,12 +402,14 @@ class _NotificationCard extends StatelessWidget {
         return AppColors.primary;
       case NotificationType.entryConfirmed:
         return AppColors.success;
+      case NotificationType.entryAutoConfirmed:
+        return AppColors.success;
       case NotificationType.entryDisputed:
         return AppColors.error;
       case NotificationType.paymentReceived:
         return AppColors.success;
-      case NotificationType.salaryPaid:
-        return AppColors.primary;
+      case NotificationType.bookingRequested:
+        return AppColors.warning;
       case NotificationType.bookingConfirmed:
         return AppColors.primary;
       case NotificationType.bookingCancelled:
@@ -310,8 +418,12 @@ class _NotificationCard extends StatelessWidget {
         return AppColors.warning;
       case NotificationType.monthlySummary:
         return AppColors.secondary;
+      case NotificationType.salaryPaid:
+        return AppColors.primary;
       case NotificationType.linkRequestReceived:
         return AppColors.primary;
+      case NotificationType.vendorLinkRequestReceived:
+        return AppColors.customerAccent;
       case NotificationType.linkRequestAccepted:
         return AppColors.success;
       case NotificationType.linkRequestDeclined:
@@ -321,6 +433,8 @@ class _NotificationCard extends StatelessWidget {
       case NotificationType.membershipChanged:
         return AppColors.success;
       case NotificationType.membershipRequestDeclined:
+        return AppColors.error;
+      case NotificationType.staffDeleted:
         return AppColors.error;
     }
   }

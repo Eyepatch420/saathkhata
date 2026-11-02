@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,6 +23,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = true;
   await dotenv.load(fileName: '.env');
+
+  // Draw behind both the status bar and navigation bar so Flutter
+  // controls the full screen. Screens add SafeArea where needed.
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarDividerColor: Colors.transparent,
+  ));
 
   AppLogger.i('App', '═══════════════════════════════════════');
   AppLogger.i('App', '  SaathKhata starting up');
@@ -105,7 +115,8 @@ class _SaathKhataAppState extends State<SaathKhataApp>
       builder: (context, child) {
         final localeProvider = Provider.of<LocaleProvider>(context);
         return MaterialApp.router(
-          title: 'Saath Khata',
+          onGenerateTitle: (context) =>
+              AppLocalizations.of(context)!.appTitle,
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,

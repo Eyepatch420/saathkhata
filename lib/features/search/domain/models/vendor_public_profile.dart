@@ -3,6 +3,7 @@
 class VendorPublicProfile {
   final String userId;
   final String name;
+  final String? email;
   final String? profilePhotoUrl;
   final String? upiId;
   final String? businessName;
@@ -12,6 +13,7 @@ class VendorPublicProfile {
   const VendorPublicProfile({
     required this.userId,
     required this.name,
+    this.email,
     this.profilePhotoUrl,
     this.upiId,
     this.businessName,
@@ -23,6 +25,7 @@ class VendorPublicProfile {
     return VendorPublicProfile(
       userId: json['userId'] as String,
       name: json['name'] as String,
+      email: json['email'] as String?,
       profilePhotoUrl: json['profilePhotoUrl'] as String?,
       upiId: json['upiId'] as String?,
       businessName: json['businessName'] as String?,

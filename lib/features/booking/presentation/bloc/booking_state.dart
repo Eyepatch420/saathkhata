@@ -33,8 +33,27 @@ class SlotsLoaded extends BookingState {
 
   const SlotsLoaded({required this.slots, required this.date});
 
+  SlotsLoaded copyWith({List<AppointmentSlot>? slots}) =>
+      SlotsLoaded(slots: slots ?? this.slots, date: date);
+
   @override
   List<Object?> get props => [slots, date];
+}
+
+/// Booking creation failed but we still have the slot grid to show.
+class BookingCreateError extends BookingState {
+  final List<AppointmentSlot> slots;
+  final DateTime date;
+  final String message;
+
+  const BookingCreateError({
+    required this.slots,
+    required this.date,
+    required this.message,
+  });
+
+  @override
+  List<Object?> get props => [slots, date, message];
 }
 
 class BookingCreated extends BookingState {
@@ -51,7 +70,6 @@ class BookingError extends BookingState {
   List<Object?> get props => [message];
 }
 
-/// Non-fatal error for a status update action — list remains visible.
 class BookingActionError extends BookingState {
   final List<BookingModel> bookings;
   final DateTime selectedDate;
@@ -63,4 +81,83 @@ class BookingActionError extends BookingState {
   });
   @override
   List<Object?> get props => [bookings, selectedDate, message];
+}
+
+// ─── Config states ────────────────────────────────────────────────────────────
+
+class BookingConfigLoading extends BookingState {}
+
+class BookingConfigLoaded extends BookingState {
+  final BookingConfig config;
+  const BookingConfigLoaded(this.config);
+  @override
+  List<Object?> get props => [config];
+}
+
+class BookingConfigSaved extends BookingState {
+  final BookingConfig config;
+  const BookingConfigSaved(this.config);
+  @override
+  List<Object?> get props => [config];
+}
+
+class BookingConfigError extends BookingState {
+  final String message;
+  final BookingConfig? config;
+  const BookingConfigError(this.message, {this.config});
+  @override
+  List<Object?> get props => [message, config];
+}
+
+// ─── Per-date override states ─────────────────────────────────────────────────
+
+class DateSlotsLoading extends BookingState {}
+
+class DateSlotsLoaded extends BookingState {
+  final DateSlotOverride dateSlots;
+  const DateSlotsLoaded(this.dateSlots);
+  @override
+  List<Object?> get props => [dateSlots];
+}
+
+class DateSlotsSaved extends BookingState {
+  final DateSlotOverride dateSlots;
+  const DateSlotsSaved(this.dateSlots);
+  @override
+  List<Object?> get props => [dateSlots];
+}
+
+class DateSlotsError extends BookingState {
+  final String message;
+  const DateSlotsError(this.message);
+  @override
+  List<Object?> get props => [message];
+}
+
+class ReplicateCompleted extends BookingState {
+  final ReplicateResult result;
+  const ReplicateCompleted(this.result);
+  @override
+  List<Object?> get props => [result];
+}
+
+class ReplicateError extends BookingState {
+  final String message;
+  const ReplicateError(this.message);
+  @override
+  List<Object?> get props => [message];
+}
+
+class SlotsMerged extends BookingState {
+  final DateSlotOverride dateSlots;
+  const SlotsMerged(this.dateSlots);
+  @override
+  List<Object?> get props => [dateSlots];
+}
+
+class MergeError extends BookingState {
+  final String message;
+  const MergeError(this.message);
+  @override
+  List<Object?> get props => [message];
 }

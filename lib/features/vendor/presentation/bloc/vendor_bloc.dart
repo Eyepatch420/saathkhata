@@ -24,13 +24,17 @@ class VendorBloc extends Bloc<VendorEvent, VendorState> {
       final results = await Future.wait([
         _repository.getLinkedCustomers(),
         _repository.getVendorSummary(),
+        _repository.getLinkedVendors(),
       ]);
       final customers = results[0] as List;
       final summary = results[1] as dynamic;
+      final myVendors = results[2] as List;
       AppLogger.i(_m, 'Dashboard loaded — ${customers.length} customers, '
-          'outstanding:${summary.totalOutstanding}, collected:${summary.totalCollectedThisMonth}');
+          '${myVendors.length} my-vendors, '
+          'outstanding:${summary.totalOutstanding}');
       emit(VendorLoaded(
         customers: customers.cast(),
+        myVendors: myVendors.cast(),
         totalOutstanding: summary.totalOutstanding as double,
         todayCollection: summary.totalCollectedToday as double,
       ));

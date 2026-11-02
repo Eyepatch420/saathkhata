@@ -55,8 +55,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       Navigator.pop(context);
     } on DioException catch (e) {
       if (!mounted) return;
-      final msg = e.response?.data?['message'] as String? ??
-          'Something went wrong. Please try again.';
+      final msg =
+          e.response?.data?['message'] as String? ??
+          AppLocalizations.of(context)!.paymentSomethingWentWrong;
       AppToast.show(context, msg, type: ToastType.error);
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -84,19 +85,19 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 Text(l10n.changePassword, style: AppTypography.h2),
                 const SizedBox(height: 8),
                 Text(
-                  'Enter your current password and choose a new one.',
-                  style: AppTypography.bodyMedium
-                      .copyWith(color: AppColors.textSecondary),
+                  l10n.changePasswordSubtitle,
+                  style: AppTypography.bodyMedium.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
                 ),
                 const SizedBox(height: 32),
                 PasswordField(
                   controller: _currentCtrl,
                   label: l10n.currentPassword,
                   visible: _showCurrent,
-                  onToggle: () =>
-                      setState(() => _showCurrent = !_showCurrent),
+                  onToggle: () => setState(() => _showCurrent = !_showCurrent),
                   validator: (v) =>
-                      (v == null || v.isEmpty) ? 'Required' : null,
+                      (v == null || v.isEmpty) ? l10n.required : null,
                 ),
                 const SizedBox(height: 16),
                 PasswordField(
@@ -105,7 +106,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   visible: _showNew,
                   onToggle: () => setState(() => _showNew = !_showNew),
                   validator: (v) {
-                    if (v == null || v.isEmpty) return 'Required';
+                    if (v == null || v.isEmpty) return l10n.required;
                     if (v.length < 8) return l10n.passwordMinChars;
                     return null;
                   },
@@ -115,8 +116,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   controller: _confirmCtrl,
                   label: l10n.confirmNewPassword,
                   visible: _showConfirm,
-                  onToggle: () =>
-                      setState(() => _showConfirm = !_showConfirm),
+                  onToggle: () => setState(() => _showConfirm = !_showConfirm),
                   validator: (v) {
                     if (v != _newCtrl.text) {
                       return l10n.passwordsDoNotMatch;
@@ -129,8 +129,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   onPressed: _isLoading ? null : _submit,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

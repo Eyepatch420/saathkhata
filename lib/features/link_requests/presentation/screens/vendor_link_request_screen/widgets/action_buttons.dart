@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../../../core/constants/app_colors.dart';
 import '../../../../../../../core/constants/app_typography.dart';
+import '../../../../../../../l10n/app_localizations.dart';
 
 class RequestActionButtons extends StatelessWidget {
   final bool isLoading;
@@ -31,7 +32,7 @@ class RequestActionButtons extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14)),
             ),
             icon: const Icon(Icons.close_rounded, size: 20),
-            label: Text('Decline',
+            label: Text(AppLocalizations.of(context)!.declineRequest,
                 style: AppTypography.labelLarge
                     .copyWith(color: AppColors.error)),
           ),
@@ -58,7 +59,7 @@ class RequestActionButtons extends StatelessWidget {
                 : const Icon(Icons.check_rounded,
                     color: Colors.white, size: 20),
             label: Text(
-              isLoading ? 'Processing…' : 'Accept',
+              isLoading ? AppLocalizations.of(context)!.processing : AppLocalizations.of(context)!.acceptRequest,
               style: AppTypography.labelLarge
                   .copyWith(color: Colors.white),
             ),

@@ -4,6 +4,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/report_models.dart';
 import '../../domain/repositories/vendor_repository.dart';
 
@@ -85,14 +86,15 @@ class _CollectedTodayScreenState extends State<CollectedTodayScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Collected Today'),
+            Text(l10n.collectedTodayTitle),
             Text(
-              _items.isEmpty ? 'No payments yet' : '${_items.length}+ payments',
+              _items.isEmpty ? l10n.noPaymentsYetSubtitle : l10n.paymentsCountSubtitle(_items.length),
               style: AppTypography.bodySmall.copyWith(color: AppColors.success),
             ),
           ],
@@ -103,6 +105,7 @@ class _CollectedTodayScreenState extends State<CollectedTodayScreen> {
   }
 
   Widget _buildBody() {
+    final l10n = AppLocalizations.of(context)!;
     if (_initialLoad && _isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -114,7 +117,7 @@ class _CollectedTodayScreenState extends State<CollectedTodayScreen> {
           children: [
             Text(_error!, style: AppTypography.bodyMedium.copyWith(color: AppColors.error)),
             const SizedBox(height: 16),
-            ElevatedButton(onPressed: _refresh, child: const Text('Retry')),
+            ElevatedButton(onPressed: _refresh, child: Text(l10n.retryButton)),
           ],
         ),
       );
@@ -127,9 +130,9 @@ class _CollectedTodayScreenState extends State<CollectedTodayScreen> {
           children: [
             Icon(Icons.payments_outlined, size: 64, color: AppColors.textHint),
             const SizedBox(height: 16),
-            Text('Nothing collected today', style: AppTypography.h3),
+            Text(l10n.nothingCollectedToday, style: AppTypography.h3),
             const SizedBox(height: 8),
-            Text('Payments received today will appear here.', style: AppTypography.bodySmall),
+            Text(l10n.paymentsWillAppearHere, style: AppTypography.bodySmall),
           ],
         ),
       );

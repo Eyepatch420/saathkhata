@@ -15,4 +15,12 @@ class AuthStateNotifier extends ChangeNotifier {
     if (state is AuthInitial || state is AuthLoading) return;
     notifyListeners();
   }
+
+  /// Called by ApiClient when a token refresh fails and the session is
+  /// cleared, so the router redirects to login immediately instead of
+  /// leaving the user stuck on a screen with silently-failing requests.
+  void forceUnauthenticated() {
+    _authState = const AuthUnauthenticated();
+    notifyListeners();
+  }
 }

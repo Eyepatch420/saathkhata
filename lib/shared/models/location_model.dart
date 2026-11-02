@@ -39,6 +39,19 @@ class LocationData {
     );
   }
 
+  LocationData copyWith({String? displayName}) => LocationData(
+        lat: lat,
+        lng: lng,
+        displayName: displayName ?? this.displayName,
+        houseNumber: houseNumber,
+        road: road,
+        suburb: suburb,
+        city: city,
+        state: state,
+        country: country,
+        postcode: postcode,
+      );
+
   /// Short human-readable address line (road + city)
   String get shortAddress {
     final parts = <String?>[

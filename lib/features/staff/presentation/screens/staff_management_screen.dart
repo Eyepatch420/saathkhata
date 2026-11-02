@@ -24,40 +24,92 @@ class StaffManagementScreen extends StatelessWidget {
   }
 }
 
-class _StaffView extends StatelessWidget {
+class _StaffView extends StatefulWidget {
   const _StaffView();
+
+  @override
+  State<_StaffView> createState() => _StaffViewState();
+}
+
+class _StaffViewState extends State<_StaffView>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _fabAnim;
+  late final Animation<double> _fabScale;
+  bool _fabVisible = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fabAnim = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 220),
+      value: 1.0,
+    );
+    _fabScale = CurvedAnimation(parent: _fabAnim, curve: Curves.easeOut);
+  }
+
+  @override
+  void dispose() {
+    _fabAnim.dispose();
+    super.dispose();
+  }
+
+  bool _onScroll(ScrollNotification notification) {
+    if (notification is ScrollUpdateNotification) {
+      final delta = notification.scrollDelta ?? 0;
+      if (delta > 0 && _fabVisible) {
+        _fabVisible = false;
+        _fabAnim.reverse();
+      } else if (delta < 0 && !_fabVisible) {
+        _fabVisible = true;
+        _fabAnim.forward();
+      }
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-
       appBar: AppBar(title: Text(l10n.staffAndLabour)),
-      body: SafeArea(child: BlocBuilder<StaffBloc, StaffState>(
-        builder: (context, state) {
-          if (state is StaffLoading || state is StaffActionLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state is StaffError) {
-            return ErrorStateWidget(
-              message: state.message,
-              onRetry: () => context.read<StaffBloc>().add(LoadStaff()),
-            );
-          }
-          if (state is StaffLoaded) {
-            return _StaffContent(state: state);
-          }
-          return const SizedBox();
-        },
+      body: SafeArea(
+        child: NotificationListener<ScrollNotification>(
+          onNotification: _onScroll,
+          child: BlocBuilder<StaffBloc, StaffState>(
+            builder: (context, state) {
+              if (state is StaffLoading || state is StaffActionLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state is StaffError) {
+                return ErrorStateWidget(
+                  message: state.message,
+                  onRetry: () => context.read<StaffBloc>().add(LoadStaff()),
+                );
+              }
+              if (state is StaffLoaded) {
+                return _StaffContent(state: state);
+              }
+              return const SizedBox();
+            },
+          ),
+        ),
       ),
-      ),
+      // Shell uses extendBody, so padding.bottom carries the pill nav height —
+      // lift the FAB above it like the dashboard FAB.
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewPadding.bottom + 88),
-        child: FloatingActionButton.extended(
-          onPressed: () => _showAddStaffSheet(context),
-          label: Text(l10n.addStaff),
-          icon: const Icon(Icons.person_add_rounded),
-          backgroundColor: AppColors.primary,
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+        child: FadeTransition(
+          opacity: _fabAnim,
+          child: ScaleTransition(
+            scale: _fabScale,
+            child: FloatingActionButton.extended(
+              onPressed: () => _showAddStaffSheet(context),
+              label: Text(l10n.addStaff),
+              icon: const Icon(Icons.person_add_rounded),
+              backgroundColor: AppColors.primary,
+            ),
+          ),
         ),
       ),
     );
@@ -85,7 +137,12 @@ class _StaffView extends StatelessWidget {
             left: 24,
             right: 24,
             top: 24,
-            bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
+            // viewInsets clears the keyboard; viewPadding clears the gesture
+            // bar / 3-button nav when the keyboard is closed.
+            bottom:
+                MediaQuery.of(ctx).viewInsets.bottom +
+                MediaQuery.of(ctx).viewPadding.bottom +
+                24,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -116,9 +173,18 @@ class _StaffView extends StatelessWidget {
                   labelText: l10n.role,
                   prefixIcon: const Icon(Icons.work_rounded),
                 ),
-                items: ['Helper', 'Cook', 'Delivery', 'Driver', 'Guard', 'Cleaner', 'Other']
-                    .map((r) => DropdownMenuItem(value: r, child: Text(r)))
-                    .toList(),
+                items:
+                    [
+                          'Helper',
+                          'Cook',
+                          'Delivery',
+                          'Driver',
+                          'Guard',
+                          'Cleaner',
+                          'Other',
+                        ]
+                        .map((r) => DropdownMenuItem(value: r, child: Text(r)))
+                        .toList(),
                 onChanged: (v) => setState(() => selectedRole = v!),
               ),
               const SizedBox(height: 14),
@@ -129,8 +195,14 @@ class _StaffView extends StatelessWidget {
                   prefixIcon: const Icon(Icons.calendar_today_rounded),
                 ),
                 items: [
-                  DropdownMenuItem(value: SalaryType.daily, child: Text(l10n.dailyWage)),
-                  DropdownMenuItem(value: SalaryType.monthly, child: Text(l10n.monthlySalary)),
+                  DropdownMenuItem(
+                    value: SalaryType.daily,
+                    child: Text(l10n.dailyWage),
+                  ),
+                  DropdownMenuItem(
+                    value: SalaryType.monthly,
+                    child: Text(l10n.monthlySalary),
+                  ),
                 ],
                 onChanged: (v) => setState(() => selectedType = v!),
               ),
@@ -165,22 +237,29 @@ class _StaffView extends StatelessWidget {
                     }
                     if (salary <= 0) return;
                     Navigator.pop(ctx);
-                    bloc.add(AddStaff(StaffModel(
-                      id: '',
-                      vendorId: '',
-                      name: name,
-                      phone: phone,
-                      role: selectedRole,
-                      salaryType: selectedType,
-                      salaryAmount: salary,
-                      joinDate: DateTime.now(),
-                    )));
+                    bloc.add(
+                      AddStaff(
+                        StaffModel(
+                          id: '',
+                          vendorId: '',
+                          name: name,
+                          phone: phone,
+                          role: selectedRole,
+                          salaryType: selectedType,
+                          salaryAmount: salary,
+                          joinDate: DateTime.now(),
+                        ),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  child: Text(l10n.addStaffButton, style: const TextStyle(color: Colors.white)),
+                  child: Text(
+                    l10n.addStaffButton,
+                    style: const TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ],
@@ -237,7 +316,12 @@ class _StaffContent extends StatelessWidget {
             },
             child: ListView.separated(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.fromLTRB(16, 16, 16, MediaQuery.of(context).viewPadding.bottom + 96),
+              padding: EdgeInsets.fromLTRB(
+                16,
+                16,
+                16,
+                MediaQuery.of(context).padding.bottom + 88,
+              ),
               itemCount: state.staffList.length,
               separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
@@ -327,11 +411,13 @@ class _StaffCard extends StatelessWidget {
         : l10n.staffSalaryPerMonth(staff.salaryAmount.toStringAsFixed(0));
 
     return GestureDetector(
-      onTap: () => Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute(builder: (_) => StaffDetailScreen(staff: staff)),
-      ).then((_) {
-        if (context.mounted) context.read<StaffBloc>().add(LoadStaff());
-      }),
+      onTap: () => Navigator.of(context, rootNavigator: true)
+          .push(
+            MaterialPageRoute(builder: (_) => StaffDetailScreen(staff: staff)),
+          )
+          .then((_) {
+            if (context.mounted) context.read<StaffBloc>().add(LoadStaff());
+          }),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -378,19 +464,27 @@ class _StaffCard extends StatelessWidget {
                               ? Icons.check_circle_rounded
                               : Icons.cancel_rounded,
                           size: 14,
-                          color: staff.presentToday ? AppColors.success : AppColors.error,
+                          color: staff.presentToday
+                              ? AppColors.success
+                              : AppColors.error,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           staff.presentToday ? l10n.present : l10n.absent,
                           style: AppTypography.bodySmall.copyWith(
-                            color: staff.presentToday ? AppColors.success : AppColors.error,
+                            color: staff.presentToday
+                                ? AppColors.success
+                                : AppColors.error,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 4),
-                    const Icon(Icons.chevron_right_rounded, color: AppColors.textHint, size: 18),
+                    const Icon(
+                      Icons.chevron_right_rounded,
+                      color: AppColors.textHint,
+                      size: 18,
+                    ),
                   ],
                 ),
               ],
@@ -416,7 +510,9 @@ class _StaffCard extends StatelessWidget {
                       Text(l10n.advanceTaken, style: AppTypography.bodySmall),
                       Text(
                         '₹${staff.advanceTaken.toStringAsFixed(0)}',
-                        style: AppTypography.labelLarge.copyWith(color: AppColors.warning),
+                        style: AppTypography.labelLarge.copyWith(
+                          color: AppColors.warning,
+                        ),
                       ),
                     ],
                   ),
@@ -439,36 +535,56 @@ class _AttendanceTodayButton extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return PopupMenuButton<AttendanceStatus>(
       onSelected: (status) {
-        context.read<StaffBloc>().add(MarkAttendance(
-              staffId: staff.id,
-              date: DateTime.now(),
-              status: status,
-            ));
+        context.read<StaffBloc>().add(
+          MarkAttendance(
+            staffId: staff.id,
+            date: DateTime.now(),
+            status: status,
+          ),
+        );
       },
       itemBuilder: (context) => [
         PopupMenuItem(
           value: AttendanceStatus.present,
-          child: Row(children: [
-            const Icon(Icons.check_circle_rounded, color: AppColors.success, size: 18),
-            const SizedBox(width: 8),
-            Text(l10n.present),
-          ]),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.check_circle_rounded,
+                color: AppColors.success,
+                size: 18,
+              ),
+              const SizedBox(width: 8),
+              Text(l10n.present),
+            ],
+          ),
         ),
         PopupMenuItem(
           value: AttendanceStatus.absent,
-          child: Row(children: [
-            const Icon(Icons.cancel_rounded, color: AppColors.error, size: 18),
-            const SizedBox(width: 8),
-            Text(l10n.absent),
-          ]),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.cancel_rounded,
+                color: AppColors.error,
+                size: 18,
+              ),
+              const SizedBox(width: 8),
+              Text(l10n.absent),
+            ],
+          ),
         ),
         PopupMenuItem(
           value: AttendanceStatus.halfDay,
-          child: Row(children: [
-            const Icon(Icons.access_time_rounded, color: AppColors.warning, size: 18),
-            const SizedBox(width: 8),
-            Text(l10n.halfDay),
-          ]),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.access_time_rounded,
+                color: AppColors.warning,
+                size: 18,
+              ),
+              const SizedBox(width: 8),
+              Text(l10n.halfDay),
+            ],
+          ),
         ),
       ],
       child: Container(
@@ -480,10 +596,16 @@ class _AttendanceTodayButton extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.edit_calendar_rounded, size: 14, color: AppColors.primary),
+            const Icon(
+              Icons.edit_calendar_rounded,
+              size: 14,
+              color: AppColors.primary,
+            ),
             const SizedBox(width: 4),
-            Text(l10n.attendanceTitle,
-                style: AppTypography.bodySmall.copyWith(color: AppColors.primary)),
+            Text(
+              l10n.attendanceTitle,
+              style: AppTypography.bodySmall.copyWith(color: AppColors.primary),
+            ),
           ],
         ),
       ),

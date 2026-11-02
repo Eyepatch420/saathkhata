@@ -32,4 +32,19 @@ class MockCustomerRepository implements CustomerRepository {
       ),
     ];
   }
+
+  @override
+  Future<void> deactivateLink(String linkId) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+  }
+
+  @override
+  Future<void> updateLinkNickname(String linkId, String? nickname) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+  }
+
+  @override
+  Future<void> updateAutoConfirm(String linkId, {required bool enabled}) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+  }
 }

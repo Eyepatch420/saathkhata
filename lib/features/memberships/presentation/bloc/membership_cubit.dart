@@ -36,15 +36,27 @@ class MembershipCubit extends Cubit<MembershipState> {
     }
   }
 
-  /// Vendor: set/elevate/remove the customer's tier.
-  Future<void> assignTier(String? tierId) => _mutate(() async {
-        final status = await _repo.assignTier(linkId, tierId);
-        emit(MembershipLoaded(status));
+  /// Vendor: enroll the customer directly into a plan.
+  Future<void> enroll(String planId) => _mutate(() async {
+        await _repo.enroll(linkId, planId);
+        await reload();
       });
 
-  /// Customer: apply for a tier.
-  Future<void> requestTier(String tierId, {String? message}) => _mutate(() async {
-        await _repo.requestTier(linkId, tierId, message: message);
+  /// Customer: apply for a plan.
+  Future<void> requestPlan(String planId, {String? message}) => _mutate(() async {
+        await _repo.requestPlan(linkId, planId, message: message);
+        await reload();
+      });
+
+  /// Vendor/staff: mark a quota benefit used on the active membership.
+  Future<void> useBenefit(String membershipId, String benefitId) => _mutate(() async {
+        await _repo.useBenefit(membershipId, benefitId);
+        await reload();
+      });
+
+  /// Vendor-only correction: decrement a benefit's used count by 1 (floors at 0).
+  Future<void> decrementBenefit(String membershipId, String benefitId) => _mutate(() async {
+        await _repo.decrementBenefit(membershipId, benefitId);
         await reload();
       });
 

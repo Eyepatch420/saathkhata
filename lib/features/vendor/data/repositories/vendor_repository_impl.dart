@@ -11,6 +11,19 @@ class VendorRepositoryImpl implements VendorRepository {
   VendorRepositoryImpl(this._api);
 
   @override
+  Future<List<VendorLinkItem>> getLinkedVendors() async {
+    try {
+      final response = await _api.get(ApiEndpoints.myVendors);
+      final list = (response.data as Map<String, dynamic>)['data'] as List;
+      return list
+          .map((e) => VendorLinkItem.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
   Future<List<CustomerLinkItem>> getLinkedCustomers() async {
     try {
       final response = await _api.get(ApiEndpoints.myCustomers);
@@ -25,24 +38,45 @@ class VendorRepositoryImpl implements VendorRepository {
   }
 
   @override
-  Future<CustomerLinkItem> linkCustomer(String identifier) async {
+  Future<void> updateLinkNickname(String linkId, String? nickname) async {
     try {
-      // Detect whether the vendor entered an email or a 10-digit phone number
-      // and send the matching field — the backend accepts either.
-      final trimmed = identifier.trim();
-      final isPhone = RegExp(r'^[6-9]\d{9}$').hasMatch(trimmed);
-      final body = isPhone
-          ? {'customerPhone': trimmed}
-          : {'customerEmail': trimmed};
-      final response = await _api.post(ApiEndpoints.links, data: body);
-      final data = ApiClient.extractData(response);
-      // Backend returns full LinkResponse; we reshape to CustomerLinkItem
-      return CustomerLinkItem(
-        linkId: data['id'] as String,
-        balance: (data['balance'] as num).toDouble(),
-        customer: UserSummary.fromJson(data['customer'] as Map<String, dynamic>),
-        createdAt: data['createdAt'] as String,
+      await _api.patch(
+        ApiEndpoints.linkNickname(linkId),
+        data: {'nickname': nickname},
       );
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<void> updateLinkDefaults(
+    String linkId, {
+    String? defaultProduct,
+    String? defaultUnit,
+    double? defaultQty,
+    double? defaultPricePerUnit,
+  }) async {
+    try {
+      await _api.patch(
+        ApiEndpoints.linkDefaults(linkId),
+        data: {
+          'defaultProduct': defaultProduct,
+          'defaultUnit': defaultUnit,
+          'defaultQty': defaultQty,
+          'defaultPricePerUnit': defaultPricePerUnit,
+        },
+      );
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<CustomerLinkItem> getCustomerByLinkId(String linkId) async {
+    try {
+      final response = await _api.get(ApiEndpoints.vendorCustomerByLinkId(linkId));
+      return CustomerLinkItem.fromJson(ApiClient.extractData(response));
     } on DioException catch (e) {
       throw Exception(ApiClient.extractErrorMessage(e));
     }

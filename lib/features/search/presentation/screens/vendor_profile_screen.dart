@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/widgets/app_toast.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../auth/presentation/bloc/auth_state.dart';
@@ -52,6 +53,13 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
         getIt<SearchRepository>().getVendorProfile(widget.preview.userId);
   }
 
+  void _retry() {
+    setState(() {
+      _profileFuture =
+          getIt<SearchRepository>().getVendorProfile(widget.preview.userId);
+    });
+  }
+
   @override
   void dispose() {
     _sendCubit.close();
@@ -67,6 +75,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
         viewAs: widget.viewAs,
         profileFuture: _profileFuture,
         accent: _accent,
+        onRetry: _retry,
       ),
     );
   }
@@ -77,12 +86,14 @@ class _ProfileScaffold extends StatelessWidget {
   final SearchViewAs viewAs;
   final Future<VendorPublicProfile> profileFuture;
   final Color accent;
+  final VoidCallback onRetry;
 
   const _ProfileScaffold({
     required this.preview,
     required this.viewAs,
     required this.profileFuture,
     required this.accent,
+    required this.onRetry,
   });
 
   @override
@@ -92,7 +103,7 @@ class _ProfileScaffold extends StatelessWidget {
         if (state is SendRequestSuccess) {
           AppToast.show(
             ctx,
-            'Request sent! ${preview.displayName} will be notified.',
+            AppLocalizations.of(ctx)!.requestSentToVendor(preview.displayName),
             type: ToastType.success,
           );
         } else if (state is SendRequestError) {
@@ -119,6 +130,7 @@ class _ProfileScaffold extends StatelessWidget {
           final photoUrl =
               snap.data?.profilePhotoUrl ?? preview.profilePhotoUrl;
           final upiId = snap.data?.upiId;
+          final email = snap.data?.email;
           final displayName =
               businessName?.isNotEmpty == true ? businessName! : name;
           final initial = displayName.isNotEmpty
@@ -145,7 +157,9 @@ class _ProfileScaffold extends StatelessWidget {
                   name: name,
                   category: category,
                   address: address,
+                  email: email,
                   upiId: upiId,
+                  onRetry: onRetry,
                 ),
               ),
             ],
@@ -245,7 +259,7 @@ class _ProfileScaffold extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 2),
                     child: Text(
-                      'by $name',
+                      AppLocalizations.of(context)!.byOwnerName(name),
                       style: AppTypography.bodySmall.copyWith(
                         color: Colors.white.withValues(alpha: 0.75),
                       ),
@@ -269,7 +283,9 @@ class _ProfileScaffold extends StatelessWidget {
     required String name,
     required String? category,
     required String? address,
+    required String? email,
     required String? upiId,
+    required VoidCallback onRetry,
   }) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -303,8 +319,11 @@ class _ProfileScaffold extends StatelessWidget {
           _InfoSection(
             accent: accent,
             address: address,
+            email: email,
             upiId: upiId,
             isLoadingExtra: snap.connectionState == ConnectionState.waiting,
+            hasError: snap.hasError,
+            onRetry: onRetry,
           ),
 
           const SizedBox(height: 28),
@@ -341,6 +360,7 @@ class _ProfileScaffold extends StatelessWidget {
         if (viewAs == SearchViewAs.vendor && user != null) {
           return _VendorCta(
             user: user,
+            vendorId: preview.userId,
             upiId: upiId,
             vendorName: displayName,
             accent: accent,
@@ -358,14 +378,20 @@ class _ProfileScaffold extends StatelessWidget {
 class _InfoSection extends StatelessWidget {
   final Color accent;
   final String? address;
+  final String? email;
   final String? upiId;
   final bool isLoadingExtra;
+  final bool hasError;
+  final VoidCallback onRetry;
 
   const _InfoSection({
     required this.accent,
     required this.address,
+    required this.email,
     required this.upiId,
     required this.isLoadingExtra,
+    required this.hasError,
+    required this.onRetry,
   });
 
   @override
@@ -373,26 +399,46 @@ class _InfoSection extends StatelessWidget {
     final surface = Theme.of(context).colorScheme.surface;
     final items = <_InfoItem>[];
 
+    final l10n = AppLocalizations.of(context)!;
+
     if (address != null && address!.isNotEmpty) {
       items.add(_InfoItem(
         icon: Icons.location_on_rounded,
-        label: 'Address',
+        label: l10n.addressLabel,
         value: address!,
         accent: accent,
+      ));
+    }
+
+    if (email != null && email!.isNotEmpty) {
+      items.add(_InfoItem(
+        icon: Icons.email_outlined,
+        label: l10n.emailLabel,
+        value: email!,
+        accent: accent,
+        isCopyable: true,
       ));
     }
 
     if (isLoadingExtra) {
       items.add(_InfoItem(
         icon: Icons.account_balance_wallet_outlined,
-        label: 'UPI',
+        label: l10n.upiLabel,
         value: '…',
         accent: accent,
+      ));
+    } else if (hasError) {
+      items.add(_InfoItem(
+        icon: Icons.warning_amber_rounded,
+        label: l10n.upiEmailLabel,
+        value: l10n.couldNotLoadRetry,
+        accent: AppColors.error,
+        onTap: onRetry,
       ));
     } else if (upiId != null && upiId!.isNotEmpty) {
       items.add(_InfoItem(
         icon: Icons.account_balance_wallet_rounded,
-        label: 'UPI ID',
+        label: l10n.upiIdLabel,
         value: upiId!,
         accent: accent,
         isCopyable: true,
@@ -427,6 +473,7 @@ class _InfoItem extends StatelessWidget {
   final String value;
   final Color accent;
   final bool isCopyable;
+  final VoidCallback? onTap;
 
   const _InfoItem({
     required this.icon,
@@ -434,21 +481,20 @@ class _InfoItem extends StatelessWidget {
     required this.value,
     required this.accent,
     this.isCopyable = false,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: isCopyable
-          ? () {
-              Clipboard.setData(ClipboardData(text: value));
-              AppToast.show(
-                context,
-                'UPI ID copied!',
-                type: ToastType.success,
-              );
-            }
-          : null,
+      onTap: onTap ??
+          (isCopyable
+              ? () {
+                  Clipboard.setData(ClipboardData(text: value));
+                  AppToast.show(context, AppLocalizations.of(context)!.labelCopied(label),
+                      type: ToastType.success);
+                }
+              : null),
       borderRadius: BorderRadius.circular(16),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -520,25 +566,26 @@ class _CustomerCta extends StatelessWidget {
         final IconData btnIcon;
         final bool disabled;
 
+        final l10n = AppLocalizations.of(ctx)!;
         if (sent) {
           btnColor = AppColors.success;
-          btnLabel = 'Request Sent';
+          btnLabel = l10n.requestSentButton;
           btnIcon = Icons.check_circle_rounded;
           disabled = true;
         } else if (alreadyDone) {
           // already linked → show as connected
           btnColor = AppColors.success;
-          btnLabel = 'Already Connected';
+          btnLabel = l10n.alreadyConnected;
           btnIcon = Icons.link_rounded;
           disabled = true;
         } else if (sending) {
           btnColor = accent;
-          btnLabel = 'Sending…';
+          btnLabel = l10n.sendingEllipsis;
           btnIcon = Icons.hourglass_top_rounded;
           disabled = true;
         } else {
           btnColor = accent;
-          btnLabel = 'Send Connection Request';
+          btnLabel = l10n.sendConnectionRequest;
           btnIcon = Icons.handshake_rounded;
           disabled = false;
         }
@@ -578,7 +625,7 @@ class _CustomerCta extends StatelessWidget {
               OutlinedButton.icon(
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: upiId!));
-                  AppToast.show(ctx, 'UPI ID copied!',
+                  AppToast.show(ctx, l10n.upiIdCopied,
                       type: ToastType.success);
                 },
                 style: OutlinedButton.styleFrom(
@@ -588,7 +635,7 @@ class _CustomerCta extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14)),
                 ),
                 icon: Icon(Icons.payment_rounded, color: accent, size: 20),
-                label: Text('Pay via UPI',
+                label: Text(l10n.payViaUpi,
                     style: TextStyle(
                         color: accent, fontWeight: FontWeight.w600)),
               ),
@@ -604,20 +651,18 @@ class _CustomerCta extends StatelessWidget {
 
 /// Shown when a vendor user views another vendor's profile.
 ///
-/// Flow: the current vendor shares their email with the other vendor, who
-/// then adds it via their own "Add Customer" flow. Once added, the ledger
-/// becomes visible in the current user's Customer account.
-///
-/// This requires the current user to have a Customer account with the same
-/// email — but they don't need to switch accounts RIGHT NOW to initiate it.
+/// Sends a connection request via the same link-requests API used by customers.
+/// The receiving vendor gets a notification and can accept or decline.
 class _VendorCta extends StatelessWidget {
   final dynamic user; // UserModel
+  final String vendorId;
   final String? upiId;
   final String vendorName;
   final Color accent;
 
   const _VendorCta({
     required this.user,
+    required this.vendorId,
     required this.upiId,
     required this.vendorName,
     required this.accent,
@@ -625,213 +670,97 @@ class _VendorCta extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // Primary: share email so the other vendor can add them as customer
-        ElevatedButton.icon(
-          onPressed: () => _showShareEmailSheet(context),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: accent,
-            padding: const EdgeInsets.symmetric(vertical: 15),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14)),
-          ),
-          icon: const Icon(Icons.handshake_rounded,
-              color: Colors.white, size: 20),
-          label: const Text(
-            'Start a Ledger with this Vendor',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-          ),
-        ),
-        // Secondary: copy UPI to pay directly
-        if (upiId != null && upiId!.isNotEmpty) ...[
-          const SizedBox(height: 12),
-          OutlinedButton.icon(
-            onPressed: () {
-              Clipboard.setData(ClipboardData(text: upiId!));
-              AppToast.show(context, 'UPI ID copied!', type: ToastType.success);
-            },
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              side: BorderSide(color: accent.withValues(alpha: 0.5)),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
-            ),
-            icon: Icon(Icons.payment_rounded, color: accent, size: 20),
-            label: Text(
-              'Copy UPI ID to Pay',
-              style: TextStyle(color: accent, fontWeight: FontWeight.w600),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
+    return BlocBuilder<SendLinkRequestCubit, SendRequestState>(
+      builder: (ctx, state) {
+        final sent = state is SendRequestSuccess;
+        final sending = state is SendRequestSending;
+        final alreadyDone = state is SendRequestError &&
+            (state.message.toLowerCase().contains('already linked') ||
+                state.message.toLowerCase().contains('already pending'));
 
-  void _showShareEmailSheet(BuildContext context) {
-    final email = user.email as String;
+        final Color btnColor;
+        final String btnLabel;
+        final IconData btnIcon;
+        final bool disabled;
 
-    showModalBottomSheet(
-      context: context,
-      useRootNavigator: true,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (ctx) => Padding(
-        padding: EdgeInsets.fromLTRB(
-            24, 24, 24, MediaQuery.of(ctx).viewInsets.bottom + 32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        final l10n = AppLocalizations.of(ctx)!;
+        if (sent) {
+          btnColor = AppColors.success;
+          btnLabel = l10n.requestSentButton;
+          btnIcon = Icons.check_circle_rounded;
+          disabled = true;
+        } else if (alreadyDone) {
+          btnColor = AppColors.success;
+          btnLabel = l10n.alreadyConnected;
+          btnIcon = Icons.link_rounded;
+          disabled = true;
+        } else if (sending) {
+          btnColor = accent;
+          btnLabel = l10n.sendingEllipsis;
+          btnIcon = Icons.hourglass_top_rounded;
+          disabled = true;
+        } else {
+          btnColor = accent;
+          btnLabel = l10n.sendConnectionRequest;
+          btnIcon = Icons.handshake_rounded;
+          disabled = false;
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: accent.withValues(alpha: 0.12),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(Icons.handshake_rounded, color: accent, size: 22),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Start a Ledger', style: AppTypography.h3),
-                      const SizedBox(height: 2),
-                      Text(
-                        'with $vendorName',
-                        style: AppTypography.bodySmall
-                            .copyWith(color: AppColors.textSecondary),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            // Step 1
-            _StepRow(
-              number: '1',
-              accent: accent,
-              text:
-                  'Share your email with $vendorName so they can add you as a customer.',
-            ),
-            const SizedBox(height: 12),
-            // Step 2
-            _StepRow(
-              number: '2',
-              accent: accent,
-              text:
-                  'Once they add you, open the app as your Customer account to see the shared ledger.',
-            ),
-            const SizedBox(height: 20),
-            // Email display
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: accent.withValues(alpha: 0.06),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: accent.withValues(alpha: 0.2)),
+            ElevatedButton.icon(
+              onPressed: disabled
+                  ? null
+                  : () => ctx
+                      .read<SendLinkRequestCubit>()
+                      .send(vendorId: vendorId),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: btnColor,
+                disabledBackgroundColor: btnColor,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14)),
               ),
-              child: Row(
-                children: [
-                  Icon(Icons.email_rounded, color: accent, size: 20),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      email,
-                      style: AppTypography.labelLarge.copyWith(color: accent),
-                    ),
-                  ),
-                ],
+              icon: sending
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: Colors.white),
+                    )
+                  : Icon(btnIcon, color: Colors.white, size: 20),
+              label: Text(
+                btnLabel,
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.w600),
               ),
             ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
+            if (upiId != null && upiId!.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              OutlinedButton.icon(
                 onPressed: () {
-                  Clipboard.setData(ClipboardData(text: email));
-                  Navigator.pop(ctx);
-                  AppToast.show(
-                    context,
-                    'Email copied! Share it with $vendorName.',
-                    type: ToastType.success,
-                  );
+                  Clipboard.setData(ClipboardData(text: upiId!));
+                  AppToast.show(ctx, l10n.upiIdCopied,
+                      type: ToastType.success);
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: accent,
+                style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14),
+                  side: BorderSide(color: accent.withValues(alpha: 0.5)),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14)),
                 ),
-                icon: const Icon(Icons.copy_rounded,
-                    color: Colors.white, size: 18),
-                label: const Text(
-                  'Copy My Email',
+                icon: Icon(Icons.payment_rounded, color: accent, size: 20),
+                label: Text(
+                  l10n.copyUpiIdToPay,
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600),
+                      color: accent, fontWeight: FontWeight.w600),
                 ),
               ),
-            ),
+            ],
           ],
-        ),
-      ),
-    );
-  }
-}
-
-// ── Step row helper ───────────────────────────────────────────────────────────
-
-class _StepRow extends StatelessWidget {
-  final String number;
-  final Color accent;
-  final String text;
-
-  const _StepRow({
-    required this.number,
-    required this.accent,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 24,
-          height: 24,
-          decoration: BoxDecoration(
-            color: accent.withValues(alpha: 0.15),
-            shape: BoxShape.circle,
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            number,
-            style: TextStyle(
-              color: accent,
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            text,
-            style: AppTypography.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.45,
-            ),
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

@@ -5,6 +5,7 @@ class VendorSearchResult {
   final String? upiId;
   final String? businessName;
   final String? businessCategory;
+  final List<String> businessCategories;
   final String? businessAddress;
 
   const VendorSearchResult({
@@ -14,6 +15,7 @@ class VendorSearchResult {
     this.upiId,
     this.businessName,
     this.businessCategory,
+    this.businessCategories = const [],
     this.businessAddress,
   });
 
@@ -25,6 +27,9 @@ class VendorSearchResult {
       upiId: json['upiId'] as String?,
       businessName: json['businessName'] as String?,
       businessCategory: json['businessCategory'] as String?,
+      businessCategories: (json['businessCategories'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ?? const [],
       businessAddress: json['businessAddress'] as String?,
     );
   }

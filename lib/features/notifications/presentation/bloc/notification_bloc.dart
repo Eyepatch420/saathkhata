@@ -2,6 +2,12 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/repositories/notification_repository.dart';
 import '../../../../core/services/push_notification_service.dart';
+import '../../../../core/di/injection.dart';
+import '../../../../shared/models/notification_model.dart';
+import '../../../customer/presentation/bloc/customer_bloc.dart';
+import '../../../customer/presentation/bloc/customer_event.dart';
+import '../../../vendor/presentation/bloc/vendor_bloc.dart';
+import '../../../vendor/presentation/bloc/vendor_event.dart';
 import 'notification_event.dart';
 import 'notification_state.dart';
 import '../../../../core/utils/app_logger.dart';
@@ -78,22 +84,58 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   }
 
   // A new notification arrived while the app is open — prepend it to the list
-  // so the user sees it immediately if the screen is visible.
+  // so the user sees it immediately if the screen is visible, then trigger the
+  // appropriate dashboard reload so data is fresh without any manual pull-to-refresh.
   Future<void> _onArrived(
       NotificationArrived event, Emitter<NotificationState> emit) async {
-    AppLogger.i(_m, 'New notification arrived: ${event.notification.title}');
+    final notif = event.notification;
+    AppLogger.i(_m, 'New notification arrived: ${notif.title}');
     final current = state;
     if (current is NotificationLoaded) {
       emit(current.copyWith(
-        notifications: [event.notification, ...current.notifications],
+        notifications: [notif, ...current.notifications],
         unreadCount: current.unreadCount + 1,
       ));
     } else {
-      // Screen not open yet — emit a minimal state so the badge updates.
       emit(NotificationLoaded(
-        notifications: [event.notification],
+        notifications: [notif],
         unreadCount: 1,
       ));
+    }
+
+    _refreshDashboardForNotification(notif.type);
+  }
+
+  // Reload the relevant dashboard singleton when a socket notification arrives
+  // so the UI reflects the new state without requiring manual navigation.
+  void _refreshDashboardForNotification(NotificationType type) {
+    switch (type) {
+      // Vendor received a customer link request → refresh vendor dashboard
+      case NotificationType.linkRequestReceived:
+        getIt<VendorBloc>().add(LoadVendorDashboard());
+        break;
+      // Customer received a vendor-initiated link request → refresh customer dashboard
+      case NotificationType.vendorLinkRequestReceived:
+        getIt<CustomerBloc>().add(LoadCustomerDashboard());
+        break;
+      // Vendor accepted the customer's request → customer dashboard gains a new vendor
+      case NotificationType.linkRequestAccepted:
+        getIt<CustomerBloc>().add(LoadCustomerDashboard());
+        break;
+      // Vendor declined → no data change, no reload needed
+      case NotificationType.linkRequestDeclined:
+        break;
+      // Ledger entry added/confirmed/disputed → vendor dashboard stats may change
+      case NotificationType.entryAdded:
+      case NotificationType.entryConfirmed:
+      case NotificationType.entryDisputed:
+        getIt<VendorBloc>().add(LoadVendorDashboard());
+        break;
+      case NotificationType.entryAutoConfirmed:
+        getIt<CustomerBloc>().add(LoadCustomerDashboard());
+        break;
+      default:
+        break;
     }
   }
 

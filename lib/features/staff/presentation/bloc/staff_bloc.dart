@@ -19,6 +19,7 @@ class StaffBloc extends Bloc<StaffEvent, StaffState> {
     on<PaySalary>(_onPaySalary);
     on<AddAdvance>(_onAddAdvance);
     on<AccrueSalary>(_onAccrueSalary);
+    on<DeleteStaff>(_onDeleteStaff);
   }
 
   Future<void> _onLoad(LoadStaff event, Emitter<StaffState> emit) async {
@@ -179,6 +180,21 @@ class StaffBloc extends Bloc<StaffEvent, StaffState> {
       }
     } catch (e) {
       AppLogger.e(_m, 'Add advance failed', e);
+    }
+  }
+
+  Future<void> _onDeleteStaff(DeleteStaff event, Emitter<StaffState> emit) async {
+    final current = state;
+    final staffName = current is StaffDetailLoaded ? current.staff.name : '';
+    AppLogger.i(_m, 'Deleting staff — staffId:${event.staffId}');
+    emit(StaffActionLoading());
+    try {
+      await _repository.deleteStaff(event.staffId);
+      AppLogger.i(_m, 'Staff deleted — staffId:${event.staffId}');
+      emit(StaffDeleted(staffName));
+    } catch (e) {
+      AppLogger.e(_m, 'Delete staff failed', e);
+      emit(const StaffError('Failed to remove staff member'));
     }
   }
 

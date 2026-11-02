@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'membership_tier.dart';
+import 'membership_plan.dart';
 
 enum MembershipRequestStatus { pending, approved, declined }
 
@@ -38,7 +38,7 @@ class MembershipRequest extends Equatable {
   final String? message;
   final DateTime? respondedAt;
   final DateTime createdAt;
-  final MembershipTier requestedTier;
+  final MembershipPlan? requestedPlan;
   final MembershipRequestCustomer customer;
 
   const MembershipRequest({
@@ -46,8 +46,8 @@ class MembershipRequest extends Equatable {
     required this.linkId,
     required this.status,
     required this.createdAt,
-    required this.requestedTier,
     required this.customer,
+    this.requestedPlan,
     this.message,
     this.respondedAt,
   });
@@ -62,13 +62,14 @@ class MembershipRequest extends Equatable {
             ? DateTime.parse(json['respondedAt'] as String)
             : null,
         createdAt: DateTime.parse(json['createdAt'] as String),
-        requestedTier: MembershipTier.fromJson(
-            json['requestedTier'] as Map<String, dynamic>),
+        requestedPlan: json['requestedPlan'] != null
+            ? MembershipPlan.fromJson(json['requestedPlan'] as Map<String, dynamic>)
+            : null,
         customer: MembershipRequestCustomer.fromJson(
             json['customer'] as Map<String, dynamic>),
       );
 
   @override
   List<Object?> get props =>
-      [id, linkId, status, message, respondedAt, createdAt, requestedTier, customer];
+      [id, linkId, status, message, respondedAt, createdAt, requestedPlan, customer];
 }

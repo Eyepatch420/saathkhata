@@ -1,19 +1,16 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../core/constants/app_colors.dart';
 import '../../../../../../core/constants/app_typography.dart';
+import '../../../../../../l10n/app_localizations.dart';
 import '../../../../../../shared/models/report_models.dart';
 import '../../../bloc/reports_dashboard_cubit.dart';
 
 class RevenueChartCard extends StatelessWidget {
   final ReportsDashboardLoaded state;
   const RevenueChartCard({super.key, required this.state});
-
-  static const _monthAbbr = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-  ];
 
   List<_MonthBar> _buildBars(MonthlyRevenueReport report) {
     final map = <int, double>{};
@@ -24,7 +21,7 @@ class RevenueChartCard extends StatelessWidget {
     return List.generate(
       12,
       (i) => _MonthBar(
-        label: _monthAbbr[i],
+        label: DateFormat('MMM').format(DateTime(2020, i + 1)),
         amount: map[i + 1] ?? 0,
         isCurrentMonth: (i + 1) == DateTime.now().month &&
             report.year == DateTime.now().year,
@@ -51,7 +48,7 @@ class RevenueChartCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Revenue Trend',
+                AppLocalizations.of(context)!.revenueTrend,
                 style:
                     AppTypography.bodySmall.copyWith(color: Colors.white70),
               ),
@@ -103,7 +100,9 @@ class RevenueChartCard extends StatelessWidget {
               children: bars.map((bar) {
                 final fraction =
                     maxAmount > 0 ? (bar.amount / maxAmount) : 0.0;
-                final barH = (fraction * 80).clamp(3.0, 80.0);
+                final barH = bar.amount > 0
+                    ? (fraction * 80).clamp(4.0, 80.0)
+                    : 0.0;
                 return Tooltip(
                   message: '₹${bar.amount.toStringAsFixed(0)}',
                   child: Column(

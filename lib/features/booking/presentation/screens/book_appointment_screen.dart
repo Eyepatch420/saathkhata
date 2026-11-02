@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/widgets/app_toast.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../core/di/injection.dart';
@@ -51,6 +52,7 @@ class _BookAppointmentBody extends StatefulWidget {
 
 class _BookAppointmentBodyState extends State<_BookAppointmentBody> {
   late DateTime _selectedDate;
+  String? _lastAttemptedSlotTime;
   static const _daysToShow = 14;
 
   @override
@@ -74,6 +76,7 @@ class _BookAppointmentBodyState extends State<_BookAppointmentBody> {
   void _onSlotTapped(AppointmentSlot slot) {
     final authState = context.read<AuthBloc>().state;
     if (authState is! AuthAuthenticated) return;
+    setState(() => _lastAttemptedSlotTime = slot.startTime);
 
     showModalBottomSheet<void>(
       context: context,
@@ -104,11 +107,13 @@ class _BookAppointmentBodyState extends State<_BookAppointmentBody> {
     final dates = List.generate(_daysToShow, (i) => today.add(Duration(days: i)));
 
     return BlocListener<BookingBloc, BookingState>(
-      listenWhen: (_, c) => c is BookingCreated || c is BookingError,
+      listenWhen: (_, c) => c is BookingCreated || c is BookingError || c is BookingCreateError,
       listener: (context, state) {
         if (state is BookingCreated) {
-          AppToast.show(context, 'Booking confirmed!', type: ToastType.success);
+          AppToast.show(context, AppLocalizations.of(context)!.bookingConfirmedToast, type: ToastType.success);
           context.go(AppRouter.customerBookings);
+        } else if (state is BookingCreateError) {
+          AppToast.show(context, state.message, type: ToastType.error);
         } else if (state is BookingError) {
           AppToast.show(context, state.message, type: ToastType.error);
         }
@@ -120,7 +125,7 @@ class _BookAppointmentBodyState extends State<_BookAppointmentBody> {
             children: [
               Text(widget.vendorName, style: AppTypography.h3),
               Text(
-                'Book an Appointment',
+                AppLocalizations.of(context)!.bookAnAppointment,
                 style: AppTypography.bodySmall
                     .copyWith(color: AppColors.textSecondary),
               ),
@@ -154,18 +159,37 @@ class _BookAppointmentBodyState extends State<_BookAppointmentBody> {
                           ),
                     );
                   }
-                  if (state is SlotsLoaded) {
-                    final available =
-                        state.slots.where((s) => s.isAvailable).toList();
-                    if (available.isEmpty) {
-                      return const EmptyStateWidget(
+                  // Booking failed — keep slot grid visible, mark attempted slot
+                  if (state is BookingCreateError) {
+                    if (state.slots.isEmpty) {
+                      final l10n = AppLocalizations.of(context)!;
+                      return EmptyStateWidget(
                         icon: Icons.event_busy_rounded,
-                        title: 'No slots available',
-                        subtitle: 'Try selecting a different date',
+                        title: l10n.noSlotsAvailable,
+                        subtitle: l10n.noSlotsVendorMayBeClosed,
+                      );
+                    }
+                    final bookedTime = _lastAttemptedSlotTime;
+                    final updatedSlots = bookedTime == null
+                        ? state.slots
+                        : state.slots
+                            .map((s) => s.startTime == bookedTime
+                                ? s.copyWith(isAlreadyBooked: true)
+                                : s)
+                            .toList();
+                    return _SlotGrid(slots: updatedSlots, onSlotTapped: _onSlotTapped);
+                  }
+                  if (state is SlotsLoaded) {
+                    if (state.slots.isEmpty) {
+                      final l10n = AppLocalizations.of(context)!;
+                      return EmptyStateWidget(
+                        icon: Icons.event_busy_rounded,
+                        title: l10n.noSlotsAvailable,
+                        subtitle: l10n.noSlotsVendorMayBeClosed,
                       );
                     }
                     return _SlotGrid(
-                      slots: available,
+                      slots: state.slots,
                       onSlotTapped: _onSlotTapped,
                     );
                   }
@@ -269,7 +293,7 @@ class _SlotGrid extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Available Slots',
+            AppLocalizations.of(context)!.availableSlots,
             style: AppTypography.labelLarge
                 .copyWith(color: AppColors.textSecondary),
           ),
@@ -287,6 +311,14 @@ class _SlotGrid extends StatelessWidget {
   }
 }
 
+String _to12h(String hhmm, BuildContext context) {
+  final p = hhmm.split(':');
+  return MaterialLocalizations.of(context).formatTimeOfDay(
+    TimeOfDay(hour: int.parse(p[0]), minute: int.parse(p[1])),
+    alwaysUse24HourFormat: false,
+  );
+}
+
 class _SlotChip extends StatelessWidget {
   final AppointmentSlot slot;
   final VoidCallback onTap;
@@ -295,41 +327,113 @@ class _SlotChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final atCapacity = slot.maxCapacity > 0 && slot.bookingCount >= slot.maxCapacity;
+    final isFull = slot.isFull || atCapacity;
+    final isBooked = slot.isAlreadyBooked;
+    final isDisabled = isFull || isBooked;
+    final overCapacity = slot.overCapacityBy > 0;
+
+    final borderColor = isBooked
+        ? AppColors.primary.withValues(alpha: 0.3)
+        : isFull
+            ? AppColors.warning.withValues(alpha: 0.5)
+            : AppColors.primary.withValues(alpha: 0.4);
+    final textColor = isDisabled ? AppColors.textHint : AppColors.primary;
+
     return InkWell(
-      onTap: onTap,
+      onTap: isDisabled ? null : onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: isDisabled
+              ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.5)
+              : Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: AppColors.primary.withValues(alpha: 0.4),
-            width: 1.5,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          border: Border.all(color: borderColor, width: 1.5),
+          boxShadow: isDisabled
+              ? null
+              : [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              slot.startTime,
-              style: AppTypography.labelLarge.copyWith(color: AppColors.primary),
-            ),
-            if (slot.durationMinutes > 0) ...[
-              const SizedBox(height: 2),
-              Text(
-                '${slot.durationMinutes} min',
-                style:
-                    AppTypography.bodySmall.copyWith(color: AppColors.textHint),
+              _to12h(slot.startTime, context),
+              style: AppTypography.labelLarge.copyWith(
+                color: textColor,
+                decoration: isDisabled ? TextDecoration.lineThrough : null,
               ),
-            ],
+            ),
+            const SizedBox(height: 4),
+            if (isBooked)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.alreadyBookedLabel,
+                  style: AppTypography.bodySmall.copyWith(
+                    fontSize: 10,
+                    color: AppColors.primary.withValues(alpha: 0.6),
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              )
+            else if (isFull)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppColors.warning.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.slotsFull,
+                  style: AppTypography.bodySmall.copyWith(
+                    fontSize: 10,
+                    color: AppColors.warning,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              )
+            else if (slot.maxCapacity > 1)
+              Text(
+                AppLocalizations.of(context)!
+                    .bookedOfCapacity(slot.bookingCount, slot.maxCapacity),
+                style: AppTypography.bodySmall.copyWith(color: AppColors.textHint),
+              )
+            else if (slot.durationMinutes > 0)
+              Text(
+                AppLocalizations.of(context)!.durationMinutes(slot.durationMinutes),
+                style: AppTypography.bodySmall.copyWith(color: AppColors.textHint),
+              ),
+            if (overCapacity)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.warning_amber_rounded, size: 12, color: AppColors.error),
+                    const SizedBox(width: 2),
+                    Text(
+                      AppLocalizations.of(context)!.overCapacityWarning(slot.overCapacityBy),
+                      style: AppTypography.bodySmall.copyWith(
+                        fontSize: 9,
+                        color: AppColors.error,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
       ),

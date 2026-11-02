@@ -1,9 +1,7 @@
 {
   "@@locale": "ta",
-
   "appTitle": "சாத்கதா",
   "tagline": "ஒரு கணக்கு, இருவருக்கும்",
-
   "onboarding1Title": "இருதரப்பு பகிரப்பட்ட கணக்கு",
   "onboarding1Subtitle": "விற்பனையாளர் மற்றும் வாடிக்கையாளர் இருவருக்கும் ஒரே கணக்கு. இருவரும் ஒரே உண்மையை காண்கிறார்கள்.",
   "onboarding2Title": "குரல் மற்றும் பில் OCR",
@@ -13,7 +11,6 @@
   "getStarted": "தொடங்குங்கள்",
   "next": "அடுத்து",
   "skip": "தவிர்க்க",
-
   "chooseLanguage": "உங்கள் மொழியை தேர்ந்தெடுங்கள்",
   "continueButton": "தொடரவும்",
   "chooseRole": "உங்கள் பாத்திரத்தை தேர்ந்தெடுங்கள்",
@@ -25,7 +22,6 @@
   "vendorRoleSubtitle": "வணிகக் கணக்கு, ஊழியர்களை நிர்வகிக்கவும் மற்றும் கட்டணம் பெறவும்.",
   "customerRoleTitle": "நான் ஒரு வாடிக்கையாளர்",
   "customerRoleSubtitle": "விற்பனையாளர்களுடன் கணக்கை கண்காணிக்கவும் மற்றும் UPI மூலம் கட்டணம் செலுத்தவும்.",
-
   "loginTitle": "சாத்கதாவில் உள்நுழைக",
   "enterMobile": "தொடர உங்கள் விவரங்களை உள்ளிடுக",
   "mobileNumber": "மொபைல் எண்",
@@ -34,7 +30,13 @@
   "verifyAndContinue": "சரிபார்த்து தொடரவும்",
   "changePhoneNumber": "தொலைபேசி எண்ணை மாற்றவும்",
   "otpSentTo": "+91 {phoneNumber} க்கு அனுப்பப்பட்ட 6 இலக்க குறியீட்டை உள்ளிடுக",
-  "@otpSentTo": { "placeholders": { "phoneNumber": { "type": "String" } } },
+  "@otpSentTo": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
   "email": "மின்னஞ்சல்",
   "password": "கடவுச்சொல்",
   "passwordHint": "கடவுச்சொல்லை உள்ளிடுக",
@@ -44,7 +46,6 @@
   "pleaseEnterCredentials": "மின்னஞ்சல் மற்றும் கடவுச்சொல்லை உள்ளிடுக",
   "fillRequiredFields": "பெயர், மின்னஞ்சல் மற்றும் கடவுச்சொல்லை நிரப்பவும்",
   "passwordMinChars": "குறைந்தது 8 எழுத்துக்கள்",
-
   "completeProfile": "சுயவிவரத்தை நிறைவு செய்யவும்",
   "enterYourName": "உங்கள் பெயரை உள்ளிடுக",
   "egBusinessName": "எ.கா. கிருஷ்ணா டெய்ரி",
@@ -56,7 +57,6 @@
   "businessCategory": "வணிக வகை",
   "businessAddress": "வணிக முகவரி (விருப்பத்தேர்வு)",
   "upiId": "UPI ஐடி (கட்டணங்களுக்கு)",
-
   "vendorDashboard": "விற்பனையாளர் டாஷ்போர்டு",
   "customerDashboard": "வாடிக்கையாளர் டாஷ்போர்டு",
   "customerMode": "வாடிக்கையாளர் பயன்முறை",
@@ -70,8 +70,13 @@
   "recentCustomers": "சமீபத்திய வாடிக்கையாளர்கள்",
   "viewAll": "அனைத்தையும் பார்க்க",
   "customerAddedSnackbar": "{name} சேர்க்கப்பட்டது",
-  "@customerAddedSnackbar": { "placeholders": { "name": { "type": "String" } } },
-
+  "@customerAddedSnackbar": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "sharedLedger": "பகிரப்பட்ட கணக்கு",
   "totalBalance": "மொத்த இருப்பு",
   "statement": "அறிக்கை",
@@ -83,6 +88,8 @@
   "balanceCustomerOwes": "வாடிக்கையாளரின் நிலுவை",
   "balanceYouOwe": "உங்கள் நிலுவை",
   "balanceSettled": "தீர்க்கப்பட்டது",
+  "balanceYouOweVendor": "நீங்கள் வணிகருக்கு கடன்பட்டிருக்கிறீர்கள்",
+  "balanceVendorOwesYou": "வணிகர் உங்களுக்கு கடன்பட்டிருக்கிறார்",
   "ledgerInfoTitle": "இந்த கணக்கு எவ்வாறு செயல்படுகிறது",
   "statusConfirmed": "உறுதிப்படுத்தப்பட்டது",
   "statusConfirmedDesc": "இரு தரப்பும் ஒப்புக்கொண்டனர். உள்ளீடு பூட்டப்பட்டது மற்றும் மாற்ற முடியாது.",
@@ -104,7 +111,14 @@
   "entryConfirmedAt": "உறுதிப்படுத்தல் தேதி",
   "entryDisputeReason": "சர்ச்சையின் காரணம்",
   "entryFor": "{name} க்காக",
-  "@entryFor": { "placeholders": { "name": { "type": "String" } } },
+  "@entryFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "description": "விவரம்",
   "descriptionOptional": "விவரம் (விருப்பத்தேர்வு)",
   "quantityOptional": "அளவு (விருப்பத்தேர்வு)",
   "descriptionHint": "எ.கா. 2L பால், மாத மளிகை",
@@ -114,13 +128,18 @@
   "noLedgerTransactionsSubtitle": "தொடங்க கடன் அல்லது கட்டண உள்ளீட்டை சேர்க்கவும்.",
   "confirmEntryTitle": "உள்ளீட்டை உறுதிப்படுத்தவும்",
   "confirmEntryMessage": "₹{amount} உள்ளீட்டை உறுதிப்படுத்த விரும்புகிறீர்களா? இதை மாற்ற முடியாது.",
-  "@confirmEntryMessage": { "placeholders": { "amount": { "type": "String" } } },
+  "@confirmEntryMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "dispute": "சர்ச்சை",
   "raiseDisputeTitle": "சர்ச்சையை எழுப்பவும்",
   "raiseDisputeSubtitle": "இந்த உள்ளீட்டில் என்ன தவறு என்று விவரிக்கவும்.",
   "raiseDisputeHint": "எ.கா. தொகை ₹50 ஆக இருக்க வேண்டும், ₹60 அல்ல",
   "submitDispute": "சர்ச்சையை சமர்ப்பிக்கவும்",
-
   "staffAndLabour": "ஊழியர்கள் மற்றும் தொழிலாளர்கள்",
   "addStaff": "ஊழியரை சேர்க்கவும்",
   "presentToday": "இன்று வருகை",
@@ -133,19 +152,48 @@
   "halfDay": "அரை நாள்",
   "paySalaryTitle": "சம்பளம் கொடுக்கவும்",
   "unpaidLabel": "செலுத்தப்படாதது: ₹{amount}",
-  "@unpaidLabel": { "placeholders": { "amount": { "type": "String" } } },
+  "@unpaidLabel": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "upiTransactionIdOptional": "UPI பரிவர்த்தனை ஐடி (விருப்பத்தேர்வு)",
   "noDues": "நிலுவைகள் இல்லை",
   "staffPayAmount": "₹{amount} கொடுக்கவும்",
-  "@staffPayAmount": { "placeholders": { "amount": { "type": "String" } } },
+  "@staffPayAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "staffJoined": "{date} அன்று சேர்ந்தார்",
-  "@staffJoined": { "placeholders": { "date": { "type": "String" } } },
+  "@staffJoined": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "staffSalaryPerDay": "₹{amount}/நாள்",
-  "@staffSalaryPerDay": { "placeholders": { "amount": { "type": "String" } } },
+  "@staffSalaryPerDay": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "staffSalaryPerMonth": "₹{amount}/மாதம்",
-  "@staffSalaryPerMonth": { "placeholders": { "amount": { "type": "String" } } },
+  "@staffSalaryPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "staffPayButton": "கட்டணம்",
-
   "businessReports": "வணிக அறிக்கைகள்",
   "revenueTrend": "வருவாய் போக்கு",
   "collectionSummary": "சேகரிப்பு சுருக்கம்",
@@ -153,7 +201,6 @@
   "totalCollected": "மொத்த சேகரிப்பு",
   "topCustomers": "சிறந்த வாடிக்கையாளர்கள்",
   "seeAll": "அனைத்தையும் பார்க்க",
-
   "settings": "அமைப்புகள்",
   "appLanguage": "ஆப் மொழி",
   "selectLanguage": "மொழியை தேர்ந்தெடுக",
@@ -162,23 +209,39 @@
   "settingsAppPinFingerprint": "ஆப் பின் மற்றும் கைரேகை",
   "settingsFaqsContact": "உதவி மற்றும் தொடர்பு",
   "settingsVersion": "பதிப்பு {version}",
-  "@settingsVersion": { "placeholders": { "version": { "type": "String" } } },
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "myUpiIds": "என் UPI ஐடிகள்",
   "notifications": "அறிவிப்புகள்",
   "security": "பாதுகாப்பு",
   "helpSupport": "உதவி",
   "logout": "வெளியேறு",
-
   "markAllRead": "அனைத்தையும் படித்ததாக குறிக்கவும்",
   "noNotificationsTitle": "இன்னும் அறிவிப்புகள் இல்லை",
   "noNotificationsSubtitle": "இங்கே கணக்கு புதுப்பிப்புகள், கட்டண எச்சரிக்கைகள் மற்றும் நினைவூட்டல்கள் தெரியும்.",
   "today": "இன்று",
   "yesterday": "நேற்று",
   "minutesAgo": "{count} நிமிடங்களுக்கு முன்",
-  "@minutesAgo": { "placeholders": { "count": { "type": "int" } } },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "hoursAgo": "{count} மணி நேரத்திற்கு முன்",
-  "@hoursAgo": { "placeholders": { "count": { "type": "int" } } },
-
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "payments": "கட்டணங்கள்",
   "transactionHistory": "பரிவர்த்தனை வரலாறு",
   "totalPaid": "மொத்தம் செலுத்தப்பட்டது",
@@ -191,7 +254,6 @@
   "paymentStatusPaid": "செலுத்தப்பட்டது",
   "paymentStatusFailed": "தோல்வி",
   "paymentStatusRefunded": "திரும்பப்பெறப்பட்டது",
-
   "appointments": "சந்திப்புகள்",
   "myAppointments": "என் சந்திப்புகள்",
   "upcoming": "வரவிருக்கும்",
@@ -205,14 +267,20 @@
   "cancelAppointmentTitle": "சந்திப்பை ரத்து செய்யவதா?",
   "cancelAppointmentMessage": "{date} அன்று {time} மணிக்கான சந்திப்பை ரத்து செய்யவதா?",
   "@cancelAppointmentMessage": {
-    "placeholders": { "date": { "type": "String" }, "time": { "type": "String" } }
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
   },
   "bookingStatusConfirmed": "உறுதிப்படுத்தப்பட்டது",
   "bookingStatusPending": "நிலுவையில்",
   "bookingStatusCancelled": "ரத்து செய்யப்பட்டது",
   "bookingStatusCompleted": "முடிந்தது",
   "bookingStatusDone": "முடிந்தது",
-
   "upiPayment": "UPI கட்டணம்",
   "amountToPay": "செலுத்த வேண்டிய தொகை",
   "securedByUpi": "UPI மூலம் பாதுகாக்கப்பட்டது",
@@ -222,23 +290,40 @@
   "enterUpiId": "UPI ஐடியை உள்ளிடுக",
   "addNoteOptional": "குறிப்பை சேர்க்கவும் (விருப்பத்தேர்வு)",
   "payAmountButton": "₹{amount} செலுத்தவும்",
-  "@payAmountButton": { "placeholders": { "amount": { "type": "String" } } },
+  "@payAmountButton": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "done": "முடிந்தது",
   "paymentSomethingWentWrong": "ஏதோ தவறு நடந்தது. மீண்டும் முயற்சிக்கவும்.",
   "upiAppComingSoon": "{app} விரைவில் வருகிறது",
-  "@upiAppComingSoon": { "placeholders": { "app": { "type": "String" } } },
+  "@upiAppComingSoon": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
   "pleaseEnterUpiId": "UPI ஐடியை உள்ளிடுக",
   "paidToRecipient": "₹{amount} {name} க்கு செலுத்தப்பட்டது",
   "@paidToRecipient": {
-    "placeholders": { "amount": { "type": "String" }, "name": { "type": "String" } }
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
   },
   "orDivider": "அல்லது",
-
   "addNewCustomer": "புதிய வாடிக்கையாளரை சேர்க்கவும்",
   "customerName": "வாடிக்கையாளர் பெயர்",
   "mobileNo": "மொபைல் எண்",
   "addCustomer": "வாடிக்கையாளரை சேர்க்கவும்",
-
   "paymentConfirmed": "கட்டணத்தை உறுதிப்படுத்தவும்",
   "addAdvance": "முன்பணம் சேர்க்கவும்",
   "addAdvanceTitle": "முன்பணம் சேர்க்கவும்",
@@ -265,35 +350,35 @@
   "addStaffButton": "ஊழியரை சேர்க்கவும்",
   "noteOptional": "குறிப்பு (விருப்பத்தேர்வு)",
   "amountRupees": "தொகை (₹)",
-
   "cancel": "ரத்து செய்",
   "confirm": "உறுதிப்படுத்து",
   "tryAgain": "மீண்டும் முயற்சிக்கவும்",
   "alignBillInFrame": "பில்லை சட்டகத்தில் வைக்கவும்",
   "verifyAndLogin": "சரிபார்த்து உள்நுழைக",
-
   "voiceListening": "கேட்கிறேன்...",
   "voiceThinking": "யோசிக்கிறேன்...",
   "voiceDetectedEntry": "கண்டறியப்பட்ட உள்ளீடு",
   "voiceConfirmEntry": "உள்ளீட்டை உறுதிப்படுத்தவும்",
   "item": "பொருள்",
-
   "totalOutstandingBalance": "மொத்த நிலுவை தொகை",
   "payAllDues": "அனைத்து நிலுவைகளையும் செலுத்தவும்",
   "myKhatas": "என் கணக்குகள்",
   "noVendorsFound": "விற்பனையாளர்கள் கிடைக்கவில்லை",
-
   "verifyBillDetails": "பில் விவரங்களை சரிபார்க்கவும்",
   "scannedBillPreview": "ஸ்கேன் செய்யப்பட்ட பில்",
   "descriptionItemDetails": "விவரம் / பொருள் விவரங்கள்",
   "selectCustomer": "வாடிக்கையாளரை தேர்ந்தெடுக",
   "searchCustomerHint": "வாடிக்கையாளரை தேடுங்கள் அல்லது தேர்ந்தெடுங்கள்",
   "saveToKhata": "கணக்கில் சேமிக்கவும்",
-
   "allCustomersReport": "அனைத்து வாடிக்கையாளர்கள் அறிக்கை",
   "collectedInMonth": "{month} இல் சேகரிக்கப்பட்டது",
-  "@collectedInMonth": { "placeholders": { "month": { "type": "String" } } },
-
+  "@collectedInMonth": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
   "notificationSettings": "அறிவிப்பு அமைப்புகள்",
   "securityPin": "பாதுகாப்பு மற்றும் பின்",
   "editProfile": "சுயவிவரத்தை திருத்தவும்",
@@ -310,28 +395,1170 @@
   "passwordChangedSuccess": "கடவுச்சொல் வெற்றிகரமாக மாற்றப்பட்டது",
   "loadingContent": "ஏற்றுகிறது...",
   "failedToLoad": "உள்ளடக்கத்தை ஏற்ற முடியவில்லை. மீண்டும் முயற்சிக்கவும்.",
-
   "bookingActions": "முன்பதிவு செயல்கள்",
   "confirmBooking": "முன்பதிவை உறுதிப்படுத்தவும்",
   "markComplete": "முடிந்ததாக குறிக்கவும்",
   "confirmBookingMessage": "{customer} இன் {date} அன்று {time} மணி சந்திப்பை உறுதிப்படுத்தவதா?",
   "@confirmBookingMessage": {
-    "placeholders": { "date": { "type": "String" }, "time": { "type": "String" }, "customer": { "type": "String" } }
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      },
+      "customer": {
+        "type": "String"
+      }
+    }
   },
   "bookingUpdated": "முன்பதிவு வெற்றிகரமாக புதுப்பிக்கப்பட்டது",
   "bookingUpdateFailed": "முன்பதிவை புதுப்பிக்க முடியவில்லை",
-
   "markAttendanceFor": "வருகையை குறிக்கவும் — {date}",
-  "@markAttendanceFor": { "placeholders": { "date": { "type": "String" } } },
+  "@markAttendanceFor": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "allCustomers": "அனைத்து வாடிக்கையாளர்கள்",
   "noCustomersYet": "இன்னும் வாடிக்கையாளர்கள் இல்லை",
   "noCustomersYetSubtitle": "தொடங்க முதல் வாடிக்கையாளரை சேர்க்கவும்",
   "invalidPhone": "6–9 இல் தொடங்கும் 10 இலக்க வலிய மொபைல் எண்ணை உள்ளிடவும்",
   "accrueMonthSalary": "மாத சம்பளத்தை சேர்க்கவும் (₹{amount})",
-  "@accrueMonthSalary": { "placeholders": { "amount": { "type": "String" } } },
+  "@accrueMonthSalary": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "accrueMonthSalaryTitle": "மாத சம்பளத்தை சேர்க்கவும்",
   "accrueMonthSalaryConfirm": "{name} இன் நிலுவைக்கு இந்த மாதம் ₹{amount} சேர்க்கவதா?",
   "@accrueMonthSalaryConfirm": {
-    "placeholders": { "name": { "type": "String" }, "amount": { "type": "String" } }
-  }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "accountInformation": "Account Information",
+  "updateProfileDetails": "Update your name, photo and details",
+  "updateAccountPassword": "Update your account password",
+  "deleteAccount": "Delete Account",
+  "deleteAccountSubtitle": "Permanently delete your account and all data",
+  "deleteAccountConfirmation": "Delete Account?",
+  "deleteAccountConfirmationMessage": "This will permanently delete your account and all your data. This action cannot be undone.",
+  "deleteAccountStaffWarning": "This will permanently delete your account. This cannot be undone.",
+  "deleteForever": "Delete Forever",
+  "delete": "Delete",
+  "readTermsOfService": "Read our terms of service",
+  "privacyPolicyDescription": "How we handle your data",
+  "confirmLogout": "Are you sure you want to log out?",
+  "membershipTiers": "Membership Tiers",
+  "membershipTiersDescription": "Rename tiers and set member discounts",
+  "logIn": "Log in",
+  "enterPhoneNumberToContinue": "Enter your phone number to continue",
+  "havingTrouble": "Having trouble?",
+  "useEmailInstead": "Use email instead →",
+  "logInWithEmail": "Log in with email",
+  "emailPlaceholder": "you@example.com",
+  "enterYourPassword": "Enter your password",
+  "takePhoto": "Take a photo",
+  "chooseFromGallery": "Choose from gallery",
+  "removePhoto": "Remove photo",
+  "tapToAddProfilePhoto": "Tap to add profile photo",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "add": "Add",
+  "addUpiId": "Add UPI ID",
+  "save": "Save",
+  "close": "Close",
+  "ok": "OK",
+  "remove": "Remove",
+  "approve": "Approve",
+  "decline": "Decline",
+  "none": "None",
+  "percent": "Percent",
+  "profile": "Profile",
+  "paymentVerification": "Payment Verification",
+  "verifyingPayment": "Verifying Payment",
+  "paymentConfirmedExclamation": "Payment Confirmed!",
+  "verificationTimedOut": "Verification Timed Out",
+  "goBack": "Go Back",
+  "payDues": "Pay Dues",
+  "skipForNow": "Skip for now",
+  "allDone": "All Done!",
+  "noUpcomingAppointments": "No upcoming appointments",
+  "myPay": "My Pay",
+  "myPaymentQr": "My Payment QR",
+  "showMyQr": "Show my QR",
+  "noPaymentsYet": "No payments yet",
+  "paymentHistory": "Payment History",
+  "paymentHistory6Months": "Payment History (6 months)",
+  "connectionRequest": "Connection Request",
+  "vendorWantsToConnect": "A vendor wants to connect",
+  "acceptRequest": "Accept",
+  "declineRequest": "Decline",
+  "messageLabel": "Message",
+  "sendRequest": "Send Request",
+  "requestSentNotification": "Request sent! They will be notified to confirm.",
+  "awaitingAcceptance": "Awaiting Acceptance",
+  "addAVendor": "Add a Vendor",
+  "findByPhoneOrEmail": "Find by phone number or email",
+  "phoneOrEmail": "Phone or email",
+  "phoneOrEmailHint": "10-digit mobile or email address",
+  "nicknameOptional": "Nickname (optional)",
+  "howYouKnowVendor": "How you know this vendor",
+  "bookingNoteExample": "E.g. Need extra milk today",
+  "confirmLocation": "Confirm Location",
+  "moveMapToSelectLocation": "Move the map to select a location",
+  "searchPlaceHint": "Search for a place…",
+  "mapAttribution": "© OpenStreetMap contributors",
+  "searchVendorsHint": "Search vendors…",
+  "somethingWentWrong": "Something went wrong",
+  "payViaUpi": "Pay via UPI",
+  "connectWithVendor": "Connect",
+  "requestConnection": "Request Connection",
+  "addVendor": "Add Vendor",
+  "noOutstandingBalances": "No outstanding balances",
+  "allCustomersSettledUp": "All customers are settled up.",
+  "nothingCollectedToday": "Nothing collected today",
+  "paymentsWillAppearHere": "Payments received today will appear here.",
+  "customerReport": "Customer Report",
+  "overview": "Overview",
+  "tapToStop": "Tap to stop",
+  "itemName": "Item name",
+  "itemNameExample": "e.g. Milk",
+  "unitPrice": "Unit Price ₹",
+  "deliverTo": "Deliver to",
+  "bulkCharge": "Bulk Charge",
+  "newProduct": "New product",
+  "editProduct": "Edit Product",
+  "newProductService": "New Product / Service",
+  "updateProductDetails": "Update name, unit or price",
+  "defineProduct": "Define what you sell and its base price",
+  "productName": "Product name",
+  "productNameExample": "e.g. Daily Morning Milk",
+  "unit": "Unit",
+  "unitExample": "litre / kg / piece",
+  "pricePerUnit": "Price / unit (₹)",
+  "deleteProduct": "Delete product",
+  "deleteProductConfirmation": "Delete product?",
+  "noProductsYet": "No products yet",
+  "addFirstProduct": "Add First Product",
+  "setPriceToChargeTitle": "Set a price for {name}",
+  "@setPriceToChargeTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "setPriceToChargeSubtitle": "This service has no unit or price set yet. Add them to charge customers for it.",
+  "setPrice": "Set Price",
+  "renameTier": "Rename tier",
+  "tierName": "Tier name",
+  "memberDiscount": "Member discount",
+  "flatAmount": "Flat ₹",
+  "discountPercent": "Discount %",
+  "discountAmount": "Discount amount (₹)",
+  "percentExample": "e.g. 5",
+  "amountExample": "e.g. 50",
+  "maxDiscountPerDue": "Max discount per due (₹) — optional",
+  "maxDiscountExample": "e.g. 100 (leave blank for no cap)",
+  "saveDiscount": "Save discount",
+  "membership": "Membership",
+  "setTier": "Set",
+  "changeTier": "Change",
+  "applyMembership": "Apply",
+  "removeMembership": "Remove membership",
+  "removeLedgerConfirmation": "Remove ledger?",
+  "exportStatement": "Export Statement",
+  "appAccess": "App access",
+  "removeProductConfirmation": "Remove \"{name}\" from your product list?",
+  "@removeProductConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tierLevel": "Level {level}",
+  "@tierLevel": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "discountFor": "Discount for {tier}",
+  "@discountFor": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "removeStaffTitle": "ஊழியரை நீக்கவும்",
+  "@removeStaffTitle": {},
+  "removeStaffConfirm": "{name} ஐ உங்கள் ஊழியர் பட்டியலில் இருந்து நீக்கவதா? இவரின் ஆப் அணுகல் உடனடியாக ரத்து செய்யப்படும்.",
+  "@removeStaffConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "invalidPhoneNumber": "சரியான 10 இலக்க இந்திய மொபைல் எண்ணை உள்ளிடவும்",
+  "enterAll6Digits": "6 இலக்கங்களையும் உள்ளிடவும்",
+  "invalidEmailAddress": "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்",
+  "passwordRequired": "கடவுச்சொல்லை உள்ளிடவும்",
+  "nameRequired": "பெயர் தேவை",
+  "required": "தேவை",
+  "invalidUpiFormat": "தவறான UPI ஐடி வடிவம் (எ.கா. name@upi)",
+  "upiIdAlreadyAdded": "இந்த UPI ஐடி ஏற்கனவே சேர்க்கப்பட்டது",
+  "verifyButton": "சரிபார்க்கவும்",
+  "createAccountButton": "கணக்கு உருவாக்கவும்",
+  "phonePlaceholder": "XXXXX XXXXX",
+  "enterPassword": "கடவுச்சொல்லை உள்ளிடவும்",
+  "mobileNumberLabel": "மொபைல் எண்",
+  "personalInfo": "தனிப்பட்ட தகவல்",
+  "businessInfo": "வணிக தகவல்",
+  "enterOtpTitle": "OTP உள்ளிடவும்",
+  "sentToLabel": "அனுப்பப்பட்டது",
+  "noOtpReceived": "OTP வரவில்லையா?",
+  "resendOtp": "OTP மீண்டும் அனுப்பவும்",
+  "uploadingPhotoLabel": "புகைப்படம் பதிவேற்றுகிறது...",
+  "phoneNumberLabel": "தொலைபேசி எண்",
+  "iAmA": "நான் ஒரு",
+  "dualRoleExplanation": "நீங்கள் முதன்மையாக விற்பனையாளர் அனுபவத்தை பயன்படுத்துவீர்கள். வாடிக்கையாளர் கணக்கை தனியாக அணுகலாம்.",
+  "profileSavedPhotoFailed": "சுயவிவரம் சேமிக்கப்பட்டது — புகைப்படத்தை இப்போது பதிவேற்ற முடியவில்லை",
+  "profileUpdatedSuccess": "சுயவிவரம் வெற்றிகரமாக புதுப்பிக்கப்பட்டது",
+  "addUpiIdTitle": "UPI ஐடி சேர்க்கவும்",
+  "upiIdHint": "yourname@upi",
+  "cancelButton": "ரத்து செய்",
+  "primaryUpiInfo": "முதன்மை UPI ஐடி",
+  "primaryUpiDescription": "முதன்மை ஐடி வாடிக்கையாளர்களிடம் கட்டணத்திற்காக பகிரப்படும். எது முதன்மையாக இருக்க வேண்டும் என்று மாற்ற நட்சத்திரத்தை தட்டவும்.",
+  "upiIdCounter": "{count} / {max} UPI ஐடிகள்",
+  "@upiIdCounter": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "primaryUpiIdTooltip": "முதன்மை UPI ஐடி",
+  "setAsPrimaryTooltip": "முதன்மையாக அமை",
+  "primaryLabel": "முதன்மை",
+  "removeButtonLabel": "நீக்கவும்",
+  "noUpiIdsEmpty": "இன்னும் UPI ஐடிகள் இல்லை",
+  "upiEmptyDescription": "5 வரை UPI ஐடிகள் சேர்க்கலாம். முதன்மை ஐடி வாடிக்கையாளர்களிடம் கட்டணத்திற்காக பகிரப்படும்.",
+  "changePasswordSubtitle": "தற்போதைய கடவுச்சொல்லை உள்ளிட்டு புதியதை தேர்வு செய்யவும்.",
+  "alreadyHaveAccount": "ஏற்கனவே கணக்கு இருக்கிறதா?",
+  "goBackButton": "திரும்பு",
+  "saveButton": "சேமி",
+  "language": "மொழி",
+  "languageEnglish": "English",
+  "languageHindi": "हिंदी",
+  "languageBengali": "বাংলা",
+  "languageMarathi": "मराठी",
+  "languageTamil": "தமிழ்",
+  "languageTelugu": "తెలుగు",
+  "languageKannada": "ಕನ್ನಡ",
+  "languageGujarati": "ગુજરાતી",
+  "languagePunjabi": "ਪੰਜਾਬੀ",
+  "languageMalayalam": "മലയാളം",
+  "languageBhojpuri": "भोजपुरी",
+  "languageMaithili": "मैथिली",
+  "needPasswordForEmail": "இதை பயன்படுத்த உங்கள் கணக்கில் கடவுச்சொல் அமைக்கப்பட்டிருக்க வேண்டும்.\nஅமைப்புகள் → கடவுச்சொல் மாற்றவும் என்பதில் அமைக்கவும்.",
+  "usePhoneInstead": "தொலைபேசி எண்ணை பயன்படுத்தவும் →",
+  "sessionExpiredVerifyPhoneAgain": "அமர்வு காலாவதியானது. மீண்டும் தொலைபேசியை சரிபார்க்கவும்.",
+  "upiIdsSavedSuccessfully": "UPI ஐடிகள் வெற்றிகரமாக சேமிக்கப்பட்டன",
+  "chooseYourLanguageHindi": "உங்கள் மொழியை தேர்வு செய்யுங்கள்",
+  "unknownLanguage": "தெரியாத மொழி",
+  "businessCategoryMilkDairy": "பால் / டெய்ரி",
+  "businessCategoryPressDhobi": "பிரஸ் / தோபி",
+  "businessCategoryMaidCook": "வேலையாள் / சமையல்காரர்",
+  "businessCategoryNewspaper": "செய்தித்தாள்",
+  "businessCategoryWaterCan": "தண்ணீர் கேன்",
+  "businessCategoryTiffinFood": "டிபன் / உணவு",
+  "businessCategoryKiranaGrocery": "கிரானா / மளிகை",
+  "businessCategorySalonParlour": "சலூன் / பார்லர்",
+  "businessCategoryConstructionLabour": "கட்டுமான தொழிலாளி",
+  "businessCategoryTransportAuto": "போக்குவரத்து / ஆட்டோ",
+  "businessCategoryOther": "மற்றவை",
+  "bookAnAppointment": "சந்திப்பை முன்பதிவு செய்யவும்",
+  "noSlotsAvailable": "நேர வரிசைகள் இல்லை",
+  "trySelectingDifferentDate": "வேறு தேதியை தேர்வு செய்து பாருங்கள்",
+  "availableSlots": "கிடைக்கும் நேர வரிசைகள்",
+  "bookingConfirmedToast": "முன்பதிவு உறுதிப்பட்டது!",
+  "date": "தேதி",
+  "time": "நேரம்",
+  "notesOptional": "குறிப்புகள் (விருப்பத்தேர்வு)",
+  "durationMinutes": "{minutes} நிமிடம்",
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "saveChanges": "மாற்றங்களை சேமி",
+  "saveProduct": "பொருளை சேமி",
+  "editProductMenuItem": "பொருளை திருத்தவும்",
+  "deleteProductMenuItem": "பொருளை நீக்கவும்",
+  "noProductsYetDescription": "பால், பனீர் போன்ற விற்கும் பொருட்களை ஒருமுறை வரையறுக்கவும், பிறகு தினமும் பயன்படுத்தவும்.",
+  "selectProductToAssignQty": "அளவை நிர்ணயிக்க மேலே ஒரு பொருளை தேர்வு செய்யவும்",
+  "noCustomersLinked": "இன்னும் வாடிக்கையாளர்கள் இணைக்கப்படவில்லை",
+  "chargeAll": "அனைவரையும் வசூல்",
+  "chargedSuccessfully": "{count} வாடிக்கையாளரிடம் வசூலிக்கப்பட்டது",
+  "@chargedSuccessfully": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargedSuccessfullyPlural": "{count} வாடிக்கையாளர்களிடம் வசூலிக்கப்பட்டது",
+  "@chargedSuccessfullyPlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargedPartial": "{ok} வசூலிக்கப்பட்டது, {fail} தோல்வி",
+  "@chargedPartial": {
+    "placeholders": {
+      "ok": {
+        "type": "int"
+      },
+      "fail": {
+        "type": "int"
+      }
+    }
+  },
+  "bulkSummaryLine": "{count} வாடிக்கையாளர்  •  {qty} {unit}",
+  "@bulkSummaryLine": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "qty": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "bulkSummaryLinePlural": "{count} வாடிக்கையாளர்கள்  •  {qty} {unit}",
+  "@bulkSummaryLinePlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "qty": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "totalAmount": "மொத்தம் ₹{amount}",
+  "@totalAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentNext": "அடுத்தது: {vendorName} · {date} அன்று {time}",
+  "@appointmentNext": {
+    "placeholders": {
+      "vendorName": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "outstandingShortLabel": "நிலுவை",
+  "payViaUpiAmount": "₹{amount} UPI மூலம் செலுத்தவும்",
+  "@payViaUpiAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentSummarySkipped": "{count} விற்பனையாளர்களுக்கு செலுத்தப்பட்டது, {skipped} தவிர்க்கப்பட்டது.",
+  "@paymentSummarySkipped": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentSummarySkippedSingular": "{count} விற்பனையாளருக்கு செலுத்தப்பட்டது, {skipped} தவிர்க்கப்பட்டது.",
+  "@paymentSummarySkippedSingular": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentSummaryComplete": "அனைத்து {count} விற்பனையாளர்களுக்கும் செலுத்தப்பட்டது.",
+  "@paymentSummaryComplete": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentSummaryCompleteSingular": "அனைத்து {count} விற்பனையாளருக்கும் செலுத்தப்பட்டது.",
+  "@paymentSummaryCompleteSingular": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tapToAcceptOrDecline": "ஏற்க அல்லது நிராகரிக்க தட்டவும்",
+  "helpSupportContactPrefix": "எந்த உதவிக்கும் எங்களை தொடர்பு கொள்ளுங்கள்:",
+  "supportEmail": "igurus@info.in",
+  "bookButton": "முன்பதிவு",
+  "waitingForVendorAcceptance": "{name} உங்கள் கோரிக்கையை ஏற்கும் வரை காத்திருக்கிறோம்.",
+  "@waitingForVendorAcceptance": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "vendorWantsToConnectAsCustomer": "ஒரு விற்பனையாளர் இணைக்க விரும்புகிறார்",
+  "vendorWantsToConnectDesc": "இவர் உங்களை வாடிக்கையாளராக சேர்த்து உங்கள் கணக்கை கண்காணிக்க விரும்புகிறார்.",
+  "someoneWantsToConnect": "யாரோ இணைக்க விரும்புகிறார்",
+  "someoneWantsToConnectDesc": "இவர் உங்கள் கணக்கில் வாடிக்கையாளராக சேர்க்கப்படுவார்.",
+  "requestedTimeAgo": "{time} முன்பு கோரப்பட்டது",
+  "@requestedTimeAgo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "connectedVendorLinked": "இணைக்கப்பட்டது! {name} உங்கள் கணக்குடன் இணைக்கப்பட்டார்.",
+  "@connectedVendorLinked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "requestDeclinedFrom": "{name} இடமிருந்து வந்த கோரிக்கை நிராகரிக்கப்பட்டது.",
+  "@requestDeclinedFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "connectedCustomerLinked": "இணைக்கப்பட்டது! {name} உங்கள் வணிகத்துடன் இணைக்கப்பட்டார்.",
+  "@connectedCustomerLinked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "processing": "செயலாக்குகிறது…",
+  "retryButton": "மீண்டும் முயற்சி",
+  "memberDiscountDescription": "இந்த நிலையில் உள்ள உறுப்பினர்களுக்கு அவர்களின் நிலுவையில் இந்த தள்ளுபடி கிடைக்கும்.",
+  "discountValueInvalid": "0 விட அதிகமான சரியான தொகையை உள்ளிடவும்",
+  "percentageExceedsMax": "சதவீதம் 100 ஐ தாண்டக்கூடாது",
+  "levelLabel": "நிலை {level}",
+  "@levelLabel": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "rename": "மறுபெயரிடு",
+  "membershipLabel": "உறுப்பினர் திட்டம்",
+  "noMembership": "உறுப்பினர் திட்டம் இல்லை",
+  "applyForMembership": "உறுப்பினர் திட்டத்திற்கு விண்ணப்பிக்கவும்",
+  "setMembershipTier": "உறுப்பினர் நிலை அமைக்கவும்",
+  "chooseTierToRequestFromVendor": "இந்த விற்பனையாளரிடம் கோர ஒரு நிலை தேர்வு செய்யவும்",
+  "chooseTierFor": "{customerName} க்கு ஒரு நிலை தேர்வு செய்யவும்",
+  "@chooseTierFor": {
+    "placeholders": {
+      "customerName": {
+        "type": "String"
+      }
+    }
+  },
+  "setButton": "அமை",
+  "changeButton": "மாற்று",
+  "applyButton": "விண்ணப்பி",
+  "approveButton": "ஒப்புக்கொள்",
+  "customerRequestedTier": "{customerName} {tierName} கோரினார்",
+  "@customerRequestedTier": {
+    "placeholders": {
+      "customerName": {
+        "type": "String"
+      },
+      "tierName": {
+        "type": "String"
+      }
+    }
+  },
+  "requestedTierAwaiting": "{tierName} கோரப்பட்டது — ஒப்புதல் காத்திருக்கிறது",
+  "@requestedTierAwaiting": {
+    "placeholders": {
+      "tierName": {
+        "type": "String"
+      }
+    }
+  },
+  "verificationConnecting": "வங்கியுடன் இணைக்கிறது…",
+  "verificationVerifying": "பரிவர்த்தனை சரிபார்க்கிறது…",
+  "verificationWaiting": "உறுதிப்படுத்தலுக்காக காத்திருக்கிறது…",
+  "verificationAlmostThere": "கிட்டத்தட்ட முடிந்தது…",
+  "verificationDoNotClose": "இந்த திரையை மூடாதீர்கள்",
+  "verificationElapsed": "{seconds} நி  •  இந்த திரையை மூடாதீர்கள்",
+  "@verificationElapsed": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "txnLabel": "பரிவர்த்தனை: {txnId}",
+  "@txnLabel": {
+    "placeholders": {
+      "txnId": {
+        "type": "String"
+      }
+    }
+  },
+  "paidAmountToRecipient": "{name} க்கு ₹{amount} செலுத்தப்பட்டது",
+  "@paidAmountToRecipient": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "verificationTimeoutBody": "30 வினாடிகளுக்குள் உங்கள் கட்டணத்தை உறுதிப்படுத்த முடியவில்லை. உங்கள் பணம் கழிக்கப்படாமல் இருக்கலாம் — மீண்டும் முயற்சிக்கும் முன் உங்கள் வங்கி அறிக்கையை சரிபார்க்கவும்.",
+  "ifDebitedContactSupport": "பணம் கழிக்கப்பட்டிருந்தால், பரிவர்த்தனை ஐடியுடன் ஆதரவை தொடர்பு கொள்ளவும்.",
+  "thisMonthSubtitle": "இந்த மாதம்",
+  "billedNet": "வசூலிக்கப்பட்டது (நிகர)",
+  "exclDisputed": "சர்ச்சை தவிர்த்து",
+  "receivedLabel": "பெறப்பட்டது",
+  "paymentsAndAdj": "கட்டணங்கள் & சரிசெய்தல்",
+  "currentBalance": "தற்போதைய இருப்பு",
+  "paymentCount": "{count} கட்டணம்",
+  "@paymentCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentCountPlural": "{count} கட்டணங்கள்",
+  "@paymentCountPlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customersCount": "{count} வாடிக்கையாளர்கள்",
+  "@customersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "rankedByOutstanding": "நிலுவை தொகை அடிப்படையில் வரிசைப்படுத்தப்பட்டது",
+  "collectedThisMonth": "இந்த மாதம் ₹{amount}",
+  "@collectedThisMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "collectedThisMonthShort": "இம்மாதம் ₹{amount}",
+  "@collectedThisMonthShort": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryAll": "அனைத்தும்",
+  "findVendorsNearYou": "அருகில் உள்ள விற்பனையாளர்களை கண்டுபிடிக்கவும்",
+  "searchByNameOrCategory": "பெயர், வணிக பெயர் அல்லது மேலே உள்ள வகையை தேர்வு செய்து தேடவும்.",
+  "noResultsForQuery": "\"{query}\" க்கு முடிவுகள் இல்லை.\nவேறு பெயர் அல்லது வகையை முயற்சிக்கவும்.",
+  "@noResultsForQuery": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "addressLabel": "முகவரி",
+  "emailLabel": "மின்னஞ்சல்",
+  "upiLabel": "UPI",
+  "upiIdLabel": "UPI ஐடி",
+  "upiEmailLabel": "UPI / மின்னஞ்சல்",
+  "couldNotLoadRetry": "ஏற்ற முடியவில்லை — மீண்டும் முயற்சிக்க தட்டவும்",
+  "labelCopied": "{label} நகலெடுக்கப்பட்டது!",
+  "@labelCopied": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "upiIdCopied": "UPI ஐடி நகலெடுக்கப்பட்டது!",
+  "requestSentButton": "கோரிக்கை அனுப்பப்பட்டது",
+  "alreadyConnected": "ஏற்கனவே இணைக்கப்பட்டது",
+  "sendingEllipsis": "அனுப்புகிறது…",
+  "sendConnectionRequest": "இணைப்பு கோரிக்கை அனுப்பவும்",
+  "copyUpiIdToPay": "கட்டணத்திற்கு UPI ஐடியை நகலெடுக்கவும்",
+  "requestSentToVendor": "கோரிக்கை அனுப்பப்பட்டது! {name} க்கு அறிவிக்கப்படும்.",
+  "@requestSentToVendor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "byOwnerName": "{name} மூலம்",
+  "@byOwnerName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "logOut": "வெளியேறு",
+  "confirmLogoutTitle": "வெளியேறு",
+  "areYouSureLogout": "நீங்கள் வெளியேற விரும்புகிறீர்களா?",
+  "showQrToCollect": "நேரடியாக கட்டணம் பெற வாடிக்கையாளரிடம் இந்த QR காட்டவும்.",
+  "uploadQr": "QR பதிவேற்றவும்",
+  "replaceQr": "மாற்றவும்",
+  "qrUploaded": "QR பதிவேற்றப்பட்டது",
+  "scanToPayName": "{name} க்கு கட்டணம் செலுத்த ஸ்கேன் செய்யவும்",
+  "@scanToPayName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "salarySingle": "சம்பளம்",
+  "advanceSingle": "முன்பணம்",
+  "customersTitle": "வாடிக்கையாளர்கள்",
+  "balanceDue": "₹{balance} நிலுவை",
+  "@balanceDue": {
+    "placeholders": {
+      "balance": {
+        "type": "String"
+      }
+    }
+  },
+  "recordDeliveryTooltip": "விநியோகத்தை பதிவு செய்யவும்",
+  "viewLedgerTooltip": "கணக்கை பார்க்கவும்",
+  "staffRoleSubtitle": "ஊழியர் · {name}",
+  "@staffRoleSubtitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "recordDelivery": "உதார் கொடுத்தது",
+  "recordDeliverySubtitle": "வாடிக்கையாளர் பொருள் எடுத்தார் — கணக்கில் சேர்க்கவும்",
+  "collectPayment": "பணம் வந்தது",
+  "collectPaymentSubtitle": "வாடிக்கையாளர் பணம் கொடுத்தார் — கணக்கில் குறைக்கவும்",
+  "viewAll2": "அனைத்தும் பார்க்க",
+  "noCustomersStaff": "இன்னும் வாடிக்கையாளர்கள் இல்லை",
+  "myVendorsSection": "என் விற்பனையாளர்கள்",
+  "shopsYouBuyFrom": "நீங்கள் வாங்கும் கடைகள்",
+  "awaitingAcceptanceTitle": "ஒப்புதல் காத்திருக்கிறது",
+  "customersHaventConfirmed": "இந்த வாடிக்கையாளர்கள் இன்னும் உறுதிப்படுத்தவில்லை",
+  "pendingBadge": "நிலுவையில்",
+  "notifyCustomersWithDues": "நிலுவை உள்ள வாடிக்கையாளர்களுக்கு அறிவிக்கவும்",
+  "linkANewCustomer": "புதிய வாடிக்கையாளரை இணைக்கவும்",
+  "dailyCharge": "தினசரி வசூல்",
+  "dailyChargeSubtitle": "அளவை அமைத்து ஒரே நேரத்தில் வசூலிக்கவும்",
+  "findByPhoneOrEmailHint": "தொலைபேசி எண் அல்லது மின்னஞ்சல் மூலம் தேடவும்",
+  "phoneOrEmailLabel": "தொலைபேசி அல்லது மின்னஞ்சல்",
+  "phoneMobileOrEmail": "10 இலக்க மொபைல் அல்லது மின்னஞ்சல் முகவரி",
+  "nicknameOptionalLabel": "புனைப்பெயர் (விருப்பத்தேர்வு)",
+  "howYouKnowCustomer": "இந்த வாடிக்கையாளரை எப்படி அறிவீர்கள்",
+  "requestSentWillBeNotified": "கோரிக்கை அனுப்பப்பட்டது! உறுதிப்படுத்த அவர்களுக்கு அறிவிக்கப்படும்.",
+  "outstandingTitle": "நிலுவை",
+  "customersWithDues": "{count}+ நிலுவை உள்ள வாடிக்கையாளர்கள்",
+  "@customersWithDues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dueLabel": "நிலுவை",
+  "collectedTodayTitle": "இன்று சேகரிக்கப்பட்டது",
+  "paymentsCountSubtitle": "{count}+ கட்டணங்கள்",
+  "@paymentsCountSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noPaymentsYetSubtitle": "இன்னும் கட்டணங்கள் இல்லை",
+  "removeLedgerVendorContent": "இது {name} உடன் உங்கள் இணைப்பை செயலிழக்கும். இரு தரப்பும் இந்த பகிரப்பட்ட கணக்கை இழப்பார்கள்.",
+  "@removeLedgerVendorContent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "removeLedgerCustomerContent": "இது {name} உடன் உங்கள் இணைப்பை நீக்கும்.",
+  "@removeLedgerCustomerContent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineUpdatesPaused": "இணைப்பு இல்லை — புதுப்பிப்புகள் நிறுத்தப்பட்டன",
+  "exportStatementTitle": "அறிக்கையை ஏற்றுமதி செய்யவும்",
+  "chooseExportDateRange": "PDF இல் சேர்க்க தேதி வரம்பை தேர்வு செய்யவும்.",
+  "last7DaysRange": "கடந்த 7 நாட்களின் உள்ளீடுகள்",
+  "last30DaysRange": "கடந்த 30 நாட்களின் உள்ளீடுகள்",
+  "last3MonthsRange": "கடந்த 3 மாதங்களின் உள்ளீடுகள்",
+  "completeLedgerHistory": "முழு கணக்கு வரலாறு",
+  "appAccessActive": "செயலில் · {phone}",
+  "@appAccessActive": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "appAccessDisabled": "முடக்கப்பட்டது",
+  "appAccessGranted": "{name} இப்போது {phone} மூலம் உள்நுழையலாம்",
+  "@appAccessGranted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "appAccessRevoked": "{name} இன் ஆப் அணுகல் ரத்து செய்யப்பட்டது",
+  "@appAccessRevoked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "appAccessDescription": "இயக்கும்போது, {name} அவர்களின் சொந்த எண்ணில் ({phone}) உள்நுழைந்து விநியோகங்களை பதிவு செய்யலாம், கட்டணங்களை பதிவு செய்யலாம், சொந்த QR காட்டலாம் — ஆனால் வருகையை மாற்றவோ, வாடிக்கையாளர்களை சேர்க்கவோ, மற்ற ஊழியர்களை பார்க்கவோ முடியாது.",
+  "@appAccessDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentHistoryTitle": "கட்டண வரலாறு",
+  "couldNotLoadPaymentHistory": "கட்டண வரலாற்றை ஏற்ற முடியவில்லை",
+  "voicePleaseCheck": "சரிபார்க்கவும்",
+  "navHome": "முகப்பு",
+  "qty": "அளவு",
+  "totalRupees": "மொத்தம்: ₹{amount}",
+  "@totalRupees": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "selectCustomerFirst": "முதலில் ஒரு வாடிக்கையாளரை தேர்வு செய்யவும்",
+  "enterValidAmount": "சரியான தொகையை உள்ளிடவும்",
+  "addsCredit": "வாடிக்கையாளர் பொருள் எடுத்தார் — கணக்கில் சேர்க்கவும்",
+  "recordsCash": "வாடிக்கையாளர் பணம் கொடுத்தார் — கணக்கில் குறைக்கவும்",
+  "deliveryRecordedFor": "{name} க்கு விநியோகம் பதிவு செய்யப்பட்டது",
+  "@deliveryRecordedFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentCollectedFrom": "{name} இடமிருந்து கட்டணம் பெறப்பட்டது",
+  "@paymentCollectedFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "manageSchedule": "அட்டவணையை நிர்வகிக்கவும்",
+  "bookingsTab": "முன்பதிவுகள்",
+  "bySlotTab": "நேர வரிசை வாரியாக",
+  "scheduleSaved": "அட்டவணை சேமிக்கப்பட்டது!",
+  "addSlot": "நேர வரிசை சேர்க்கவும்",
+  "noSlotsForDay": "{day} க்கு நேர வரிசைகள் இல்லை",
+  "@noSlotsForDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "tapAddSlotHint": "கிடைக்கும் நேரத்தை அமைக்க \"நேர வரிசை சேர்க்கவும்\" தட்டவும்",
+  "slotAvailable": "கிடைக்கும்",
+  "slotsFull": "நிரம்பியது",
+  "slotFullHint": "இந்த நேர வரிசையை முழுவதும் முன்பதிவு செய்யப்பட்டதாக குறிக்கவும்",
+  "enableSlotFirst": "முதலில் நேர வரிசையை இயக்கவும்",
+  "deleteSlotTitle": "நேர வரிசையை நீக்கவும்",
+  "deleteSlotConfirm": "{time} நேர வரிசையை நீக்கவதா?",
+  "@deleteSlotConfirm": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "endTimeAfterStart": "முடிவு நேரம் தொடக்க நேரத்திற்கு பிறகு இருக்க வேண்டும்",
+  "slotOverlaps": "இந்த நேர வரிசை ஏற்கனவே உள்ள ஒன்றுடன் மேல்பாடு ஆகிறது",
+  "addTimeSlot": "நேர வரிசை சேர்க்கவும்",
+  "editTimeSlot": "நேர வரிசையை திருத்தவும்",
+  "selectTimeHint": "12 மணி நேர வடிவத்தில் தொடக்க மற்றும் முடிவு நேரத்தை தேர்வு செய்யவும்",
+  "startLabel": "தொடக்கம்",
+  "endLabel": "முடிவு",
+  "update": "புதுப்பி",
+  "notifTabAll": "அனைத்தும்",
+  "notifTabBookings": "முன்பதிவுகள்",
+  "noBookingNotifications": "முன்பதிவு அறிவிப்புகள் இல்லை",
+  "noBookingNotificationsSubtitle": "முன்பதிவு கோரிக்கைகள் மற்றும் புதுப்பிப்புகள் இங்கே தெரியும்",
+  "bookingPillLabel": "முன்பதிவு",
+  "slotDetailTitle": "நேர வரிசை விவரங்கள்",
+  "bookingsCount": "{count} முன்பதிவு",
+  "@bookingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bookingsCountPlural": "{count} முன்பதிவுகள்",
+  "@bookingsCountPlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingCountLabel": "{count} நிலுவையில்",
+  "@pendingCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "slotTimeRange": "{start} – {end}",
+  "@slotTimeRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "keepButton": "வைத்திரு",
+  "deleteButton": "நீக்கு",
+  "membershipPlansTitle": "உறுப்பினர் திட்டங்கள்",
+  "newPlanButton": "புதிய திட்டம்",
+  "deletePlanTitle": "திட்டத்தை நீக்கவதா?",
+  "deletePlanConfirm": "\"{name}\" நீக்கப்படும். இதை மீண்டும் மாற்ற முடியாது.",
+  "@deletePlanConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "inactiveLabel": "செயலற்றது",
+  "noBenefitsAdded": "நன்மைகள் சேர்க்கப்படவில்லை.",
+  "noMembershipPlans": "இன்னும் உறுப்பினர் திட்டங்கள் இல்லை",
+  "tapNewPlanHint": "முதல் திட்டத்தை உருவாக்க \"புதிய திட்டம்\" தட்டவும்.",
+  "membershipRequestsTitle": "உறுப்பினர் கோரிக்கைகள்",
+  "noPendingRequests": "நிலுவை கோரிக்கைகள் இல்லை",
+  "customersCanApplyHint": "வாடிக்கையாளர்கள் தங்கள் கணக்கு திரையில் இருந்து\nஉறுப்பினர் திட்டத்திற்கு விண்ணப்பிக்கலாம்.",
+  "membersTitle": "உறுப்பினர்கள்",
+  "noMembersYet": "இன்னும் உறுப்பினர்கள் இல்லை",
+  "activeStat": "செயலில்",
+  "mrrStat": "MRR",
+  "expiringStat": "காலாவதியாகும்",
+  "allPlansFilter": "அனைத்து திட்டங்கள்",
+  "daysLeft": "{count}நா மீதம்",
+  "@daysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysLeftFull": "{count} நாட்கள்",
+  "@daysLeftFull": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planNameLabel": "திட்டத்தின் பெயர்",
+  "planNameHint": "எ.கா. தங்க உறுப்பினர்",
+  "durationDaysLabel": "கால அளவு (நாட்கள்)",
+  "priceRupeesLabel": "விலை ₹",
+  "addBenefitButton": "நன்மை சேர்க்கவும்",
+  "customLabel": "தனிப்பயன்",
+  "customAdvanceLabel": "தனிப்பயன் முன்பணம் ₹",
+  "benefitLabel": "நன்மை",
+  "benefitHint": "எ.கா. 4 முடி வெட்டு",
+  "planDetailsSection": "திட்ட விவரங்கள்",
+  "benefitsSection": "நன்மைகள்",
+  "advanceRequiredSection": "தேவையான முன்பணம்",
+  "editPlanTitle": "திட்டத்தை திருத்தவும்",
+  "createPlanTitle": "உறுப்பினர் திட்டம் உருவாக்கவும்",
+  "publishPlanButton": "திட்டத்தை வெளியிடவும்",
+  "planUpdatedToast": "திட்டம் புதுப்பிக்கப்பட்டது",
+  "planPublishedToast": "திட்டம் வெளியிடப்பட்டது",
+  "vendorPlansTitle": "{vendorName} · திட்டங்கள்",
+  "@vendorPlansTitle": {
+    "placeholders": {
+      "vendorName": {
+        "type": "String"
+      }
+    }
+  },
+  "noPlansAvailable": "இன்னும் திட்டங்கள் இல்லை",
+  "vendorNoPlansHint": "இந்த விற்பனையாளர் இன்னும் உறுப்பினர் திட்டங்கள் உருவாக்கவில்லை.",
+  "applyForPlan": "{planName} க்கு விண்ணப்பிக்கவும்",
+  "@applyForPlan": {
+    "placeholders": {
+      "planName": {
+        "type": "String"
+      }
+    }
+  },
+  "messageToVendorOptional": "விற்பனையாளருக்கு செய்தி (விருப்பத்தேர்வு)",
+  "messageToVendorHint": "எ.கா. இந்த மாதம் என்னை சேர்க்கவும்",
+  "sendRequestButton": "கோரிக்கை அனுப்பவும்",
+  "activeLabel": "செயலில்",
+  "noAdditionalBenefits": "கூடுதல் நன்மைகள் இல்லை",
+  "currentPlanLabel": "தற்போதைய திட்டம்",
+  "requestPendingLabel": "கோரிக்கை நிலுவையில்",
+  "applyLabel": "விண்ணப்பி",
+  "requestSentToName": "{name} க்கு கோரிக்கை அனுப்பப்பட்டது",
+  "@requestSentToName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "membershipDialogTitle": "உறுப்பினர் திட்டம்",
+  "pendingPlanPrefix": "நிலுவையில்: {planName}",
+  "@pendingPlanPrefix": {
+    "placeholders": {
+      "planName": {
+        "type": "String"
+      }
+    }
+  },
+  "enrollCustomer": "{name} ஐ சேர்க்கவும்",
+  "@enrollCustomer": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "choosePlanHint": "உறுப்பினர் திட்டத்தை தொடங்க ஒரு திட்டத்தை தேர்வு செய்யவும்.",
+  "noActivePlansHint": "செயலில் திட்டங்கள் இல்லை. முதலில் உறுப்பினர் திட்டங்கள் → திட்டங்கள் இல் உருவாக்கவும்.",
+  "enrollLabel": "சேர்",
+  "changeLabel": "மாற்று",
+  "usedLabel": "பயன்படுத்தப்பட்டது",
+  "useLabel": "பயன்படுத்து",
+  "daysLeftLabel": "{count} நாட்கள் மீதம்",
+  "@daysLeftLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "orderPlacedSuccess": "ஆர்டர் வெற்றிகரமாக பதிவு செய்யப்பட்டது!",
+  "orderFromVendor": "{vendorName} இடமிருந்து ஆர்டர்",
+  "@orderFromVendor": {
+    "placeholders": {
+      "vendorName": {
+        "type": "String"
+      }
+    }
+  },
+  "addItemButton": "பொருள் சேர்க்கவும்",
+  "orderNoteOptional": "ஆர்டர் குறிப்பு (விருப்பத்தேர்வு)",
+  "totalLabel": "மொத்தம்",
+  "placeOrderButton": "ஆர்டர் செய்யவும்",
+  "itemNameRequired": "பொருளின் பெயர் *",
+  "unitLabel": "அலகு",
+  "unitHint": "கிகி, லி…",
+  "unitPriceLabel": "அலகு விலை ₹",
+  "itemNumber": "பொருள் {number}",
+  "@itemNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "subtotalLabel": "துணை மொத்தம்: ₹{amount}",
+  "@subtotalLabel": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "orderDetailsTitle": "ஆர்டர் விவரங்கள்",
+  "proofPhotoLabel": "ஆதார புகைப்படம்",
+  "tapToViewFullScreen": "முழு திரையில் பார்க்க தட்டவும்",
+  "rejectButton": "நிராகரி",
+  "confirmButton": "உறுதிப்படுத்து",
+  "markAsDeliveredButton": "விநியோகிக்கப்பட்டதாக குறிக்கவும்",
+  "confirmDeliveryTitle": "விநியோகத்தை உறுதிப்படுத்தவும்",
+  "deliveryNoteOptional": "விநியோக குறிப்பு (விருப்பத்தேர்வு)",
+  "retakeLabel": "மீண்டும் எடு",
+  "photoUploadFailed": "புகைப்படம் பதிவேற்றம் தோல்வி: {error}",
+  "@photoUploadFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "orderNoteLabel": "ஆர்டர் குறிப்பு",
+  "customerLabel": "வாடிக்கையாளர்",
+  "ordersTitle": "ஆர்டர்கள்",
+  "noOrdersYet": "இன்னும் ஆர்டர்கள் இல்லை",
+  "markDeliveredButton": "விநியோகிக்கப்பட்டதாக குறிக்கவும்",
+  "myOrdersTitle": "என் ஆர்டர்கள்",
+  "deliverButton": "விநியோகி",
+  "noPendingDeliveries": "நிலுவை விநியோகங்கள் இல்லை",
+  "deliveriesTitle": "விநியோகங்கள்",
+  "monthlyStatementTitle": "மாத அறிக்கை",
+  "deliveryProofLabel": "விநியோக ஆதாரம்",
+  "replacePhotoButton": "புகைப்படத்தை மாற்றவும்",
+  "attachProofButton": "ஆதாரத்தை இணைக்கவும்",
+  "uploadingLabel": "பதிவேற்றுகிறது...",
+  "proofLockedHint": "இந்த ஆதாரம் பூட்டப்பட்டது மற்றும் மாற்ற முடியாது",
+  "proofAttachedToast": "ஆதாரம் இணைக்கப்பட்டது",
+  "itemLabel": "பொருள் {number}",
+  "@itemLabel": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "amountRequired": "தொகை *",
+  "addItemLabel": "பொருள் சேர்க்கவும்",
+  "totalAmountLabel": "மொத்தம்",
+  "deactivate": "முடக்கு",
+  "activate": "இயக்கு",
+  "activeStatLabel": "செயலில்",
+  "mrrStatLabel": "MRR",
+  "expiringStatLabel": "காலாவதியாகும்",
+  "closeLabel": "மூடு",
+  "pendingPlanLabel": "நிலுவையில்: {name}",
+  "@pendingPlanLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "customerRequestedPlan": "{customer} {plan} கோரினார்",
+  "@customerRequestedPlan": {
+    "placeholders": {
+      "customer": {
+        "type": "String"
+      },
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "itemsCount": "பொருட்கள் ({count})",
+  "@itemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deliveryLabel": "விநியோகம்",
+  "markedDeliveredBy": "{role} மூலம் விநியோகிக்கப்பட்டதாக குறிக்கப்பட்டது",
+  "@markedDeliveredBy": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "deliveriesHint": "ஆர்டர்கள் மூலம் விநியோகிக்கப்பட்ட பொருட்கள். உள்ளீட்டை தட்டி பொருட்களை பாருங்கள்."
 }

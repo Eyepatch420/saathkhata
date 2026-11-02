@@ -1,9 +1,10 @@
 {
   "@@locale": "mr",
-
   "appTitle": "साथखाता",
+  "@appTitle": {
+    "description": "The name of the application"
+  },
   "tagline": "एक खाता, दोघांचा",
-
   "onboarding1Title": "दोन बाजूंचे सामायिक खाते",
   "onboarding1Subtitle": "विक्रेता आणि ग्राहक दोघांसाठी एकच खाते. दोघेही एकच सत्य पाहतात.",
   "onboarding2Title": "व्हॉईस आणि बिल OCR",
@@ -13,7 +14,6 @@
   "getStarted": "सुरुवात करा",
   "next": "पुढे",
   "skip": "वगळा",
-
   "chooseLanguage": "तुमची भाषा निवडा",
   "continueButton": "पुढे सुरू ठेवा",
   "chooseRole": "तुमची भूमिका निवडा",
@@ -25,7 +25,6 @@
   "vendorRoleSubtitle": "व्यवसायाचे खाते, कर्मचारी व्यवस्थापित करा आणि पेमेंट घ्या.",
   "customerRoleTitle": "मी एक ग्राहक आहे",
   "customerRoleSubtitle": "विक्रेत्यांसोबत खाते ट्रॅक करा आणि UPI द्वारे पेमेंट करा.",
-
   "loginTitle": "साथखातामध्ये लॉगिन करा",
   "enterMobile": "पुढे सुरू ठेवण्यासाठी माहिती प्रविष्ट करा",
   "mobileNumber": "मोबाइल नंबर",
@@ -34,7 +33,13 @@
   "verifyAndContinue": "सत्यापित करा आणि पुढे सुरू ठेवा",
   "changePhoneNumber": "फोन नंबर बदला",
   "otpSentTo": "+91 {phoneNumber} वर पाठवलेला ६ अंकी कोड प्रविष्ट करा",
-  "@otpSentTo": { "placeholders": { "phoneNumber": { "type": "String" } } },
+  "@otpSentTo": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
   "email": "ईमेल",
   "password": "पासवर्ड",
   "passwordHint": "पासवर्ड प्रविष्ट करा",
@@ -44,7 +49,6 @@
   "pleaseEnterCredentials": "ईमेल आणि पासवर्ड प्रविष्ट करा",
   "fillRequiredFields": "नाव, ईमेल आणि पासवर्ड भरा",
   "passwordMinChars": "किमान ८ अक्षरे",
-
   "completeProfile": "प्रोफाइल पूर्ण करा",
   "enterYourName": "तुमचे नाव प्रविष्ट करा",
   "egBusinessName": "उदा. कृष्णा डेअरी",
@@ -56,7 +60,6 @@
   "businessCategory": "व्यवसायाची श्रेणी",
   "businessAddress": "व्यवसायाचा पत्ता (पर्यायी)",
   "upiId": "UPI आयडी (पेमेंटसाठी)",
-
   "vendorDashboard": "विक्रेता डॅशबोर्ड",
   "customerDashboard": "ग्राहक डॅशबोर्ड",
   "customerMode": "ग्राहक मोड",
@@ -70,8 +73,13 @@
   "recentCustomers": "अलीकडील ग्राहक",
   "viewAll": "सर्व पहा",
   "customerAddedSnackbar": "{name} जोडला",
-  "@customerAddedSnackbar": { "placeholders": { "name": { "type": "String" } } },
-
+  "@customerAddedSnackbar": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "sharedLedger": "सामायिक खाते",
   "totalBalance": "एकूण शिल्लक",
   "statement": "विवरण",
@@ -83,6 +91,8 @@
   "balanceCustomerOwes": "ग्राहकाची थकबाकी",
   "balanceYouOwe": "तुमची थकबाकी",
   "balanceSettled": "निकाल झाला",
+  "balanceYouOweVendor": "तुम्ही दुकानदाराला द्यायचे आहे",
+  "balanceVendorOwesYou": "दुकानदार तुम्हाला देणे आहे",
   "ledgerInfoTitle": "हे खाते कसे काम करते",
   "statusConfirmed": "पुष्टी झाली",
   "statusConfirmedDesc": "दोन्ही बाजू सहमत. नोंद लॉक आहे आणि बदलता येणार नाही.",
@@ -104,7 +114,14 @@
   "entryConfirmedAt": "पुष्टी तारीख",
   "entryDisputeReason": "विवादाचे कारण",
   "entryFor": "{name} साठी",
-  "@entryFor": { "placeholders": { "name": { "type": "String" } } },
+  "@entryFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "description": "वर्णन",
   "descriptionOptional": "वर्णन (पर्यायी)",
   "quantityOptional": "प्रमाण (पर्यायी)",
   "descriptionHint": "उदा. २L दूध, मासिक किराणा",
@@ -114,13 +131,18 @@
   "noLedgerTransactionsSubtitle": "सुरुवात करण्यासाठी उधार किंवा पेमेंट नोंद जोडा.",
   "confirmEntryTitle": "नोंद पुष्टी करा",
   "confirmEntryMessage": "तुम्हाला ₹{amount} ची नोंद पुष्टी करायची आहे का? हे पूर्ववत होणार नाही.",
-  "@confirmEntryMessage": { "placeholders": { "amount": { "type": "String" } } },
+  "@confirmEntryMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "dispute": "विवाद",
   "raiseDisputeTitle": "विवाद उपस्थित करा",
   "raiseDisputeSubtitle": "या नोंदीत काय चुकीचे आहे ते सांगा.",
   "raiseDisputeHint": "उदा. रक्कम ₹५० असायला हवी होती, ₹६० नाही",
   "submitDispute": "विवाद सादर करा",
-
   "staffAndLabour": "कर्मचारी आणि मजूर",
   "addStaff": "कर्मचारी जोडा",
   "presentToday": "आज उपस्थित",
@@ -133,19 +155,48 @@
   "halfDay": "अर्धा दिवस",
   "paySalaryTitle": "पगार द्या",
   "unpaidLabel": "न दिलेले: ₹{amount}",
-  "@unpaidLabel": { "placeholders": { "amount": { "type": "String" } } },
+  "@unpaidLabel": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "upiTransactionIdOptional": "UPI व्यवहार आयडी (पर्यायी)",
   "noDues": "कोणतीही थकबाकी नाही",
   "staffPayAmount": "₹{amount} द्या",
-  "@staffPayAmount": { "placeholders": { "amount": { "type": "String" } } },
+  "@staffPayAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "staffJoined": "{date} रोजी रुजू झाले",
-  "@staffJoined": { "placeholders": { "date": { "type": "String" } } },
+  "@staffJoined": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "staffSalaryPerDay": "₹{amount}/दिवस",
-  "@staffSalaryPerDay": { "placeholders": { "amount": { "type": "String" } } },
+  "@staffSalaryPerDay": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "staffSalaryPerMonth": "₹{amount}/महिना",
-  "@staffSalaryPerMonth": { "placeholders": { "amount": { "type": "String" } } },
+  "@staffSalaryPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "staffPayButton": "पेमेंट",
-
   "businessReports": "व्यवसाय अहवाल",
   "revenueTrend": "महसूल कल",
   "collectionSummary": "संकलनाचा सारांश",
@@ -153,7 +204,6 @@
   "totalCollected": "एकूण संकलन",
   "topCustomers": "शीर्ष ग्राहक",
   "seeAll": "सर्व पहा",
-
   "settings": "सेटिंग्ज",
   "appLanguage": "अॅप भाषा",
   "selectLanguage": "भाषा निवडा",
@@ -162,23 +212,39 @@
   "settingsAppPinFingerprint": "अॅप पिन आणि फिंगरप्रिंट",
   "settingsFaqsContact": "मदत आणि संपर्क",
   "settingsVersion": "आवृत्ती {version}",
-  "@settingsVersion": { "placeholders": { "version": { "type": "String" } } },
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "myUpiIds": "माझे UPI आयडी",
   "notifications": "सूचना",
   "security": "सुरक्षा",
   "helpSupport": "मदत",
   "logout": "लॉगआउट",
-
   "markAllRead": "सर्व वाचले म्हणून चिन्हांकित करा",
   "noNotificationsTitle": "अद्याप कोणत्याही सूचना नाहीत",
   "noNotificationsSubtitle": "येथे खाते अपडेट, पेमेंट सूचना आणि स्मरणपत्रे दिसतील.",
   "today": "आज",
   "yesterday": "काल",
   "minutesAgo": "{count} मिनिटांपूर्वी",
-  "@minutesAgo": { "placeholders": { "count": { "type": "int" } } },
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "hoursAgo": "{count} तासांपूर्वी",
-  "@hoursAgo": { "placeholders": { "count": { "type": "int" } } },
-
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "payments": "पेमेंट",
   "transactionHistory": "व्यवहार इतिहास",
   "totalPaid": "एकूण भरलेले",
@@ -191,7 +257,6 @@
   "paymentStatusPaid": "भरले",
   "paymentStatusFailed": "अयशस्वी",
   "paymentStatusRefunded": "परत",
-
   "appointments": "भेटी",
   "myAppointments": "माझ्या भेटी",
   "upcoming": "येणाऱ्या",
@@ -205,14 +270,20 @@
   "cancelAppointmentTitle": "भेट रद्द करायची?",
   "cancelAppointmentMessage": "{date} रोजी {time} वाजता भेट रद्द करायची?",
   "@cancelAppointmentMessage": {
-    "placeholders": { "date": { "type": "String" }, "time": { "type": "String" } }
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
   },
   "bookingStatusConfirmed": "पुष्टी झाली",
   "bookingStatusPending": "प्रलंबित",
   "bookingStatusCancelled": "रद्द",
   "bookingStatusCompleted": "पूर्ण",
   "bookingStatusDone": "पूर्ण",
-
   "upiPayment": "UPI पेमेंट",
   "amountToPay": "भरण्याची रक्कम",
   "securedByUpi": "UPI द्वारे सुरक्षित",
@@ -222,23 +293,40 @@
   "enterUpiId": "UPI आयडी प्रविष्ट करा",
   "addNoteOptional": "नोट जोडा (पर्यायी)",
   "payAmountButton": "₹{amount} भरा",
-  "@payAmountButton": { "placeholders": { "amount": { "type": "String" } } },
+  "@payAmountButton": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "done": "झाले",
   "paymentSomethingWentWrong": "काहीतरी चुकले. पुन्हा प्रयत्न करा.",
   "upiAppComingSoon": "{app} लवकरच येत आहे",
-  "@upiAppComingSoon": { "placeholders": { "app": { "type": "String" } } },
+  "@upiAppComingSoon": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
   "pleaseEnterUpiId": "UPI आयडी प्रविष्ट करा",
   "paidToRecipient": "₹{amount} {name} ला भरले",
   "@paidToRecipient": {
-    "placeholders": { "amount": { "type": "String" }, "name": { "type": "String" } }
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
   },
   "orDivider": "किंवा",
-
   "addNewCustomer": "नवीन ग्राहक जोडा",
   "customerName": "ग्राहकाचे नाव",
   "mobileNo": "मोबाइल नंबर",
   "addCustomer": "ग्राहक जोडा",
-
   "paymentConfirmed": "पेमेंट पुष्टी करा",
   "addAdvance": "आगाऊ जोडा",
   "addAdvanceTitle": "आगाऊ जोडा",
@@ -265,35 +353,35 @@
   "addStaffButton": "कर्मचारी जोडा",
   "noteOptional": "नोट (पर्यायी)",
   "amountRupees": "रक्कम (₹)",
-
   "cancel": "रद्द करा",
   "confirm": "पुष्टी करा",
   "tryAgain": "पुन्हा प्रयत्न करा",
   "alignBillInFrame": "बिल फ्रेममध्ये ठेवा",
   "verifyAndLogin": "सत्यापित करा आणि लॉगिन करा",
-
   "voiceListening": "ऐकत आहे...",
   "voiceThinking": "विचार करत आहे...",
   "voiceDetectedEntry": "आढळलेली नोंद",
   "voiceConfirmEntry": "नोंद पुष्टी करा",
   "item": "वस्तू",
-
   "totalOutstandingBalance": "एकूण थकबाकी रक्कम",
   "payAllDues": "सर्व थकबाकी भरा",
   "myKhatas": "माझी खाती",
   "noVendorsFound": "कोणताही विक्रेता आढळला नाही",
-
   "verifyBillDetails": "बिलाचा तपशील सत्यापित करा",
   "scannedBillPreview": "स्कॅन केलेले बिल",
   "descriptionItemDetails": "वर्णन / वस्तूचा तपशील",
   "selectCustomer": "ग्राहक निवडा",
   "searchCustomerHint": "ग्राहक शोधा किंवा निवडा",
   "saveToKhata": "खात्यात सेव्ह करा",
-
   "allCustomersReport": "सर्व ग्राहकांचा अहवाल",
   "collectedInMonth": "{month} मध्ये संकलन",
-  "@collectedInMonth": { "placeholders": { "month": { "type": "String" } } },
-
+  "@collectedInMonth": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
   "notificationSettings": "सूचना सेटिंग्ज",
   "securityPin": "सुरक्षा आणि पिन",
   "editProfile": "प्रोफाइल संपादित करा",
@@ -310,28 +398,1175 @@
   "passwordChangedSuccess": "पासवर्ड यशस्वीरीत्या बदलला",
   "loadingContent": "लोड होत आहे...",
   "failedToLoad": "सामग्री लोड करण्यात अयशस्वी. पुन्हा प्रयत्न करा.",
-
   "bookingActions": "बुकिंग क्रिया",
   "confirmBooking": "बुकिंग पुष्टी करा",
   "markComplete": "पूर्ण चिन्हांकित करा",
   "confirmBookingMessage": "{customer} च्या {date} रोजी {time} वाजता भेट पुष्टी करायची?",
   "@confirmBookingMessage": {
-    "placeholders": { "date": { "type": "String" }, "time": { "type": "String" }, "customer": { "type": "String" } }
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      },
+      "customer": {
+        "type": "String"
+      }
+    }
   },
   "bookingUpdated": "बुकिंग यशस्वीरीत्या अपडेट झाली",
   "bookingUpdateFailed": "बुकिंग अपडेट करण्यात अयशस्वी",
-
   "markAttendanceFor": "उपस्थिती नोंदवा — {date}",
-  "@markAttendanceFor": { "placeholders": { "date": { "type": "String" } } },
+  "@markAttendanceFor": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "allCustomers": "सर्व ग्राहक",
+  "@allCustomers": {},
   "noCustomersYet": "अद्याप कोणताही ग्राहक नाही",
+  "@noCustomersYet": {},
   "noCustomersYetSubtitle": "सुरुवात करण्यासाठी पहिला ग्राहक जोडा",
+  "@noCustomersYetSubtitle": {},
   "invalidPhone": "6–9 ने सुरू होणारा 10 अंकी वैध मोबाइल नंबर प्रविष्ट करा",
+  "@invalidPhone": {},
   "accrueMonthSalary": "महिन्याचा पगार जोडा (₹{amount})",
-  "@accrueMonthSalary": { "placeholders": { "amount": { "type": "String" } } },
+  "@accrueMonthSalary": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "accrueMonthSalaryTitle": "महिन्याचा पगार जोडा",
+  "@accrueMonthSalaryTitle": {},
+  "removeStaffTitle": "Remove Staff Member",
+  "@removeStaffTitle": {},
+  "removeStaffConfirm": "Remove {name} from your staff? This will revoke their app access immediately.",
+  "@removeStaffConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "accrueMonthSalaryConfirm": "{name} च्या थकबाकीत या महिन्यासाठी ₹{amount} जोडायचे?",
   "@accrueMonthSalaryConfirm": {
-    "placeholders": { "name": { "type": "String" }, "amount": { "type": "String" } }
-  }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "accountInformation": "Account Information",
+  "updateProfileDetails": "Update your name, photo and details",
+  "updateAccountPassword": "Update your account password",
+  "deleteAccount": "Delete Account",
+  "deleteAccountSubtitle": "Permanently delete your account and all data",
+  "deleteAccountConfirmation": "Delete Account?",
+  "deleteAccountConfirmationMessage": "This will permanently delete your account and all your data. This action cannot be undone.",
+  "deleteAccountStaffWarning": "This will permanently delete your account. This cannot be undone.",
+  "deleteForever": "Delete Forever",
+  "delete": "Delete",
+  "readTermsOfService": "Read our terms of service",
+  "privacyPolicyDescription": "How we handle your data",
+  "confirmLogout": "Are you sure you want to log out?",
+  "membershipTiers": "Membership Tiers",
+  "membershipTiersDescription": "Rename tiers and set member discounts",
+  "logIn": "Log in",
+  "enterPhoneNumberToContinue": "Enter your phone number to continue",
+  "havingTrouble": "Having trouble?",
+  "useEmailInstead": "Use email instead →",
+  "logInWithEmail": "Log in with email",
+  "emailPlaceholder": "you@example.com",
+  "enterYourPassword": "Enter your password",
+  "takePhoto": "Take a photo",
+  "chooseFromGallery": "Choose from gallery",
+  "removePhoto": "Remove photo",
+  "tapToAddProfilePhoto": "Tap to add profile photo",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "add": "Add",
+  "addUpiId": "Add UPI ID",
+  "save": "Save",
+  "close": "Close",
+  "ok": "OK",
+  "remove": "Remove",
+  "approve": "Approve",
+  "decline": "Decline",
+  "none": "None",
+  "percent": "Percent",
+  "profile": "Profile",
+  "paymentVerification": "Payment Verification",
+  "verifyingPayment": "Verifying Payment",
+  "paymentConfirmedExclamation": "Payment Confirmed!",
+  "verificationTimedOut": "Verification Timed Out",
+  "goBack": "Go Back",
+  "payDues": "Pay Dues",
+  "skipForNow": "Skip for now",
+  "allDone": "All Done!",
+  "noUpcomingAppointments": "No upcoming appointments",
+  "myPay": "My Pay",
+  "myPaymentQr": "My Payment QR",
+  "showMyQr": "Show my QR",
+  "noPaymentsYet": "No payments yet",
+  "paymentHistory": "Payment History",
+  "paymentHistory6Months": "Payment History (6 months)",
+  "connectionRequest": "Connection Request",
+  "vendorWantsToConnect": "A vendor wants to connect",
+  "acceptRequest": "Accept",
+  "declineRequest": "Decline",
+  "messageLabel": "Message",
+  "sendRequest": "Send Request",
+  "requestSentNotification": "Request sent! They will be notified to confirm.",
+  "awaitingAcceptance": "Awaiting Acceptance",
+  "addAVendor": "Add a Vendor",
+  "findByPhoneOrEmail": "Find by phone number or email",
+  "phoneOrEmail": "Phone or email",
+  "phoneOrEmailHint": "10-digit mobile or email address",
+  "nicknameOptional": "Nickname (optional)",
+  "howYouKnowVendor": "How you know this vendor",
+  "bookingNoteExample": "E.g. Need extra milk today",
+  "confirmLocation": "Confirm Location",
+  "moveMapToSelectLocation": "Move the map to select a location",
+  "searchPlaceHint": "Search for a place…",
+  "mapAttribution": "© OpenStreetMap contributors",
+  "searchVendorsHint": "Search vendors…",
+  "somethingWentWrong": "Something went wrong",
+  "payViaUpi": "Pay via UPI",
+  "connectWithVendor": "Connect",
+  "requestConnection": "Request Connection",
+  "addVendor": "Add Vendor",
+  "noOutstandingBalances": "No outstanding balances",
+  "allCustomersSettledUp": "All customers are settled up.",
+  "nothingCollectedToday": "Nothing collected today",
+  "paymentsWillAppearHere": "Payments received today will appear here.",
+  "customerReport": "Customer Report",
+  "overview": "Overview",
+  "tapToStop": "Tap to stop",
+  "itemName": "Item name",
+  "itemNameExample": "e.g. Milk",
+  "unitPrice": "Unit Price ₹",
+  "deliverTo": "Deliver to",
+  "bulkCharge": "Bulk Charge",
+  "newProduct": "New product",
+  "editProduct": "Edit Product",
+  "newProductService": "New Product / Service",
+  "updateProductDetails": "Update name, unit or price",
+  "defineProduct": "Define what you sell and its base price",
+  "productName": "Product name",
+  "productNameExample": "e.g. Daily Morning Milk",
+  "unit": "Unit",
+  "unitExample": "litre / kg / piece",
+  "pricePerUnit": "Price / unit (₹)",
+  "deleteProduct": "Delete product",
+  "deleteProductConfirmation": "Delete product?",
+  "removeProductConfirmation": "Remove \"{name}\" from your product list?",
+  "@removeProductConfirmation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "noProductsYet": "No products yet",
+  "addFirstProduct": "Add First Product",
+  "setPriceToChargeTitle": "Set a price for {name}",
+  "@setPriceToChargeTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "setPriceToChargeSubtitle": "This service has no unit or price set yet. Add them to charge customers for it.",
+  "setPrice": "Set Price",
+  "renameTier": "Rename tier",
+  "tierName": "Tier name",
+  "tierLevel": "Level {level}",
+  "@tierLevel": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "memberDiscount": "Member discount",
+  "discountFor": "Discount for {tier}",
+  "@discountFor": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "flatAmount": "Flat ₹",
+  "discountPercent": "Discount %",
+  "discountAmount": "Discount amount (₹)",
+  "percentExample": "e.g. 5",
+  "amountExample": "e.g. 50",
+  "maxDiscountPerDue": "Max discount per due (₹) — optional",
+  "maxDiscountExample": "e.g. 100 (leave blank for no cap)",
+  "saveDiscount": "Save discount",
+  "membership": "Membership",
+  "setTier": "Set",
+  "changeTier": "Change",
+  "applyMembership": "Apply",
+  "removeMembership": "Remove membership",
+  "removeLedgerConfirmation": "Remove ledger?",
+  "exportStatement": "Export Statement",
+  "appAccess": "App access",
+  "invalidPhoneNumber": "Enter a valid 10-digit Indian mobile number",
+  "enterAll6Digits": "Enter all 6 digits",
+  "invalidEmailAddress": "Enter a valid email address",
+  "passwordRequired": "Please enter your password",
+  "nameRequired": "Name is required",
+  "required": "Required",
+  "invalidUpiFormat": "Invalid UPI ID format (e.g. name@upi)",
+  "upiIdAlreadyAdded": "This UPI ID is already added",
+  "verifyButton": "Verify",
+  "createAccountButton": "Create Account",
+  "phonePlaceholder": "XXXXX XXXXX",
+  "enterPassword": "Enter your password",
+  "mobileNumberLabel": "Mobile Number",
+  "personalInfo": "Personal Info",
+  "businessInfo": "Business Info",
+  "enterOtpTitle": "Enter OTP",
+  "sentToLabel": "Sent to",
+  "noOtpReceived": "Didn't receive it?",
+  "resendOtp": "Resend OTP",
+  "uploadingPhotoLabel": "Uploading photo...",
+  "phoneNumberLabel": "Phone Number",
+  "iAmA": "I am a",
+  "dualRoleExplanation": "You'll primarily use the Vendor experience. Your Customer account can be accessed separately.",
+  "profileSavedPhotoFailed": "Profile saved — photo could not be uploaded right now",
+  "profileUpdatedSuccess": "Profile updated successfully",
+  "addUpiIdTitle": "Add UPI ID",
+  "upiIdHint": "yourname@upi",
+  "cancelButton": "Cancel",
+  "primaryUpiInfo": "PRIMARY UPI ID",
+  "primaryUpiDescription": "The primary ID is shared with customers for payment. Tap the star to switch which one is primary.",
+  "upiIdCounter": "{count} / {max} UPI IDs",
+  "@upiIdCounter": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "primaryUpiIdTooltip": "Primary UPI ID",
+  "setAsPrimaryTooltip": "Set as primary",
+  "primaryLabel": "Primary",
+  "removeButtonLabel": "Remove",
+  "noUpiIdsEmpty": "No UPI IDs yet",
+  "upiEmptyDescription": "Add up to 5 UPI IDs. Your primary ID will be shared with customers for payment.",
+  "changePasswordSubtitle": "Enter your current password and choose a new one.",
+  "alreadyHaveAccount": "Already have an account?",
+  "goBackButton": "Go back",
+  "saveButton": "Save",
+  "language": "Language",
+  "languageEnglish": "English",
+  "languageHindi": "Hindi",
+  "languageBengali": "Bengali",
+  "languageMarathi": "Marathi",
+  "languageTamil": "Tamil",
+  "languageTelugu": "Telugu",
+  "languageKannada": "Kannada",
+  "languageGujarati": "Gujarati",
+  "languagePunjabi": "Punjabi",
+  "languageMalayalam": "Malayalam",
+  "languageBhojpuri": "Bhojpuri",
+  "languageMaithili": "Maithili",
+  "needPasswordForEmail": "You need a password set on your account to use this.\nSet one from Settings → Change Password.",
+  "usePhoneInstead": "Use phone number instead →",
+  "sessionExpiredVerifyPhoneAgain": "Session expired. Please verify your phone again.",
+  "upiIdsSavedSuccessfully": "UPI IDs saved successfully",
+  "chooseYourLanguageHindi": "आपकी भाषा चुनें",
+  "unknownLanguage": "Unknown",
+  "businessCategoryMilkDairy": "Milk / Dairy",
+  "businessCategoryPressDhobi": "Press / Dhobi",
+  "businessCategoryMaidCook": "Maid / Cook",
+  "businessCategoryNewspaper": "Newspaper",
+  "businessCategoryWaterCan": "Water Can",
+  "businessCategoryTiffinFood": "Tiffin / Food",
+  "businessCategoryKiranaGrocery": "Kirana / Grocery",
+  "businessCategorySalonParlour": "Salon / Parlour",
+  "businessCategoryConstructionLabour": "Construction Labour",
+  "businessCategoryTransportAuto": "Transport / Auto",
+  "businessCategoryOther": "Other",
+  "bookAnAppointment": "Book an Appointment",
+  "noSlotsAvailable": "No slots available",
+  "trySelectingDifferentDate": "Try selecting a different date",
+  "availableSlots": "Available Slots",
+  "bookingConfirmedToast": "Booking confirmed!",
+  "date": "Date",
+  "time": "Time",
+  "notesOptional": "Notes (optional)",
+  "durationMinutes": "{minutes} min",
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "saveChanges": "Save Changes",
+  "saveProduct": "Save Product",
+  "editProductMenuItem": "Edit product",
+  "deleteProductMenuItem": "Delete product",
+  "noProductsYetDescription": "Define the items you sell — milk, paneer, etc. — once, then use them every day.",
+  "selectProductToAssignQty": "Select a product above to assign quantities",
+  "noCustomersLinked": "No customers linked yet",
+  "chargeAll": "Charge All",
+  "chargedSuccessfully": "Charged {count} customer successfully",
+  "@chargedSuccessfully": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargedSuccessfullyPlural": "Charged {count} customers successfully",
+  "@chargedSuccessfullyPlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargedPartial": "{ok} charged, {fail} failed",
+  "@chargedPartial": {
+    "placeholders": {
+      "ok": {
+        "type": "int"
+      },
+      "fail": {
+        "type": "int"
+      }
+    }
+  },
+  "bulkSummaryLine": "{count} customer  •  {qty} {unit}",
+  "@bulkSummaryLine": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "qty": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "bulkSummaryLinePlural": "{count} customers  •  {qty} {unit}",
+  "@bulkSummaryLinePlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "qty": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "totalAmount": "₹{amount} total",
+  "@totalAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "appointmentNext": "Next: {vendorName} · {date} at {time}",
+  "@appointmentNext": {
+    "placeholders": {
+      "vendorName": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "outstandingShortLabel": "outstanding",
+  "payViaUpiAmount": "Pay ₹{amount} via UPI",
+  "@payViaUpiAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentSummarySkipped": "Paid {count} vendors, skipped {skipped}.",
+  "@paymentSummarySkipped": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentSummarySkippedSingular": "Paid {count} vendor, skipped {skipped}.",
+  "@paymentSummarySkippedSingular": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentSummaryComplete": "Paid all {count} vendors.",
+  "@paymentSummaryComplete": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentSummaryCompleteSingular": "Paid all {count} vendor.",
+  "@paymentSummaryCompleteSingular": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tapToAcceptOrDecline": "Tap to accept or decline",
+  "helpSupportContactPrefix": "For any assistance, reach out to us at:",
+  "supportEmail": "igurus@info.in",
+  "bookButton": "Book",
+  "waitingForVendorAcceptance": "Waiting for {name} to accept your request.",
+  "@waitingForVendorAcceptance": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "vendorWantsToConnectAsCustomer": "A vendor wants to connect",
+  "vendorWantsToConnectDesc": "They want to add you as a customer and track your account.",
+  "someoneWantsToConnect": "Someone wants to connect",
+  "someoneWantsToConnectDesc": "They will be added as a customer to your account.",
+  "requestedTimeAgo": "Requested {time}",
+  "@requestedTimeAgo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "connectedVendorLinked": "Connected! {name} is now linked to your account.",
+  "@connectedVendorLinked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "requestDeclinedFrom": "Request from {name} declined.",
+  "@requestDeclinedFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "connectedCustomerLinked": "Connected! {name} is now linked to your business.",
+  "@connectedCustomerLinked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "processing": "Processing…",
+  "retryButton": "Retry",
+  "memberDiscountDescription": "Members on this tier get this discount on their dues.",
+  "discountValueInvalid": "Enter a valid amount greater than 0",
+  "percentageExceedsMax": "Percentage cannot exceed 100",
+  "levelLabel": "Level {level}",
+  "@levelLabel": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "rename": "Rename",
+  "membershipLabel": "Membership",
+  "noMembership": "No membership",
+  "applyForMembership": "Apply for membership",
+  "setMembershipTier": "Set membership tier",
+  "chooseTierToRequestFromVendor": "Choose a tier to request from this vendor",
+  "chooseTierFor": "Choose a tier for {customerName}",
+  "@chooseTierFor": {
+    "placeholders": {
+      "customerName": {
+        "type": "String"
+      }
+    }
+  },
+  "setButton": "Set",
+  "changeButton": "Change",
+  "applyButton": "Apply",
+  "approveButton": "Approve",
+  "customerRequestedTier": "{customerName} requested {tierName}",
+  "@customerRequestedTier": {
+    "placeholders": {
+      "customerName": {
+        "type": "String"
+      },
+      "tierName": {
+        "type": "String"
+      }
+    }
+  },
+  "requestedTierAwaiting": "Requested {tierName} — awaiting approval",
+  "@requestedTierAwaiting": {
+    "placeholders": {
+      "tierName": {
+        "type": "String"
+      }
+    }
+  },
+  "verificationConnecting": "Connecting to your bank…",
+  "verificationVerifying": "Verifying transaction…",
+  "verificationWaiting": "Waiting for confirmation…",
+  "verificationAlmostThere": "Almost there…",
+  "verificationDoNotClose": "Do not close this screen",
+  "verificationElapsed": "{seconds}s  •  Do not close this screen",
+  "@verificationElapsed": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "txnLabel": "Txn: {txnId}",
+  "@txnLabel": {
+    "placeholders": {
+      "txnId": {
+        "type": "String"
+      }
+    }
+  },
+  "paidAmountToRecipient": "₹{amount} paid to {name}",
+  "@paidAmountToRecipient": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "verificationTimeoutBody": "We could not confirm your payment within 30 seconds. Your money may NOT have been debited — please check your bank statement before retrying.",
+  "ifDebitedContactSupport": "If debited, contact support with Txn ID.",
+  "thisMonthSubtitle": "This month",
+  "billedNet": "Billed (net)",
+  "exclDisputed": "excl. disputed",
+  "receivedLabel": "Received",
+  "paymentsAndAdj": "payments & adj.",
+  "currentBalance": "Current Balance",
+  "paymentCount": "{count} payment",
+  "@paymentCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentCountPlural": "{count} payments",
+  "@paymentCountPlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customersCount": "{count} customers",
+  "@customersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "rankedByOutstanding": "Ranked by outstanding balance",
+  "collectedThisMonth": "₹{amount} this month",
+  "@collectedThisMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "collectedThisMonthShort": "₹{amount} this mo.",
+  "@collectedThisMonthShort": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryAll": "All",
+  "findVendorsNearYou": "Find vendors near you",
+  "searchByNameOrCategory": "Search by name, business name,\nor select a category above.",
+  "noResultsForQuery": "No results for \"{query}\".\nTry a different name or category.",
+  "@noResultsForQuery": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "addressLabel": "Address",
+  "emailLabel": "Email",
+  "upiLabel": "UPI",
+  "upiIdLabel": "UPI ID",
+  "upiEmailLabel": "UPI / Email",
+  "couldNotLoadRetry": "Could not load — tap to retry",
+  "labelCopied": "{label} copied!",
+  "@labelCopied": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "upiIdCopied": "UPI ID copied!",
+  "requestSentButton": "Request Sent",
+  "alreadyConnected": "Already Connected",
+  "sendingEllipsis": "Sending…",
+  "sendConnectionRequest": "Send Connection Request",
+  "copyUpiIdToPay": "Copy UPI ID to Pay",
+  "requestSentToVendor": "Request sent! {name} will be notified.",
+  "@requestSentToVendor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "byOwnerName": "by {name}",
+  "@byOwnerName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "logOut": "Log out",
+  "confirmLogoutTitle": "Log out",
+  "areYouSureLogout": "Are you sure you want to log out?",
+  "showQrToCollect": "Show this QR to a customer to collect payment directly to you.",
+  "uploadQr": "Upload QR",
+  "replaceQr": "Replace",
+  "qrUploaded": "QR uploaded",
+  "scanToPayName": "Scan to pay {name}",
+  "@scanToPayName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "salarySingle": "Salary",
+  "advanceSingle": "Advance",
+  "customersTitle": "Customers",
+  "balanceDue": "₹{balance} due",
+  "@balanceDue": {
+    "placeholders": {
+      "balance": {
+        "type": "String"
+      }
+    }
+  },
+  "recordDeliveryTooltip": "Record delivery",
+  "viewLedgerTooltip": "View ledger",
+  "staffRoleSubtitle": "Staff · {name}",
+  "@staffRoleSubtitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "recordDelivery": "Udhaar Diya",
+  "recordDeliverySubtitle": "Customer took goods — add to their khata",
+  "collectPayment": "Paisa Mila",
+  "collectPaymentSubtitle": "Customer paid — reduce their khata",
+  "viewAll2": "View all",
+  "noCustomersStaff": "No customers yet",
+  "myVendorsSection": "My Vendors",
+  "shopsYouBuyFrom": "Shops you buy from",
+  "awaitingAcceptanceTitle": "Awaiting Acceptance",
+  "customersHaventConfirmed": "These customers haven't confirmed yet",
+  "pendingBadge": "Pending",
+  "notifyCustomersWithDues": "Notify customers with dues",
+  "linkANewCustomer": "Link a new customer",
+  "dailyCharge": "Daily Charge",
+  "dailyChargeSubtitle": "Set quantities & charge all at once",
+  "findByPhoneOrEmailHint": "Find by phone number or email",
+  "phoneOrEmailLabel": "Phone or email",
+  "phoneMobileOrEmail": "10-digit mobile or email address",
+  "nicknameOptionalLabel": "Nickname (optional)",
+  "howYouKnowCustomer": "How you know this customer",
+  "requestSentWillBeNotified": "Request sent! They will be notified to confirm.",
+  "outstandingTitle": "Outstanding",
+  "customersWithDues": "{count}+ customers with dues",
+  "@customersWithDues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dueLabel": "due",
+  "collectedTodayTitle": "Collected Today",
+  "paymentsCountSubtitle": "{count}+ payments",
+  "@paymentsCountSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noPaymentsYetSubtitle": "No payments yet",
+  "removeLedgerVendorContent": "This will deactivate your link with {name}. Both parties will lose access to this shared ledger.",
+  "@removeLedgerVendorContent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "removeLedgerCustomerContent": "This will remove your connection with {name}.",
+  "@removeLedgerCustomerContent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineUpdatesPaused": "Offline — updates paused",
+  "exportStatementTitle": "Export Statement",
+  "chooseExportDateRange": "Choose the date range to include in the PDF.",
+  "last7DaysRange": "Entries from the past 7 days",
+  "last30DaysRange": "Entries from the past 30 days",
+  "last3MonthsRange": "Entries from the past 3 months",
+  "completeLedgerHistory": "Complete ledger history",
+  "appAccessActive": "Active · {phone}",
+  "@appAccessActive": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "appAccessDisabled": "Disabled",
+  "appAccessGranted": "{name} can now log in with {phone}",
+  "@appAccessGranted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "appAccessRevoked": "App access revoked for {name}",
+  "@appAccessRevoked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "appAccessDescription": "When on, {name} logs in with their own number ({phone}) and can record deliveries & payments and show their own QR — but cannot change attendance, add customers, or see other staff.",
+  "@appAccessDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentHistoryTitle": "Payment History",
+  "couldNotLoadPaymentHistory": "Could not load payment history",
+  "voicePleaseCheck": "Please check",
+  "navHome": "Home",
+  "qty": "Qty",
+  "totalRupees": "Total: ₹{amount}",
+  "@totalRupees": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "selectCustomerFirst": "Select a customer first",
+  "enterValidAmount": "Enter a valid amount",
+  "addsCredit": "Customer took goods — add to their khata",
+  "recordsCash": "Customer paid — reduce their khata",
+  "deliveryRecordedFor": "Delivery recorded for {name}",
+  "@deliveryRecordedFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentCollectedFrom": "Payment collected from {name}",
+  "@paymentCollectedFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "manageSchedule": "Manage Schedule",
+  "bookingsTab": "Bookings",
+  "bySlotTab": "By Slot",
+  "scheduleSaved": "Schedule saved!",
+  "addSlot": "Add Slot",
+  "noSlotsForDay": "No slots for {day}",
+  "@noSlotsForDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "tapAddSlotHint": "Tap \"Add Slot\" to set your availability",
+  "slotAvailable": "Available",
+  "slotsFull": "Slots Full",
+  "slotFullHint": "Mark this slot as fully booked",
+  "enableSlotFirst": "Enable slot first",
+  "deleteSlotTitle": "Delete Slot",
+  "deleteSlotConfirm": "Remove the {time} slot?",
+  "@deleteSlotConfirm": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "endTimeAfterStart": "End time must be after start time",
+  "slotOverlaps": "This slot overlaps with an existing one",
+  "addTimeSlot": "Add Time Slot",
+  "editTimeSlot": "Edit Time Slot",
+  "selectTimeHint": "Select start and end time in 12-hour format",
+  "startLabel": "Start",
+  "endLabel": "End",
+  "update": "Update",
+  "notifTabAll": "All",
+  "notifTabBookings": "Bookings",
+  "noBookingNotifications": "No booking notifications",
+  "noBookingNotificationsSubtitle": "Booking requests and updates will appear here",
+  "bookingPillLabel": "Booking",
+  "slotDetailTitle": "Slot Details",
+  "bookingsCount": "{count} booking",
+  "@bookingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bookingsCountPlural": "{count} bookings",
+  "@bookingsCountPlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingCountLabel": "{count} pending",
+  "@pendingCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "slotTimeRange": "{start} – {end}",
+  "@slotTimeRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "keepButton": "Keep",
+  "deleteButton": "Delete",
+  "membershipPlansTitle": "Membership Plans",
+  "newPlanButton": "New Plan",
+  "deletePlanTitle": "Delete plan?",
+  "deletePlanConfirm": "\"{name}\" will be removed. This cannot be undone.",
+  "@deletePlanConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "inactiveLabel": "Inactive",
+  "noBenefitsAdded": "No benefits added.",
+  "noMembershipPlans": "No membership plans yet",
+  "tapNewPlanHint": "Tap \"New Plan\" to create your first one.",
+  "membershipRequestsTitle": "Membership Requests",
+  "noPendingRequests": "No pending requests",
+  "customersCanApplyHint": "Customers can apply for membership\nfrom their ledger screen.",
+  "membersTitle": "Members",
+  "noMembersYet": "No members yet",
+  "activeStat": "Active",
+  "mrrStat": "MRR",
+  "expiringStat": "Expiring",
+  "allPlansFilter": "All Plans",
+  "daysLeft": "{count}d left",
+  "@daysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysLeftFull": "{count} days",
+  "@daysLeftFull": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planNameLabel": "Plan name",
+  "planNameHint": "e.g. Gold Membership",
+  "durationDaysLabel": "Duration (days)",
+  "priceRupeesLabel": "Price ₹",
+  "addBenefitButton": "Add benefit",
+  "customLabel": "Custom",
+  "customAdvanceLabel": "Custom advance ₹",
+  "benefitLabel": "Benefit",
+  "benefitHint": "e.g. 4 haircuts",
+  "planDetailsSection": "Plan details",
+  "benefitsSection": "Benefits",
+  "advanceRequiredSection": "Advance required",
+  "editPlanTitle": "Edit Plan",
+  "createPlanTitle": "Create Membership Plan",
+  "publishPlanButton": "Publish Plan",
+  "planUpdatedToast": "Plan updated",
+  "planPublishedToast": "Plan published",
+  "vendorPlansTitle": "{vendorName} · Plans",
+  "@vendorPlansTitle": {
+    "placeholders": {
+      "vendorName": {
+        "type": "String"
+      }
+    }
+  },
+  "noPlansAvailable": "No plans available yet",
+  "vendorNoPlansHint": "This vendor hasn't created any membership plans.",
+  "applyForPlan": "Apply for {planName}",
+  "@applyForPlan": {
+    "placeholders": {
+      "planName": {
+        "type": "String"
+      }
+    }
+  },
+  "messageToVendorOptional": "Message to vendor (optional)",
+  "messageToVendorHint": "e.g. Please enroll me for this month",
+  "sendRequestButton": "Send Request",
+  "activeLabel": "Active",
+  "noAdditionalBenefits": "No additional benefits",
+  "currentPlanLabel": "Current Plan",
+  "requestPendingLabel": "Request Pending",
+  "applyLabel": "Apply",
+  "requestSentToName": "Request sent to {name}",
+  "@requestSentToName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "membershipDialogTitle": "Membership",
+  "pendingPlanPrefix": "Pending: {planName}",
+  "@pendingPlanPrefix": {
+    "placeholders": {
+      "planName": {
+        "type": "String"
+      }
+    }
+  },
+  "enrollCustomer": "Enroll {name}",
+  "@enrollCustomer": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "choosePlanHint": "Choose a plan to start their membership.",
+  "noActivePlansHint": "No active plans. Create one in Memberships → Plans first.",
+  "enrollLabel": "Enroll",
+  "changeLabel": "Change",
+  "usedLabel": "Used",
+  "useLabel": "Use",
+  "daysLeftLabel": "{count} days left",
+  "@daysLeftLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "orderPlacedSuccess": "Order placed successfully!",
+  "orderFromVendor": "Order from {vendorName}",
+  "@orderFromVendor": {
+    "placeholders": {
+      "vendorName": {
+        "type": "String"
+      }
+    }
+  },
+  "addItemButton": "Add item",
+  "orderNoteOptional": "Order note (optional)",
+  "totalLabel": "Total",
+  "placeOrderButton": "Place Order",
+  "itemNameRequired": "Item name *",
+  "unitLabel": "Unit",
+  "unitHint": "kg, L…",
+  "unitPriceLabel": "Unit ₹",
+  "itemNumber": "Item {number}",
+  "@itemNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "subtotalLabel": "Subtotal: ₹{amount}",
+  "@subtotalLabel": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "orderDetailsTitle": "Order Details",
+  "proofPhotoLabel": "Proof photo",
+  "tapToViewFullScreen": "Tap to view full screen",
+  "rejectButton": "Reject",
+  "confirmButton": "Confirm",
+  "markAsDeliveredButton": "Mark as Delivered",
+  "confirmDeliveryTitle": "Confirm Delivery",
+  "deliveryNoteOptional": "Delivery note (optional)",
+  "retakeLabel": "Retake",
+  "photoUploadFailed": "Photo upload failed: {error}",
+  "@photoUploadFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "orderNoteLabel": "Order note",
+  "customerLabel": "Customer",
+  "ordersTitle": "Orders",
+  "noOrdersYet": "No orders yet",
+  "markDeliveredButton": "Mark Delivered",
+  "myOrdersTitle": "My Orders",
+  "deliverButton": "Deliver",
+  "noPendingDeliveries": "No pending deliveries",
+  "deliveriesTitle": "Deliveries",
+  "monthlyStatementTitle": "Monthly Statement",
+  "deliveryProofLabel": "Delivery proof",
+  "replacePhotoButton": "Replace Photo",
+  "attachProofButton": "Attach Proof",
+  "uploadingLabel": "Uploading...",
+  "proofLockedHint": "This proof is locked and cannot be changed",
+  "proofAttachedToast": "Proof attached",
+  "itemLabel": "Item {number}",
+  "@itemLabel": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "amountRequired": "Amount *",
+  "addItemLabel": "Add Item",
+  "totalAmountLabel": "Total",
+  "deactivate": "Deactivate",
+  "activate": "Activate",
+  "activeStatLabel": "Active",
+  "mrrStatLabel": "MRR",
+  "expiringStatLabel": "Expiring",
+  "closeLabel": "Close",
+  "pendingPlanLabel": "Pending: {name}",
+  "@pendingPlanLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "customerRequestedPlan": "{customer} requested {plan}",
+  "@customerRequestedPlan": {
+    "placeholders": {
+      "customer": {
+        "type": "String"
+      },
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "itemsCount": "Items ({count})",
+  "@itemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deliveryLabel": "Delivery",
+  "markedDeliveredBy": "Marked delivered by {role}",
+  "@markedDeliveredBy": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "deliveriesHint": "Items delivered through orders. Tap an entry to see the items."
 }

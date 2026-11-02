@@ -1,5 +1,6 @@
 import '../../domain/repositories/staff_repository.dart';
 import '../../../../shared/models/staff_model.dart';
+import '../../../staff_portal/domain/models/staff_self.dart';
 
 class MockStaffRepository implements StaffRepository {
   final List<StaffModel> _staff = [
@@ -139,5 +140,27 @@ class MockStaffRepository implements StaffRepository {
     final s = _staff[index];
     _staff[index] = s.copyWith(unpaidSalary: s.unpaidSalary + s.salaryAmount);
     return _staff[index];
+  }
+
+  @override
+  Future<StaffModel> setAppAccess(String staffId, bool canLogin) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    final index = _staff.indexWhere((s) => s.id == staffId);
+    if (index == -1) throw Exception('Staff not found');
+    _staff[index] = _staff[index]
+        .copyWith(canLogin: canLogin, hasAppAccount: canLogin);
+    return _staff[index];
+  }
+
+  @override
+  Future<List<StaffPayTransaction>> getSalaryHistory(String staffId) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    return const [];
+  }
+
+  @override
+  Future<void> deleteStaff(String staffId) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    _staff.removeWhere((s) => s.id == staffId);
   }
 }

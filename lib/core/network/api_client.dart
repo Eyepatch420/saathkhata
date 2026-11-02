@@ -2,21 +2,33 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import '../services/storage_service.dart';
 import '../utils/app_logger.dart';
+import '../router/auth_state_notifier.dart';
 import 'api_endpoints.dart';
 
 // Keys that must never appear in logs
-const _redactedKeys = {'password', 'refreshToken', 'accessToken', 'Authorization'};
+const _redactedKeys = {
+  'password',
+  'currentPassword',
+  'newPassword',
+  'otp',
+  'token',
+  'refreshToken',
+  'accessToken',
+  'Authorization',
+  'apikey',
+};
 
 class ApiClient {
   late final Dio _dio;
   final StorageService _storage;
+  final AuthStateNotifier _authStateNotifier;
 
   // Serialises token refresh: only one POST /auth/refresh in flight at a time.
   // Concurrent 401s wait on this future and reuse the single new token.
   bool _isRefreshing = false;
   Completer<String?>? _refreshCompleter;
 
-  ApiClient(this._storage) {
+  ApiClient(this._storage, this._authStateNotifier) {
     _dio = Dio(BaseOptions(
       baseUrl: ApiEndpoints.baseUrl,
       connectTimeout: const Duration(seconds: 15),
@@ -55,6 +67,7 @@ class ApiClient {
     // Prevent the refresh call itself from re-triggering refresh on failure.
     if (err.requestOptions.path == ApiEndpoints.refresh) {
       await _storage.clearAll();
+      _authStateNotifier.forceUnauthenticated();
       handler.next(err);
       return;
     }
@@ -65,6 +78,7 @@ class ApiClient {
     if (refreshToken == null) {
       AppLogger.w('API', 'No refresh token stored — clearing session');
       await _storage.clearAll();
+      _authStateNotifier.forceUnauthenticated();
       handler.next(err);
       return;
     }
@@ -113,6 +127,7 @@ class ApiClient {
     } catch (e) {
       AppLogger.e('API', 'Token refresh failed — clearing session', e);
       await _storage.clearAll();
+      _authStateNotifier.forceUnauthenticated();
       _refreshCompleter!.complete(null);
       handler.next(err);
     } finally {

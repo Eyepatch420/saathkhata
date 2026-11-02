@@ -37,26 +37,34 @@ class MockVendorRepository implements VendorRepository {
   ];
 
   @override
+  Future<List<VendorLinkItem>> getLinkedVendors() async => [];
+
+  @override
   Future<List<CustomerLinkItem>> getLinkedCustomers() async {
     await Future.delayed(const Duration(milliseconds: 500));
     return List.from(_links);
   }
 
   @override
-  Future<CustomerLinkItem> linkCustomer(String customerEmail) async {
-    await Future.delayed(const Duration(milliseconds: 400));
-    final newLink = CustomerLinkItem(
-      linkId: 'link${_links.length + 1}',
-      balance: 0.0,
-      customer: UserSummary(
-        id: 'c${_links.length + 1}',
-        name: customerEmail.split('@').first,
-        mobile: null,
-      ),
-      createdAt: DateTime.now().toIso8601String(),
-    );
-    _links.add(newLink);
-    return newLink;
+  Future<CustomerLinkItem> getCustomerByLinkId(String linkId) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    return _links.firstWhere((l) => l.linkId == linkId);
+  }
+
+  @override
+  Future<void> updateLinkNickname(String linkId, String? nickname) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+  }
+
+  @override
+  Future<void> updateLinkDefaults(
+    String linkId, {
+    String? defaultProduct,
+    String? defaultUnit,
+    double? defaultQty,
+    double? defaultPricePerUnit,
+  }) async {
+    await Future.delayed(const Duration(milliseconds: 200));
   }
 
   @override

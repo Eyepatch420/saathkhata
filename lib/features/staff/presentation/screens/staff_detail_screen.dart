@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart' show CupertinoPicker, FixedExtentScrollController;
+import 'package:flutter/cupertino.dart'
+    show CupertinoPicker, FixedExtentScrollController;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +10,9 @@ import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/staff_model.dart';
+import '../../../../shared/widgets/app_toast.dart';
+import 'staff_detail_screen/widgets/app_access_card.dart';
+import 'staff_detail_screen/widgets/salary_history_section.dart';
 import '../bloc/staff_bloc.dart';
 import '../bloc/staff_event.dart';
 import '../bloc/staff_state.dart';
@@ -22,12 +26,14 @@ class StaffDetailScreen extends StatelessWidget {
     final now = DateTime.now();
     return BlocProvider(
       create: (context) => StaffBloc(getIt())
-        ..add(LoadAttendance(
-          staffId: staff.id,
-          year: now.year,
-          month: now.month,
-          staff: staff,
-        )),
+        ..add(
+          LoadAttendance(
+            staffId: staff.id,
+            year: now.year,
+            month: now.month,
+            staff: staff,
+          ),
+        ),
       child: _StaffDetailView(initialStaff: staff),
     );
   }
@@ -40,16 +46,32 @@ class _StaffDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return BlocBuilder<StaffBloc, StaffState>(
+    return BlocConsumer<StaffBloc, StaffState>(
+      listener: (context, state) {
+        if (state is StaffDeleted) {
+          AppToast.show(
+            context,
+            '${state.staffName} has been removed',
+            type: ToastType.info,
+          );
+          Navigator.of(context).pop();
+        } else if (state is StaffError) {
+          AppToast.show(context, state.message, type: ToastType.error);
+        }
+      },
       builder: (context, state) {
         final staff = state is StaffDetailLoaded ? state.staff : initialStaff;
-        final attendance =
-            state is StaffDetailLoaded ? state.attendance : <String, AttendanceStatus>{};
-        final year = state is StaffDetailLoaded ? state.year : DateTime.now().year;
-        final month = state is StaffDetailLoaded ? state.month : DateTime.now().month;
+        final attendance = state is StaffDetailLoaded
+            ? state.attendance
+            : <String, AttendanceStatus>{};
+        final year = state is StaffDetailLoaded
+            ? state.year
+            : DateTime.now().year;
+        final month = state is StaffDetailLoaded
+            ? state.month
+            : DateTime.now().month;
 
         return Scaffold(
-
           appBar: AppBar(
             title: Text(staff.name),
             actions: [
@@ -58,41 +80,98 @@ class _StaffDetailView extends StatelessWidget {
                   onPressed: () => _showPaySalarySheet(context, staff),
                   icon: const Icon(Icons.payment_rounded, size: 18),
                   label: Text(l10n.staffPayButton),
-                  style: TextButton.styleFrom(foregroundColor: AppColors.primary),
-                ),
-            ],
-          ),
-          body: SafeArea(child: state is StaffLoading
-              ? const Center(child: CircularProgressIndicator())
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _ProfileCard(staff: staff),
-                      const SizedBox(height: 16),
-                      _SalaryCard(
-                          staff: staff, attendance: attendance, year: year, month: month),
-                      const SizedBox(height: 16),
-                      _AttendanceCalendar(
-                        staffId: staff.id,
-                        attendance: attendance,
-                        year: year,
-                        month: month,
-                        joinDate: staff.joinDate,
-                        onMonthChanged: (y, m) => context.read<StaffBloc>().add(
-                              LoadAttendance(staffId: staff.id, year: y, month: m),
-                            ),
-                      ),
-                      const SizedBox(height: 16),
-                      _ActionButtons(staff: staff),
-                      const SizedBox(height: 24),
-                    ],
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.primary,
                   ),
                 ),
+              IconButton(
+                icon: const Icon(
+                  Icons.delete_outline_rounded,
+                  color: AppColors.error,
+                ),
+                tooltip: AppLocalizations.of(context)!.removeStaffTooltip,
+                onPressed: () => _confirmDelete(context, staff),
+              ),
+            ],
+          ),
+          body: SafeArea(
+            child: state is StaffLoading
+                ? const Center(child: CircularProgressIndicator())
+                : SingleChildScrollView(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _ProfileCard(staff: staff),
+                        const SizedBox(height: 16),
+                        _SalaryCard(
+                          staff: staff,
+                          attendance: attendance,
+                          year: year,
+                          month: month,
+                        ),
+                        const SizedBox(height: 16),
+                        AppAccessCard(staff: staff),
+                        const SizedBox(height: 16),
+                        _AttendanceCalendar(
+                          staffId: staff.id,
+                          attendance: attendance,
+                          year: year,
+                          month: month,
+                          joinDate: staff.joinDate,
+                          onMonthChanged: (y, m) =>
+                              context.read<StaffBloc>().add(
+                                LoadAttendance(
+                                  staffId: staff.id,
+                                  year: y,
+                                  month: m,
+                                ),
+                              ),
+                        ),
+                        const SizedBox(height: 16),
+                        _ActionButtons(staff: staff),
+                        const SizedBox(height: 24),
+                        SalaryHistorySection(
+                          staffId: staff.id,
+                          // Re-fetch whenever a payment/advance changes the balances.
+                          refreshKey:
+                              '${staff.unpaidSalary}_${staff.advanceTaken}',
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                    ),
+                  ),
           ),
         );
       },
+    );
+  }
+
+  void _confirmDelete(BuildContext context, StaffModel staff) {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.removeStaffTitle),
+        content: Text(l10n.removeStaffConfirm(staff.name)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              context.read<StaffBloc>().add(DeleteStaff(staffId: staff.id));
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
+            child: Text(
+              l10n.remove,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -100,7 +179,9 @@ class _StaffDetailView extends StatelessWidget {
     final bloc = context.read<StaffBloc>();
     final router = GoRouter.of(context);
     final l10n = AppLocalizations.of(context)!;
-    final amountCtrl = TextEditingController(text: staff.unpaidSalary.toStringAsFixed(0));
+    final amountCtrl = TextEditingController(
+      text: staff.unpaidSalary.toStringAsFixed(0),
+    );
     final upiCtrl = TextEditingController();
 
     showModalBottomSheet(
@@ -115,7 +196,12 @@ class _StaffDetailView extends StatelessWidget {
           left: 24,
           right: 24,
           top: 24,
-          bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
+          // viewInsets clears the keyboard; viewPadding clears the gesture
+          // bar / 3-button nav when the keyboard is closed.
+          bottom:
+              MediaQuery.of(ctx).viewInsets.bottom +
+              MediaQuery.of(ctx).viewPadding.bottom +
+              24,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -125,7 +211,9 @@ class _StaffDetailView extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               l10n.unpaidLabel(staff.unpaidSalary.toStringAsFixed(0)),
-              style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
+              style: AppTypography.bodySmall.copyWith(
+                color: AppColors.textSecondary,
+              ),
             ),
             const SizedBox(height: 20),
             TextField(
@@ -152,24 +240,32 @@ class _StaffDetailView extends StatelessWidget {
                   final amount = double.tryParse(amountCtrl.text) ?? 0;
                   if (amount <= 0) return;
                   Navigator.pop(ctx);
-                  bloc.add(PaySalary(
-                    staffId: staff.id,
-                    amount: amount,
-                    upiTransactionId:
-                        upiCtrl.text.trim().isEmpty ? null : upiCtrl.text.trim(),
-                  ));
-                  router.push(AppRouter.upiPayment, extra: {
-                    'amount': amount,
-                    'recipientName': staff.name,
-                    'upiId': null,
-                  });
+                  bloc.add(
+                    PaySalary(
+                      staffId: staff.id,
+                      amount: amount,
+                      upiTransactionId: upiCtrl.text.trim().isEmpty
+                          ? null
+                          : upiCtrl.text.trim(),
+                    ),
+                  );
+                  router.push(
+                    AppRouter.upiPayment,
+                    extra: {
+                      'amount': amount,
+                      'recipientName': staff.name,
+                      'upiId': null,
+                    },
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                child: Text(l10n.paymentConfirmed,
-                    style: const TextStyle(color: Colors.white)),
+                child: Text(
+                  l10n.paymentConfirmed,
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ],
@@ -216,25 +312,40 @@ class _ProfileCard extends StatelessWidget {
               children: [
                 Text(staff.name, style: AppTypography.h3),
                 const SizedBox(height: 2),
-                Text(staff.role,
-                    style:
-                        AppTypography.bodySmall.copyWith(color: AppColors.textSecondary)),
+                Text(
+                  staff.role,
+                  style: AppTypography.bodySmall.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    const Icon(Icons.phone_rounded, size: 14, color: AppColors.textHint),
+                    const Icon(
+                      Icons.phone_rounded,
+                      size: 14,
+                      color: AppColors.textHint,
+                    ),
                     const SizedBox(width: 4),
-                    Text(staff.phone.isEmpty ? l10n.noPhone : staff.phone,
-                        style: AppTypography.bodySmall),
+                    Text(
+                      staff.phone.isEmpty ? l10n.noPhone : staff.phone,
+                      style: AppTypography.bodySmall,
+                    ),
                   ],
                 ),
                 const SizedBox(height: 2),
                 Row(
                   children: [
-                    const Icon(Icons.calendar_month_rounded,
-                        size: 14, color: AppColors.textHint),
+                    const Icon(
+                      Icons.calendar_month_rounded,
+                      size: 14,
+                      color: AppColors.textHint,
+                    ),
                     const SizedBox(width: 4),
-                    Text(l10n.staffJoined(joinedDate), style: AppTypography.bodySmall),
+                    Text(
+                      l10n.staffJoined(joinedDate),
+                      style: AppTypography.bodySmall,
+                    ),
                   ],
                 ),
               ],
@@ -278,10 +389,12 @@ class _SalaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final daysPresent =
-        attendance.values.where((s) => s == AttendanceStatus.present).length;
-    final halfDays =
-        attendance.values.where((s) => s == AttendanceStatus.halfDay).length;
+    final daysPresent = attendance.values
+        .where((s) => s == AttendanceStatus.present)
+        .length;
+    final halfDays = attendance.values
+        .where((s) => s == AttendanceStatus.halfDay)
+        .length;
     final effectiveDays = daysPresent + (halfDays * 0.5);
 
     final earned = staff.salaryType == SalaryType.daily
@@ -304,14 +417,20 @@ class _SalaryCard extends StatelessWidget {
               _SalaryStat(
                 label: l10n.rate,
                 value: staff.salaryType == SalaryType.daily
-                    ? l10n.staffSalaryPerDay(staff.salaryAmount.toStringAsFixed(0))
-                    : l10n.staffSalaryPerMonth(staff.salaryAmount.toStringAsFixed(0)),
+                    ? l10n.staffSalaryPerDay(
+                        staff.salaryAmount.toStringAsFixed(0),
+                      )
+                    : l10n.staffSalaryPerMonth(
+                        staff.salaryAmount.toStringAsFixed(0),
+                      ),
                 color: AppColors.primary,
               ),
               const SizedBox(width: 12),
               _SalaryStat(
                 label: l10n.daysPresent,
-                value: daysPresent + halfDays > 0 ? effectiveDays.toStringAsFixed(1) : '0',
+                value: daysPresent + halfDays > 0
+                    ? effectiveDays.toStringAsFixed(1)
+                    : '0',
                 color: AppColors.success,
               ),
               const SizedBox(width: 12),
@@ -356,7 +475,11 @@ class _SalaryStat extends StatelessWidget {
   final String value;
   final Color color;
 
-  const _SalaryStat({required this.label, required this.value, required this.color});
+  const _SalaryStat({
+    required this.label,
+    required this.value,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -370,7 +493,12 @@ class _SalaryStat extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: AppTypography.bodySmall.copyWith(color: AppColors.textHint)),
+            Text(
+              label,
+              style: AppTypography.bodySmall.copyWith(
+                color: AppColors.textHint,
+              ),
+            ),
             const SizedBox(height: 4),
             Text(value, style: AppTypography.labelLarge.copyWith(color: color)),
           ],
@@ -417,10 +545,12 @@ class _AttendanceCalendarState extends State<_AttendanceCalendar> {
       }
     }
 
-    int selectedIndex =
-        months.indexWhere((d) => d.year == widget.year && d.month == widget.month);
+    int selectedIndex = months.indexWhere(
+      (d) => d.year == widget.year && d.month == widget.month,
+    );
     if (selectedIndex < 0) selectedIndex = months.length - 1;
 
+    final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
 
     showModalBottomSheet(
@@ -438,13 +568,16 @@ class _AttendanceCalendarState extends State<_AttendanceCalendar> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButton(
                         onPressed: () => Navigator.pop(ctx),
-                        child: const Text('Cancel'),
+                        child: Text(l10n.cancel),
                       ),
                       Container(
                         width: 40,
@@ -481,12 +614,14 @@ class _AttendanceCalendarState extends State<_AttendanceCalendar> {
                     itemExtent: 44,
                     onSelectedItemChanged: (i) => pickerIndex = i,
                     children: months
-                        .map((d) => Center(
-                              child: Text(
-                                DateFormat('MMMM yyyy', locale).format(d),
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                            ))
+                        .map(
+                          (d) => Center(
+                            child: Text(
+                              DateFormat('MMMM yyyy', locale).format(d),
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                          ),
+                        )
                         .toList(),
                   ),
                 ),
@@ -502,8 +637,10 @@ class _AttendanceCalendarState extends State<_AttendanceCalendar> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
-    final monthLabel =
-        DateFormat('MMMM yyyy', locale).format(DateTime(widget.year, widget.month));
+    final monthLabel = DateFormat(
+      'MMMM yyyy',
+      locale,
+    ).format(DateTime(widget.year, widget.month));
     final daysInMonth = DateTime(widget.year, widget.month + 1, 0).day;
     final firstWeekday = DateTime(widget.year, widget.month, 1).weekday % 7;
 
@@ -511,7 +648,8 @@ class _AttendanceCalendarState extends State<_AttendanceCalendar> {
     final joinFirst = DateTime(widget.joinDate.year, widget.joinDate.month);
     final current = DateTime(widget.year, widget.month);
     final canGoPrev = current.isAfter(joinFirst);
-    final canGoNext = current.year < now.year ||
+    final canGoNext =
+        current.year < now.year ||
         (current.year == now.year && current.month < now.month);
 
     return Container(
@@ -580,15 +718,19 @@ class _AttendanceCalendarState extends State<_AttendanceCalendar> {
           const SizedBox(height: 12),
           Row(
             children: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
-                .map((d) => Expanded(
-                      child: Center(
-                        child: Text(d,
-                            style: AppTypography.bodySmall.copyWith(
-                              color: AppColors.textHint,
-                              fontWeight: FontWeight.w600,
-                            )),
+                .map(
+                  (d) => Expanded(
+                    child: Center(
+                      child: Text(
+                        d,
+                        style: AppTypography.bodySmall.copyWith(
+                          color: AppColors.textHint,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ))
+                    ),
+                  ),
+                )
                 .toList(),
           ),
           const SizedBox(height: 8),
@@ -609,18 +751,25 @@ class _AttendanceCalendarState extends State<_AttendanceCalendar> {
                   '${widget.year}-${widget.month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
               final status = widget.attendance[key];
               final cellDate = DateTime(widget.year, widget.month, day);
-              final isToday = now.year == widget.year &&
+              final isToday =
+                  now.year == widget.year &&
                   now.month == widget.month &&
                   now.day == day;
-              final isFuture =
-                  cellDate.isAfter(DateTime(now.year, now.month, now.day));
+              final isFuture = cellDate.isAfter(
+                DateTime(now.year, now.month, now.day),
+              );
               return _DayCell(
                 day: day,
                 status: status,
                 isToday: isToday,
                 onTap: isFuture
                     ? null
-                    : () => _showMarkSheet(context, widget.staffId, cellDate, status),
+                    : () => _showMarkSheet(
+                        context,
+                        widget.staffId,
+                        cellDate,
+                        status,
+                      ),
               );
             },
           ),
@@ -677,11 +826,13 @@ class _AttendanceCalendarState extends State<_AttendanceCalendar> {
                 selected: current == AttendanceStatus.present,
                 onTap: () {
                   Navigator.pop(ctx);
-                  bloc.add(MarkAttendance(
-                    staffId: staffId,
-                    date: date,
-                    status: AttendanceStatus.present,
-                  ));
+                  bloc.add(
+                    MarkAttendance(
+                      staffId: staffId,
+                      date: date,
+                      status: AttendanceStatus.present,
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 8),
@@ -692,11 +843,13 @@ class _AttendanceCalendarState extends State<_AttendanceCalendar> {
                 selected: current == AttendanceStatus.halfDay,
                 onTap: () {
                   Navigator.pop(ctx);
-                  bloc.add(MarkAttendance(
-                    staffId: staffId,
-                    date: date,
-                    status: AttendanceStatus.halfDay,
-                  ));
+                  bloc.add(
+                    MarkAttendance(
+                      staffId: staffId,
+                      date: date,
+                      status: AttendanceStatus.halfDay,
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 8),
@@ -707,11 +860,13 @@ class _AttendanceCalendarState extends State<_AttendanceCalendar> {
                 selected: current == AttendanceStatus.absent,
                 onTap: () {
                   Navigator.pop(ctx);
-                  bloc.add(MarkAttendance(
-                    staffId: staffId,
-                    date: date,
-                    status: AttendanceStatus.absent,
-                  ));
+                  bloc.add(
+                    MarkAttendance(
+                      staffId: staffId,
+                      date: date,
+                      status: AttendanceStatus.absent,
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 8),
@@ -754,10 +909,7 @@ class _AttendanceOption extends StatelessWidget {
           children: [
             Icon(icon, color: color, size: 20),
             const SizedBox(width: 12),
-            Text(
-              label,
-              style: AppTypography.labelLarge.copyWith(color: color),
-            ),
+            Text(label, style: AppTypography.labelLarge.copyWith(color: color)),
             if (selected) ...[
               const Spacer(),
               Icon(Icons.check_rounded, color: color, size: 18),
@@ -801,8 +953,12 @@ class _DayCell extends StatelessWidget {
         bg = AppColors.textHint.withValues(alpha: 0.3);
         text = AppColors.textSecondary;
       case null:
-        bg = isToday ? AppColors.primary.withValues(alpha: 0.15) : Colors.transparent;
-        text = isToday ? AppColors.primary : Theme.of(context).colorScheme.onSurface;
+        bg = isToday
+            ? AppColors.primary.withValues(alpha: 0.15)
+            : Colors.transparent;
+        text = isToday
+            ? AppColors.primary
+            : Theme.of(context).colorScheme.onSurface;
     }
 
     return GestureDetector(
@@ -861,7 +1017,10 @@ class _LegendItem extends StatelessWidget {
         Container(
           width: 10,
           height: 10,
-          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(3)),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(3),
+          ),
         ),
         const SizedBox(width: 4),
         Text(label, style: AppTypography.bodySmall.copyWith(fontSize: 11)),
@@ -900,9 +1059,13 @@ class _ActionButtons extends StatelessWidget {
                     ? () => _showPaySalaryFromButtons(context, staff)
                     : null,
                 icon: const Icon(Icons.payment_rounded, size: 18),
-                label: Text(staff.unpaidSalary > 0
-                    ? l10n.staffPayAmount(staff.unpaidSalary.toStringAsFixed(0))
-                    : l10n.noDues),
+                label: Text(
+                  staff.unpaidSalary > 0
+                      ? l10n.staffPayAmount(
+                          staff.unpaidSalary.toStringAsFixed(0),
+                        )
+                      : l10n.noDues,
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
@@ -919,7 +1082,9 @@ class _ActionButtons extends StatelessWidget {
             child: OutlinedButton.icon(
               onPressed: () => _confirmAccrue(context, staff),
               icon: const Icon(Icons.receipt_long_rounded, size: 18),
-              label: Text(l10n.accrueMonthSalary(staff.salaryAmount.toStringAsFixed(0))),
+              label: Text(
+                l10n.accrueMonthSalary(staff.salaryAmount.toStringAsFixed(0)),
+              ),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.primary,
                 side: const BorderSide(color: AppColors.primary),
@@ -939,10 +1104,12 @@ class _ActionButtons extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(l10n.accrueMonthSalaryTitle),
-        content: Text(l10n.accrueMonthSalaryConfirm(
-          staff.name,
-          staff.salaryAmount.toStringAsFixed(0),
-        )),
+        content: Text(
+          l10n.accrueMonthSalaryConfirm(
+            staff.name,
+            staff.salaryAmount.toStringAsFixed(0),
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -954,7 +1121,10 @@ class _ActionButtons extends StatelessWidget {
               bloc.add(AccrueSalary(staffId: staff.id));
             },
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
-            child: Text(l10n.confirm, style: const TextStyle(color: Colors.white)),
+            child: Text(
+              l10n.confirm,
+              style: const TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
@@ -979,7 +1149,12 @@ class _ActionButtons extends StatelessWidget {
           left: 24,
           right: 24,
           top: 24,
-          bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
+          // viewInsets clears the keyboard; viewPadding clears the gesture
+          // bar / 3-button nav when the keyboard is closed.
+          bottom:
+              MediaQuery.of(ctx).viewInsets.bottom +
+              MediaQuery.of(ctx).viewPadding.bottom +
+              24,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -1011,17 +1186,24 @@ class _ActionButtons extends StatelessWidget {
                   final amount = double.tryParse(amountCtrl.text) ?? 0;
                   if (amount <= 0) return;
                   Navigator.pop(ctx);
-                  bloc.add(AddAdvance(
-                    staffId: staff.id,
-                    amount: amount,
-                    note: noteCtrl.text.trim().isEmpty ? null : noteCtrl.text.trim(),
-                  ));
+                  bloc.add(
+                    AddAdvance(
+                      staffId: staff.id,
+                      amount: amount,
+                      note: noteCtrl.text.trim().isEmpty
+                          ? null
+                          : noteCtrl.text.trim(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.warning,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                child: Text(l10n.addAdvanceTitle, style: const TextStyle(color: Colors.white)),
+                child: Text(
+                  l10n.addAdvanceTitle,
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ],
@@ -1034,7 +1216,9 @@ class _ActionButtons extends StatelessWidget {
     final bloc = context.read<StaffBloc>();
     final router = GoRouter.of(context);
     final l10n = AppLocalizations.of(context)!;
-    final amountCtrl = TextEditingController(text: staff.unpaidSalary.toStringAsFixed(0));
+    final amountCtrl = TextEditingController(
+      text: staff.unpaidSalary.toStringAsFixed(0),
+    );
     final upiCtrl = TextEditingController();
 
     showModalBottomSheet(
@@ -1049,7 +1233,12 @@ class _ActionButtons extends StatelessWidget {
           left: 24,
           right: 24,
           top: 24,
-          bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
+          // viewInsets clears the keyboard; viewPadding clears the gesture
+          // bar / 3-button nav when the keyboard is closed.
+          bottom:
+              MediaQuery.of(ctx).viewInsets.bottom +
+              MediaQuery.of(ctx).viewPadding.bottom +
+              24,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -1059,7 +1248,9 @@ class _ActionButtons extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               l10n.unpaidLabel(staff.unpaidSalary.toStringAsFixed(0)),
-              style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
+              style: AppTypography.bodySmall.copyWith(
+                color: AppColors.textSecondary,
+              ),
             ),
             const SizedBox(height: 20),
             TextField(
@@ -1086,24 +1277,32 @@ class _ActionButtons extends StatelessWidget {
                   final amount = double.tryParse(amountCtrl.text) ?? 0;
                   if (amount <= 0) return;
                   Navigator.pop(ctx);
-                  bloc.add(PaySalary(
-                    staffId: staff.id,
-                    amount: amount,
-                    upiTransactionId:
-                        upiCtrl.text.trim().isEmpty ? null : upiCtrl.text.trim(),
-                  ));
-                  router.push(AppRouter.upiPayment, extra: {
-                    'amount': amount,
-                    'recipientName': staff.name,
-                    'upiId': null,
-                  });
+                  bloc.add(
+                    PaySalary(
+                      staffId: staff.id,
+                      amount: amount,
+                      upiTransactionId: upiCtrl.text.trim().isEmpty
+                          ? null
+                          : upiCtrl.text.trim(),
+                    ),
+                  );
+                  router.push(
+                    AppRouter.upiPayment,
+                    extra: {
+                      'amount': amount,
+                      'recipientName': staff.name,
+                      'upiId': null,
+                    },
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                child: Text(l10n.paymentConfirmed,
-                    style: const TextStyle(color: Colors.white)),
+                child: Text(
+                  l10n.paymentConfirmed,
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ],

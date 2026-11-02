@@ -4,6 +4,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../features/vendor/domain/repositories/vendor_repository.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/report_models.dart';
 import '../bloc/customer_detail_cubit.dart';
 import 'customer_detail_report_screen/widgets/balance_check.dart';
@@ -47,7 +48,7 @@ class _CustomerDetailView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(customerName, style: AppTypography.h3),
-            Text('Customer Report',
+            Text(AppLocalizations.of(context)!.customerReport,
                 style: AppTypography.bodySmall
                     .copyWith(color: AppColors.primary)),
           ],
@@ -72,7 +73,7 @@ class _CustomerDetailView extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () =>
                           context.read<CustomerDetailCubit>().load(linkId),
-                      child: const Text('Retry'),
+                      child: Text(AppLocalizations.of(context)!.retryButton),
                     ),
                   ],
                 ),
@@ -103,14 +104,14 @@ class _DetailBody extends StatelessWidget {
         children: [
           BalanceHero(balance: detail.balance),
           const SizedBox(height: 20),
-          Text('Overview', style: AppTypography.h3),
+          Text(AppLocalizations.of(context)!.overview, style: AppTypography.h3),
           const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
                 child: ReportsStatCard(
-                  title: 'Billed (net)',
-                  subtitle: 'excl. disputed',
+                  title: AppLocalizations.of(context)!.billedNet,
+                  subtitle: AppLocalizations.of(context)!.exclDisputed,
                   value: '₹${detail.totalCredit.toStringAsFixed(0)}',
                   color: AppColors.error,
                   icon: Icons.receipt_long_rounded,
@@ -119,8 +120,8 @@ class _DetailBody extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: ReportsStatCard(
-                  title: 'Received',
-                  subtitle: 'payments & adj.',
+                  title: AppLocalizations.of(context)!.receivedLabel,
+                  subtitle: AppLocalizations.of(context)!.paymentsAndAdj,
                   value: '₹${detail.totalPaid.toStringAsFixed(0)}',
                   color: AppColors.success,
                   icon: Icons.payments_rounded,
@@ -142,7 +143,7 @@ class _DetailBody extends StatelessWidget {
           ),
           if (detail.monthlyBreakdown.isNotEmpty) ...[
             const SizedBox(height: 24),
-            Text('Payment History (6 months)', style: AppTypography.h3),
+            Text(AppLocalizations.of(context)!.paymentHistory6Months, style: AppTypography.h3),
             const SizedBox(height: 12),
             ...detail.monthlyBreakdown.map((m) => MonthlyRow(data: m)),
           ],

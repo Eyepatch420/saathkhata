@@ -51,3 +51,10 @@ class StaffError extends StaffState {
   @override
   List<Object?> get props => [message];
 }
+
+class StaffDeleted extends StaffState {
+  final String staffName;
+  const StaffDeleted(this.staffName);
+  @override
+  List<Object?> get props => [staffName];
+}

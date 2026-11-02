@@ -6,6 +6,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../features/location/data/services/location_iq_service.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/models/location_model.dart';
 
 class LocationPickerScreen extends StatefulWidget {
@@ -21,7 +22,10 @@ class LocationPickerScreen extends StatefulWidget {
 class _LocationPickerScreenState extends State<LocationPickerScreen> {
   // ── Map ──────────────────────────────────────────────────────────────────
   final _mapController = MapController();
-  LatLng _center = const LatLng(28.6139, 77.2090); // default: New Delhi
+  // Deliberately unusable fallback (middle of the Pacific Ocean) — this should
+  // never be seen by a user; if it shows up, location permission/GPS failed
+  // silently rather than actually resolving to a real place.
+  LatLng _center = const LatLng(0.0, -160.0);
 
   // ── Search ───────────────────────────────────────────────────────────────
   final _searchController = TextEditingController();
@@ -32,6 +36,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   // ── Location details ─────────────────────────────────────────────────────
   LocationData? _location;
   bool _geocoding = false;
+  final _addressCtrl = TextEditingController();
 
   // ── Timers ───────────────────────────────────────────────────────────────
   Timer? _mapDebounce;
@@ -46,6 +51,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
       final il = widget.initialLocation!;
       _center = LatLng(il.lat, il.lng);
       _location = il;
+      _addressCtrl.text = il.displayName;
     } else {
       _tryCurrentLocation();
     }
@@ -56,6 +62,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
     _mapController.dispose();
     _searchController.dispose();
     _searchFocus.dispose();
+    _addressCtrl.dispose();
     _mapDebounce?.cancel();
     _searchDebounce?.cancel();
     super.dispose();
@@ -111,6 +118,15 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
       _location = result;
       _geocoding = false;
     });
+    // Pre-fill the editable field with the freshly geocoded address; the user
+    // can still type over it before confirming.
+    _addressCtrl.text = result?.displayName ?? '';
+  }
+
+  void _onAddressEdited(String value) {
+    final loc = _location;
+    if (loc == null) return;
+    _location = loc.copyWith(displayName: value);
   }
 
   // ── Search ───────────────────────────────────────────────────────────────
@@ -160,6 +176,9 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   @override
   Widget build(BuildContext context) {
     final safeTop = MediaQuery.of(context).padding.top;
+    final colorScheme = Theme.of(context).colorScheme;
+    final surfaceColor = colorScheme.surface;
+    final onSurfaceColor = colorScheme.onSurface;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -180,7 +199,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                 maxZoom: 19,
               ),
               SimpleAttributionWidget(
-                source: const Text('© OpenStreetMap contributors'),
+                source: Text(AppLocalizations.of(context)!.mapAttribution),
               ),
             ],
           ),
@@ -246,15 +265,16 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                   children: [
                     // Back button
                     Material(
-                      color: Colors.white,
+                      color: surfaceColor,
                       shape: const CircleBorder(),
                       elevation: 3,
                       child: InkWell(
                         customBorder: const CircleBorder(),
                         onTap: () => Navigator.of(context).pop(),
-                        child: const Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Icon(Icons.arrow_back_rounded, size: 22),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Icon(Icons.arrow_back_rounded,
+                              size: 22, color: onSurfaceColor),
                         ),
                       ),
                     ),
@@ -264,23 +284,24 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                       child: Material(
                         elevation: 4,
                         borderRadius: BorderRadius.circular(14),
-                        color: Colors.white,
+                        color: surfaceColor,
                         child: TextField(
                           controller: _searchController,
                           focusNode: _searchFocus,
                           onChanged: _onSearchChanged,
                           style: AppTypography.bodyMedium
-                              .copyWith(color: Colors.black87),
+                              .copyWith(color: onSurfaceColor),
                           decoration: InputDecoration(
-                            hintText: 'Search for a place…',
+                            hintText: AppLocalizations.of(context)!.searchPlaceHint,
                             hintStyle: AppTypography.bodySmall
-                                .copyWith(color: Colors.black38),
-                            prefixIcon: const Icon(Icons.search_rounded,
-                                color: Colors.black45),
+                                .copyWith(color: onSurfaceColor.withValues(alpha: 0.4)),
+                            prefixIcon: Icon(Icons.search_rounded,
+                                color: onSurfaceColor.withValues(alpha: 0.6)),
                             suffixIcon: _searchController.text.isNotEmpty
                                 ? IconButton(
-                                    icon: const Icon(Icons.close_rounded,
-                                        color: Colors.black45, size: 20),
+                                    icon: Icon(Icons.close_rounded,
+                                        color: onSurfaceColor.withValues(alpha: 0.6),
+                                        size: 20),
                                     onPressed: _clearSearch,
                                   )
                                 : null,
@@ -289,7 +310,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                               borderSide: BorderSide.none,
                             ),
                             filled: true,
-                            fillColor: Colors.white,
+                            fillColor: surfaceColor,
                             contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 14),
                           ),
@@ -305,7 +326,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                   Material(
                     elevation: 6,
                     borderRadius: BorderRadius.circular(14),
-                    color: Colors.white,
+                    color: surfaceColor,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(14),
                       child: ListView.separated(
@@ -325,7 +346,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: AppTypography.bodySmall
-                                  .copyWith(color: Colors.black87),
+                                  .copyWith(color: onSurfaceColor),
                             ),
                             dense: true,
                             onTap: () => _onSuggestionTap(s),
@@ -354,7 +375,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                   child: FloatingActionButton(
                     heroTag: 'myLocation',
                     onPressed: _tryCurrentLocation,
-                    backgroundColor: Colors.white,
+                    backgroundColor: surfaceColor,
                     elevation: 4,
                     mini: false,
                     child: const Icon(Icons.my_location_rounded,
@@ -368,6 +389,8 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                   geocoding: _geocoding,
                   lat: _center.latitude,
                   lng: _center.longitude,
+                  addressController: _addressCtrl,
+                  onAddressChanged: _onAddressEdited,
                   onConfirm: _location == null
                       ? null
                       : () => Navigator.of(context).pop(_location),
@@ -388,6 +411,8 @@ class _LocationCard extends StatelessWidget {
   final bool geocoding;
   final double lat;
   final double lng;
+  final TextEditingController addressController;
+  final ValueChanged<String> onAddressChanged;
   final VoidCallback? onConfirm;
 
   const _LocationCard({
@@ -395,6 +420,8 @@ class _LocationCard extends StatelessWidget {
     required this.geocoding,
     required this.lat,
     required this.lng,
+    required this.addressController,
+    required this.onAddressChanged,
     required this.onConfirm,
   });
 
@@ -423,7 +450,7 @@ class _LocationCard extends StatelessWidget {
               height: 4,
               margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
-                color: Colors.grey.shade300,
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -452,15 +479,22 @@ class _LocationCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 6),
-            // Full address
+            // Full address — editable; pre-filled from reverse-geocoding but
+            // the user can rename/correct it before confirming.
             Padding(
               padding: const EdgeInsets.only(left: 28),
-              child: Text(
-                location!.displayName,
+              child: TextField(
+                controller: addressController,
+                onChanged: onAddressChanged,
+                minLines: 1,
+                maxLines: 3,
                 style: AppTypography.bodySmall
                     .copyWith(color: AppColors.textSecondary),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(vertical: 6),
+                  border: UnderlineInputBorder(),
+                ),
               ),
             ),
             const SizedBox(height: 14),
@@ -468,12 +502,12 @@ class _LocationCard extends StatelessWidget {
             Row(
               children: [
                 _CoordChip(
-                  label: 'LAT',
+                  label: AppLocalizations.of(context)!.latLabel,
                   value: lat.toStringAsFixed(6),
                 ),
                 const SizedBox(width: 10),
                 _CoordChip(
-                  label: 'LNG',
+                  label: AppLocalizations.of(context)!.lngLabel,
                   value: lng.toStringAsFixed(6),
                 ),
               ],
@@ -496,7 +530,7 @@ class _LocationCard extends StatelessWidget {
               ),
             ],
           ] else ...[
-            Text('Move the map to select a location',
+            Text(AppLocalizations.of(context)!.moveMapToSelectLocation,
                 style: AppTypography.bodySmall
                     .copyWith(color: AppColors.textSecondary)),
           ],
@@ -508,8 +542,8 @@ class _LocationCard extends StatelessWidget {
               onPressed: onConfirm,
               icon: const Icon(Icons.check_circle_outline_rounded,
                   color: Colors.white, size: 20),
-              label: const Text('Confirm Location',
-                  style: TextStyle(
+              label: Text(AppLocalizations.of(context)!.confirmLocation,
+                  style: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,

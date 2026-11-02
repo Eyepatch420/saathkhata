@@ -9,7 +9,10 @@ class BookingRepositoryImpl implements BookingRepository {
 
   BookingRepositoryImpl(this._api);
 
-  List<T> _extractList<T>(Response response, T Function(Map<String, dynamic>) fromJson) {
+  List<T> _extractList<T>(
+    Response response,
+    T Function(Map<String, dynamic>) fromJson,
+  ) {
     final list = (response.data as Map<String, dynamic>)['data'] as List;
     return list.map((e) => fromJson(e as Map<String, dynamic>)).toList();
   }
@@ -39,7 +42,9 @@ class BookingRepositoryImpl implements BookingRepository {
 
   @override
   Future<List<AppointmentSlot>> getAvailableSlots(
-      String vendorId, String date) async {
+    String vendorId,
+    String date,
+  ) async {
     try {
       final response = await _api.get(
         ApiEndpoints.publicSlots(vendorId),
@@ -74,13 +79,161 @@ class BookingRepositoryImpl implements BookingRepository {
 
   @override
   Future<BookingModel> updateBookingStatus(
-      String bookingId, BookingStatus status) async {
+    String bookingId,
+    BookingStatus status,
+  ) async {
     try {
       final response = await _api.patch(
         ApiEndpoints.bookingById(bookingId),
         data: {'status': status.toJson()},
       );
       return BookingModel.fromJson(ApiClient.extractData(response));
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<BookingConfig> saveBookingConfig(BookingConfig config) async {
+    try {
+      final response = await _api.put(
+        ApiEndpoints.bookingConfig,
+        data: config.toJson(),
+      );
+      final data = ApiClient.extractData(response);
+      return BookingConfig.fromJson(data);
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<BookingConfig?> getBookingConfig() async {
+    try {
+      final response = await _api.get(ApiEndpoints.bookingConfig);
+      final data = (response.data as Map<String, dynamic>)['data'];
+      if (data == null) return null;
+      return BookingConfig.fromJson(data as Map<String, dynamic>);
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<BookingConfig> toggleSlotFull({
+    required int dayOfWeek,
+    required String startTime,
+    required bool isFull,
+  }) async {
+    try {
+      final response = await _api.patch(
+        ApiEndpoints.bookingSlotFull,
+        data: {
+          'dayOfWeek': dayOfWeek,
+          'startTime': startTime,
+          'isFull': isFull,
+        },
+      );
+      final data = ApiClient.extractData(response);
+      return BookingConfig.fromJson(data);
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  // ─── Per-date overrides / capacity / replicate / merge ─────────────────────
+
+  @override
+  Future<DateSlotOverride> getDateSlots(String date) async {
+    try {
+      final response = await _api.get(ApiEndpoints.dateSlots(date));
+      final data = ApiClient.extractData(response);
+      return DateSlotOverride.fromJson(data);
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<DateSlotOverride> saveDateSlots(String date, List<DaySlot> slots) async {
+    try {
+      final response = await _api.put(
+        ApiEndpoints.dateSlots(date),
+        data: {'slots': slots.map((s) => s.toJson()).toList()},
+      );
+      final data = ApiClient.extractData(response);
+      return DateSlotOverride.fromJson(data);
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<DateSlotOverride> setDateClosed(String date, bool closed) async {
+    try {
+      final response = await _api.patch(
+        ApiEndpoints.dateSlotsClosed(date),
+        data: {'closed': closed},
+      );
+      final data = ApiClient.extractData(response);
+      return DateSlotOverride.fromJson(data);
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<DateSlotOverride> deleteDateSlots(String date) async {
+    try {
+      final response = await _api.delete(ApiEndpoints.dateSlots(date));
+      final data = ApiClient.extractData(response);
+      return DateSlotOverride.fromJson(data);
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<ReplicateResult> replicateSlots({
+    String? sourceDate,
+    int? sourceDayOfWeek,
+    required String targetType,
+    required String startDate,
+    int? monthsCount,
+  }) async {
+    try {
+      final body = <String, dynamic>{
+        'targetType': targetType,
+        'startDate': startDate,
+      };
+      if (sourceDate != null) body['sourceDate'] = sourceDate;
+      if (sourceDayOfWeek != null) body['sourceDayOfWeek'] = sourceDayOfWeek;
+      if (monthsCount != null) body['monthsCount'] = monthsCount;
+      final response = await _api.post(ApiEndpoints.replicateDateSlots, data: body);
+      final data = ApiClient.extractData(response);
+      return ReplicateResult.fromJson(data);
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<DateSlotOverride> mergeSlots({
+    String? date,
+    int? dayOfWeek,
+    required List<int> slotIndexes,
+    int? mergedCapacity,
+  }) async {
+    try {
+      final body = <String, dynamic>{
+        'slotIndexes': slotIndexes,
+      };
+      if (date != null) body['date'] = date;
+      if (dayOfWeek != null) body['dayOfWeek'] = dayOfWeek;
+      if (mergedCapacity != null) body['mergedCapacity'] = mergedCapacity;
+      final response = await _api.post(ApiEndpoints.mergeDateSlots, data: body);
+      final data = ApiClient.extractData(response);
+      return DateSlotOverride.fromJson(data);
     } on DioException catch (e) {
       throw Exception(ApiClient.extractErrorMessage(e));
     }

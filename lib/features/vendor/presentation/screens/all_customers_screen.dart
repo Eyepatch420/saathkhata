@@ -8,7 +8,7 @@ import '../../../../core/router/app_router.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/widgets/empty_state_widget.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
-import '../../../memberships/presentation/widgets/membership_tier_badge.dart';
+import '../../../memberships/presentation/widgets/membership_plan_badge.dart';
 import '../bloc/vendor_bloc.dart';
 import '../bloc/vendor_event.dart';
 import '../bloc/vendor_state.dart';
@@ -68,7 +68,7 @@ class _AllCustomersView extends StatelessWidget {
               onRefresh: () async =>
                   context.read<VendorBloc>().add(LoadVendorDashboard()),
               child: ListView.separated(
-                padding: EdgeInsets.fromLTRB(16, 16, 16, MediaQuery.of(context).viewPadding.bottom + 96),
+                padding: EdgeInsets.fromLTRB(16, 16, 16, MediaQuery.of(context).padding.bottom + 16),
                 itemCount: state.customers.length,
                 separatorBuilder: (_, i) => const SizedBox(height: 12),
                 itemBuilder: (context, index) {
@@ -92,12 +92,10 @@ class _CustomerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final info = customer.customer;
+    final displayName = customer.displayName as String;
+    final subName = customer.subName as String?;
     return InkWell(
-      onTap: () => context.push(
-        AppRouter.sharedLedger,
-        extra: {'linkId': customer.linkId, 'name': info.name, 'isVendorView': true},
-      ),
+      onTap: () => context.push(AppRouter.customerDetail, extra: customer),
       borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -110,7 +108,7 @@ class _CustomerTile extends StatelessWidget {
             CircleAvatar(
               backgroundColor: AppColors.primary.withValues(alpha: 0.15),
               child: Text(
-                info.name[0],
+                displayName[0].toUpperCase(),
                 style: const TextStyle(
                     color: AppColors.primary, fontWeight: FontWeight.bold),
               ),
@@ -123,21 +121,21 @@ class _CustomerTile extends StatelessWidget {
                   Row(
                     children: [
                       Flexible(
-                        child: Text(info.name,
+                        child: Text(displayName,
                             style: AppTypography.labelLarge,
                             overflow: TextOverflow.ellipsis),
                       ),
                       if (customer.tierName != null) ...[
                         const SizedBox(width: 8),
-                        MembershipTierBadge(
-                          tierName: customer.tierName,
-                          tierLevel: customer.tierLevel,
-                        ),
+                        MembershipPlanBadge(name: customer.tierName!),
                       ],
                     ],
                   ),
-                  if (info.mobile != null)
-                    Text(info.mobile!, style: AppTypography.bodySmall),
+                  if (subName != null)
+                    Text(subName,
+                        style: AppTypography.bodySmall.copyWith(
+                            color: AppColors.textSecondary),
+                        overflow: TextOverflow.ellipsis),
                 ],
               ),
             ),

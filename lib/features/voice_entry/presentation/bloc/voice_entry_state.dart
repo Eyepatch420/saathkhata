@@ -9,9 +9,11 @@ class VoiceIdle extends VoiceEntryState {
 }
 
 /// Mic is open; [partial] is the live transcript so far.
+/// [soundLevel] is the latest dB reading from the mic (roughly -2 to +10).
 class VoiceListening extends VoiceEntryState {
   final String partial;
-  const VoiceListening(this.partial);
+  final double soundLevel;
+  const VoiceListening(this.partial, {this.soundLevel = 0.0});
 }
 
 /// Transcript captured, waiting on the backend LLM.

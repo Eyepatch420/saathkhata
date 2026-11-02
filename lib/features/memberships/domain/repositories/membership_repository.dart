@@ -1,41 +1,48 @@
+import '../models/members_dashboard.dart';
+import '../models/membership_plan.dart';
 import '../models/membership_request.dart';
 import '../models/membership_status.dart';
-import '../models/membership_tier.dart';
 
 abstract class MembershipRepository {
-  /// Vendor: fetch their three tiers (auto-seeded), with names and discounts.
-  Future<List<MembershipTier>> getTiers();
-
-  /// Vendor: rename a tier and/or set its discount function. Any subset of
-  /// fields may be supplied.
-  Future<MembershipTier> updateTier(
-    String tierId, {
-    String? name,
-    DiscountType? discountType,
-    double? discountValue,
-    double? discountCap,
-    bool clearCap = false,
+  // ── Plans (vendor) ──
+  Future<List<MembershipPlan>> getPlans();
+  Future<MembershipPlan> createPlan({
+    required String name,
+    required int durationDays,
+    required double price,
+    double advanceRequired,
+    required List<PlanBenefit> benefits,
   });
+  Future<MembershipPlan> updatePlan(
+    String planId, {
+    String? name,
+    int? durationDays,
+    double? price,
+    double? advanceRequired,
+    bool? isActive,
+    List<PlanBenefit>? benefits,
+  });
+  Future<void> deletePlan(String planId);
 
-  /// Membership status for a link (both roles): current tier, pending request, tiers.
+  // ── Members dashboard (vendor) ──
+  Future<MembersDashboard> getMembersDashboard();
+  Future<CustomerMembership> useBenefit(String membershipId, String benefitId);
+  /// Vendor-only correction — decrements usage by 1 (floors at 0).
+  Future<CustomerMembership> decrementBenefit(String membershipId, String benefitId);
+
+  // ── Per-link status (all roles) ──
   Future<MembershipStatus> getStatus(String linkId);
+  Future<CustomerMembership> enroll(String linkId, String planId);
 
-  /// Vendor: set/elevate/remove a customer's tier. [tierId] null removes membership.
-  Future<MembershipStatus> assignTier(String linkId, String? tierId);
-
-  /// Customer: apply for a tier on a link.
-  Future<MembershipRequest> requestTier(
+  // ── Customer applies for a plan ──
+  Future<MembershipRequest> requestPlan(
     String linkId,
-    String tierId, {
+    String planId, {
     String? message,
   });
 
-  /// Vendor: all pending membership requests across their links.
+  // ── Requests (vendor) ──
   Future<List<MembershipRequest>> getPendingRequests();
-
-  /// Vendor: approve a pending request (assigns the requested tier).
   Future<MembershipRequest> approveRequest(String requestId);
-
-  /// Vendor: decline a pending request.
   Future<MembershipRequest> declineRequest(String requestId);
 }

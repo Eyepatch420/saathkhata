@@ -43,6 +43,10 @@ class StaffModel extends Equatable {
   final bool presentToday;
   final double unpaidSalary;
   final double advanceTaken;
+  // App-access fields
+  final bool canLogin;        // whether this staff can currently log into the app
+  final bool hasAppAccount;   // whether a login account has been provisioned
+  final String? qrCodeUrl;    // staff's own payment QR
 
   factory StaffModel.fromJson(Map<String, dynamic> json) => StaffModel(
         id: json['id'] as String,
@@ -58,6 +62,9 @@ class StaffModel extends Equatable {
         presentToday: json['presentToday'] as bool? ?? false,
         unpaidSalary: (json['unpaidSalary'] as num?)?.toDouble() ?? 0,
         advanceTaken: (json['advanceTaken'] as num?)?.toDouble() ?? 0,
+        canLogin: json['canLogin'] as bool? ?? false,
+        hasAppAccount: json['hasAppAccount'] as bool? ?? false,
+        qrCodeUrl: json['qrCodeUrl'] as String?,
       );
 
   const StaffModel({
@@ -74,6 +81,9 @@ class StaffModel extends Equatable {
     this.presentToday = false,
     this.unpaidSalary = 0,
     this.advanceTaken = 0,
+    this.canLogin = false,
+    this.hasAppAccount = false,
+    this.qrCodeUrl,
   });
 
   StaffModel copyWith({
@@ -81,6 +91,9 @@ class StaffModel extends Equatable {
     double? unpaidSalary,
     double? advanceTaken,
     bool? isActive,
+    bool? canLogin,
+    bool? hasAppAccount,
+    String? qrCodeUrl,
   }) {
     return StaffModel(
       id: id,
@@ -96,6 +109,9 @@ class StaffModel extends Equatable {
       presentToday: presentToday ?? this.presentToday,
       unpaidSalary: unpaidSalary ?? this.unpaidSalary,
       advanceTaken: advanceTaken ?? this.advanceTaken,
+      canLogin: canLogin ?? this.canLogin,
+      hasAppAccount: hasAppAccount ?? this.hasAppAccount,
+      qrCodeUrl: qrCodeUrl ?? this.qrCodeUrl,
     );
   }
 
@@ -114,6 +130,9 @@ class StaffModel extends Equatable {
         presentToday,
         unpaidSalary,
         advanceTaken,
+        canLogin,
+        hasAppAccount,
+        qrCodeUrl,
       ];
 }
 

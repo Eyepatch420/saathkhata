@@ -6,6 +6,8 @@ import '../../../../core/constants/app_typography.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/utils/app_logger.dart';
+import '../../../../core/localization/localized_labels.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/models/vendor_search_result.dart';
 import '../bloc/search_cubit.dart';
 import '../bloc/search_state.dart';
@@ -101,7 +103,7 @@ class _VendorSearchScreenState extends State<VendorSearchScreen> {
                     textInputAction: TextInputAction.search,
                     style: AppTypography.bodyMedium,
                     decoration: InputDecoration(
-                      hintText: 'Search vendors…',
+                      hintText: AppLocalizations.of(context)!.searchVendorsHint,
                       hintStyle: AppTypography.bodyMedium
                           .copyWith(color: AppColors.textHint),
                       border: InputBorder.none,
@@ -149,19 +151,18 @@ class _VendorSearchScreenState extends State<VendorSearchScreen> {
         separatorBuilder: (sepCtx, idx) => const SizedBox(width: 8),
         itemBuilder: (itemCtx, i) {
           final isAll = i == 0;
-          final label = isAll ? 'All' : _kCategories[i - 1];
+          final l10n = AppLocalizations.of(context)!;
+          final raw = isAll ? null : _kCategories[i - 1];
+          final label = isAll ? l10n.categoryAll : l10n.businessCategoryName(raw!);
           final selected =
-              isAll ? _selectedCategory == null : _selectedCategory == label;
+              isAll ? _selectedCategory == null : _selectedCategory == raw;
 
           return ChoiceChip(
             label: Text(label),
             selected: selected,
             onSelected: (_) {
-              setState(
-                  () => _selectedCategory = isAll ? null : label);
-              ctx
-                  .read<SearchCubit>()
-                  .categorySelected(isAll ? null : label);
+              setState(() => _selectedCategory = raw);
+              ctx.read<SearchCubit>().categorySelected(raw);
             },
             selectedColor: _accent.withValues(alpha: 0.15),
             checkmarkColor: _accent,
@@ -394,13 +395,13 @@ class _Hint extends StatelessWidget {
               color: accent.withValues(alpha: 0.25)),
           const SizedBox(height: 16),
           Text(
-            'Find vendors near you',
+            AppLocalizations.of(context)!.findVendorsNearYou,
             style: AppTypography.h3
                 .copyWith(color: AppColors.textSecondary),
           ),
           const SizedBox(height: 8),
           Text(
-            'Search by name, business name,\nor select a category above.',
+            AppLocalizations.of(context)!.searchByNameOrCategory,
             textAlign: TextAlign.center,
             style: AppTypography.bodySmall
                 .copyWith(color: AppColors.textHint, height: 1.5),
@@ -425,11 +426,11 @@ class _EmptyResult extends StatelessWidget {
           Icon(Icons.search_off_rounded, size: 56,
               color: accent.withValues(alpha: 0.25)),
           const SizedBox(height: 16),
-          Text('No vendors found', style: AppTypography.h3
+          Text(AppLocalizations.of(context)!.noVendorsFound, style: AppTypography.h3
               .copyWith(color: AppColors.textSecondary)),
           const SizedBox(height: 8),
           Text(
-            'No results for "$query".\nTry a different name or category.',
+            AppLocalizations.of(context)!.noResultsForQuery(query),
             textAlign: TextAlign.center,
             style: AppTypography.bodySmall
                 .copyWith(color: AppColors.textHint, height: 1.5),
@@ -543,7 +544,7 @@ class _ErrorView extends StatelessWidget {
             const Icon(Icons.wifi_off_rounded,
                 size: 48, color: AppColors.textHint),
             const SizedBox(height: 16),
-            Text('Something went wrong',
+            Text(AppLocalizations.of(context)!.somethingWentWrong,
                 style: AppTypography.h3
                     .copyWith(color: AppColors.textSecondary)),
             const SizedBox(height: 8),
@@ -557,7 +558,7 @@ class _ErrorView extends StatelessWidget {
             OutlinedButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh_rounded),
-              label: const Text('Retry'),
+              label: Text(AppLocalizations.of(context)!.retryButton),
             ),
           ],
         ),

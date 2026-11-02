@@ -53,7 +53,7 @@ class _ReportsView extends StatelessWidget {
                       onPressed: () => context
                           .read<ReportsDashboardCubit>()
                           .loadDashboard(),
-                      child: const Text('Retry'),
+                      child: Text(l10n.retryButton),
                     ),
                   ],
                 ),
@@ -90,7 +90,7 @@ class _ReportsView extends StatelessWidget {
                         value:
                             '₹${state.summary.totalCollectedThisMonth.toStringAsFixed(0)}',
                         color: AppColors.success,
-                        subtitle: 'This month',
+                        subtitle: l10n.thisMonthSubtitle,
                       ),
                       const SizedBox(height: 24),
                       Row(
@@ -110,7 +110,7 @@ class _ReportsView extends StatelessWidget {
                           padding:
                               const EdgeInsets.symmetric(vertical: 24),
                           child: Center(
-                            child: Text('No customers yet',
+                            child: Text(l10n.noCustomersYet,
                                 style: AppTypography.bodySmall
                                     .copyWith(color: AppColors.textHint)),
                           ),

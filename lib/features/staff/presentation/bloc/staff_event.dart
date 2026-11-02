@@ -64,3 +64,10 @@ class AccrueSalary extends StaffEvent {
   @override
   List<Object?> get props => [staffId];
 }
+
+class DeleteStaff extends StaffEvent {
+  final String staffId;
+  const DeleteStaff({required this.staffId});
+  @override
+  List<Object?> get props => [staffId];
+}

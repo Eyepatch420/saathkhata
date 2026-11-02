@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../../core/constants/app_typography.dart';
+import '../../../../../../l10n/app_localizations.dart';
 
 class BalanceHero extends StatelessWidget {
   final double balance;
@@ -25,7 +26,7 @@ class BalanceHero extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Current Balance',
+            AppLocalizations.of(context)!.currentBalance,
             style: AppTypography.bodySmall.copyWith(color: Colors.white70),
           ),
           const SizedBox(height: 8),
@@ -36,7 +37,7 @@ class BalanceHero extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            hasBalance ? 'Outstanding' : 'Settled',
+            hasBalance ? AppLocalizations.of(context)!.outstanding : AppLocalizations.of(context)!.balanceSettled,
             style:
                 AppTypography.bodySmall.copyWith(color: Colors.white60),
           ),

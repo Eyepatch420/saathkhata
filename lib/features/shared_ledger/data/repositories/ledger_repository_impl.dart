@@ -1,6 +1,10 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
+import '../../../../core/di/injection.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
+import '../../../../core/services/ledger_attachment_service.dart';
+import '../../domain/models/ledger_filter.dart';
 import '../../domain/repositories/ledger_repository.dart';
 import '../../../../shared/models/ledger_entry.dart';
 import '../../../../shared/models/ledger_balance.dart';
@@ -16,20 +20,27 @@ class LedgerRepositoryImpl implements LedgerRepository {
   LedgerRepositoryImpl(this._api);
 
   @override
-  Future<List<LedgerEntry>> getEntries(String linkId) async {
+  Future<LedgerPageResult> getEntries(
+    String linkId, {
+    int page = 1,
+    int limit = 50,
+    LedgerFilter? filter,
+  }) async {
     _currentLinkId = linkId;
     try {
-      // Fetch up to 100 entries so the BLoC's client-side balance calc
-      // covers the full ledger without pagination complexity.
+      final params = <String, dynamic>{'page': page, 'limit': limit};
+      if (filter != null) params.addAll(filter.toQueryParams());
       final response = await _api.get(
         ApiEndpoints.linkEntries(linkId),
-        queryParameters: {'page': 1, 'limit': 100},
+        queryParameters: params,
       );
       final data = ApiClient.extractData(response);
       final list = (data['entries'] as List?) ?? [];
-      return list
+      final entries = list
           .map((e) => LedgerEntry.fromJson(e as Map<String, dynamic>))
           .toList();
+      final total = (data['total'] as num?)?.toInt() ?? entries.length;
+      return LedgerPageResult(entries: entries, total: total);
     } on DioException catch (e) {
       throw Exception(ApiClient.extractErrorMessage(e));
     }
@@ -49,6 +60,9 @@ class LedgerRepositoryImpl implements LedgerRepository {
       if (entry.description != null) body['description'] = entry.description;
       if (entry.quantity != null) body['quantity'] = entry.quantity;
       if (entry.unit != null) body['unit'] = entry.unit;
+      if (entry.attachmentUrl != null) body['attachmentUrl'] = entry.attachmentUrl;
+      if (entry.parentEntryId != null) body['parentEntryId'] = entry.parentEntryId;
+      if (entry.isParent) body['isParent'] = true;
 
       final response = await _api.post(
         ApiEndpoints.linkEntries(entry.linkId),
@@ -84,6 +98,26 @@ class LedgerRepositoryImpl implements LedgerRepository {
         data: {'reason': reason},
       );
       return LedgerEntry.fromJson(ApiClient.extractData(response));
+    } on DioException catch (e) {
+      throw Exception(ApiClient.extractErrorMessage(e));
+    }
+  }
+
+  @override
+  Future<LedgerEntry> attachToEntry(String entryId, String linkId, File imageFile) async {
+    try {
+      await getIt<LedgerAttachmentService>().uploadAttachment(
+        imageFile: imageFile,
+        linkId: linkId,
+        entryId: entryId,
+      );
+      // The socket broadcasts ledger:entry_updated after the backend writes.
+      // Return the current cached entry — the bloc replaces it on socket arrival.
+      final result = await getEntries(linkId);
+      return result.entries.firstWhere(
+        (e) => e.id == entryId,
+        orElse: () => throw Exception('Entry not found after attachment upload'),
+      );
     } on DioException catch (e) {
       throw Exception(ApiClient.extractErrorMessage(e));
     }

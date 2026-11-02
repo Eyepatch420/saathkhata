@@ -51,9 +51,20 @@ class LedgerSocketService {
         AppLogger.i(_m, 'Connected');
       })
       ..on('notification:new', (raw) {
+        // Socket.IO may deliver data as Map or as List<dynamic> where [0] is the payload.
+        final Map<String, dynamic>? payload;
         if (raw is Map<String, dynamic>) {
+          payload = raw;
+        } else if (raw is List && raw.isNotEmpty && raw[0] is Map<String, dynamic>) {
+          payload = raw[0] as Map<String, dynamic>;
+        } else {
+          payload = null;
+        }
+        if (payload != null) {
           AppLogger.v(_m, 'Received notification:new');
-          _notifController.add(raw);
+          _notifController.add(payload);
+        } else {
+          AppLogger.w(_m, 'notification:new — unexpected payload type: ${raw.runtimeType}');
         }
       })
       ..onDisconnect((reason) {
@@ -78,29 +89,51 @@ class LedgerSocketService {
     _socket?.emit('ledger:leave', {'linkId': linkId});
   }
 
+  Map<String, dynamic>? _coerceMap(dynamic raw) {
+    if (raw is Map<String, dynamic>) return raw;
+    if (raw is List && raw.isNotEmpty && raw[0] is Map<String, dynamic>) {
+      return raw[0] as Map<String, dynamic>;
+    }
+    return null;
+  }
+
   /// Listen for a new entry being added to the ledger.
-  /// Returns a callback handle — call `off('ledger:entry_added', handle)` to remove.
+  /// Clears any existing handler for this event before registering to prevent accumulation.
   void onEntryAdded(void Function(Map<String, dynamic> data) handler) {
+    _socket?.off('ledger:entry_added');
     _socket?.on('ledger:entry_added', (raw) {
-      AppLogger.v(_m, 'Received ledger:entry_added');
-      if (raw is Map<String, dynamic>) handler(raw);
+      final payload = _coerceMap(raw);
+      if (payload != null) {
+        AppLogger.v(_m, 'Received ledger:entry_added');
+        handler(payload);
+      }
     });
   }
 
   /// Listen for an existing entry being updated (confirm / dispute).
+  /// Clears any existing handler for this event before registering to prevent accumulation.
   void onEntryUpdated(void Function(Map<String, dynamic> data) handler) {
+    _socket?.off('ledger:entry_updated');
     _socket?.on('ledger:entry_updated', (raw) {
-      AppLogger.v(_m, 'Received ledger:entry_updated');
-      if (raw is Map<String, dynamic>) handler(raw);
+      final payload = _coerceMap(raw);
+      if (payload != null) {
+        AppLogger.v(_m, 'Received ledger:entry_updated');
+        handler(payload);
+      }
     });
   }
 
   /// Listen for a membership change on the current ledger link (assign / request /
   /// approve / decline). Payload carries `{ linkId }`; the client refetches status.
+  /// Clears any existing handler for this event before registering to prevent accumulation.
   void onMembershipUpdated(void Function(Map<String, dynamic> data) handler) {
+    _socket?.off('membership:updated');
     _socket?.on('membership:updated', (raw) {
-      AppLogger.v(_m, 'Received membership:updated');
-      if (raw is Map<String, dynamic>) handler(raw);
+      final payload = _coerceMap(raw);
+      if (payload != null) {
+        AppLogger.v(_m, 'Received membership:updated');
+        handler(payload);
+      }
     });
   }
 

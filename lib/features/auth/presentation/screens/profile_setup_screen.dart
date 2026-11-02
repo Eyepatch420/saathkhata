@@ -23,36 +23,41 @@ import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
-  final String role; // 'vendor' or 'customer'
-
-  const ProfileSetupScreen({super.key, required this.role});
+  /// When arriving from OTP flow: extra = { 'signupToken': ..., 'phone': ... }
+  /// role is chosen on this screen (vendor / customer selector).
+  const ProfileSetupScreen({super.key});
 
   @override
   State<ProfileSetupScreen> createState() => _ProfileSetupScreenState();
 }
 
 class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
-  // Matches VENDOR_CATEGORIES in backend constants/index.ts
-  static const List<String> _vendorCategories = [
-    'Milk / Dairy',
-    'Press / Dhobi',
-    'Maid / Cook',
-    'Newspaper',
-    'Water Can',
-    'Tiffin / Food',
-    'Kirana / Grocery',
-    'Salon / Parlour',
-    'Construction Labour',
-    'Transport / Auto',
-    'Other',
+  List<String> _vendorCategories(AppLocalizations l10n) => [
+    l10n.businessCategoryMilkDairy,
+    l10n.businessCategoryPressDhobi,
+    l10n.businessCategoryMaidCook,
+    l10n.businessCategoryNewspaper,
+    l10n.businessCategoryWaterCan,
+    l10n.businessCategoryTiffinFood,
+    l10n.businessCategoryKiranaGrocery,
+    l10n.businessCategorySalonParlour,
+    l10n.businessCategoryConstructionLabour,
+    l10n.businessCategoryTransportAuto,
+    'Gym / Fitness',
+    l10n.businessCategoryOther,
   ];
 
   final _picker = ImagePicker();
 
+  // Extracted from route extra
+  late String _signupToken;
+  late String _phone;
+
+  // Role selection (replaces the old RoleSelectionScreen step here)
+  String _role = 'vendor';
+
   // Form state
-  String? _selectedCategory;
-  bool _obscurePassword = true;
-  bool _obscureConfirm = true;
+  final List<String> _selectedCategories = [];
   XFile? _pickedImage;
   bool _isUploadingPhoto = false;
   LocationData? _pickedLocation;
@@ -60,20 +65,23 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   // Controllers
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
   final _businessNameController = TextEditingController();
   final _businessAddressController = TextEditingController();
   final _upiController = TextEditingController();
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final extra =
+        GoRouterState.of(context).extra as Map<String, dynamic>? ?? {};
+    _signupToken = extra['signupToken'] as String? ?? '';
+    _phone = extra['phone'] as String? ?? '';
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
-    _phoneController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
     _businessNameController.dispose();
     _businessAddressController.dispose();
     _upiController.dispose();
@@ -83,7 +91,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   // ─── Photo picker ──────────────────────────────────────────────────────────
 
   Future<void> _pickImage(ImageSource source) async {
-    Navigator.pop(context); // close bottom sheet
+    Navigator.pop(context);
     try {
       final xFile = await _picker.pickImage(
         source: source,
@@ -91,9 +99,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         maxWidth: 800,
       );
       if (xFile != null) setState(() => _pickedImage = xFile);
-    } catch (_) {
-      // User denied permission or cancelled
-    }
+    } catch (_) {}
   }
 
   void _showPhotoOptions() {
@@ -118,22 +124,31 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             ),
             const SizedBox(height: 16),
             ListTile(
-              leading:
-                  const Icon(Icons.camera_alt_rounded, color: AppColors.primary),
-              title: const Text('Take a photo'),
+              leading: const Icon(
+                Icons.camera_alt_rounded,
+                color: AppColors.primary,
+              ),
+              title: Text(AppLocalizations.of(context)!.takePhoto),
               onTap: () => _pickImage(ImageSource.camera),
             ),
             ListTile(
-              leading: const Icon(Icons.photo_library_rounded,
-                  color: AppColors.primary),
-              title: const Text('Choose from gallery'),
+              leading: const Icon(
+                Icons.photo_library_rounded,
+                color: AppColors.primary,
+              ),
+              title: Text(AppLocalizations.of(context)!.chooseFromGallery),
               onTap: () => _pickImage(ImageSource.gallery),
             ),
             if (_pickedImage != null)
               ListTile(
-                leading: const Icon(Icons.delete_rounded, color: AppColors.error),
-                title: const Text('Remove photo',
-                    style: TextStyle(color: AppColors.error)),
+                leading: const Icon(
+                  Icons.delete_rounded,
+                  color: AppColors.error,
+                ),
+                title: Text(
+                  AppLocalizations.of(context)!.removePhoto,
+                  style: const TextStyle(color: AppColors.error),
+                ),
                 onTap: () {
                   setState(() => _pickedImage = null);
                   Navigator.pop(context);
@@ -146,18 +161,16 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     );
   }
 
-  // ─── Photo upload (called after successful signup) ─────────────────────────
+  // ─── Photo upload (after signup) ──────────────────────────────────────────
 
   Future<void> _uploadPhotoThenNavigate(AuthAuthenticated state) async {
-    // Capture the destination before any async gap.
-    final destination =
-        state.user.isVendor ? AppRouter.vendorHome : AppRouter.customerHome;
-
+    final destination = state.user.isVendor
+        ? AppRouter.vendorHome
+        : AppRouter.customerHome;
     if (_pickedImage == null) {
       if (mounted) context.go(destination);
       return;
     }
-
     setState(() => _isUploadingPhoto = true);
     try {
       final formData = FormData.fromMap({
@@ -167,10 +180,12 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           contentType: DioMediaType('image', 'jpeg'),
         ),
       });
-      await getIt<ApiClient>()
-          .postFormData(ApiEndpoints.uploadPhoto, formData: formData);
+      await getIt<ApiClient>().postFormData(
+        ApiEndpoints.uploadPhoto,
+        formData: formData,
+      );
     } catch (_) {
-      // Non-critical — user can update photo from profile later
+      // Non-critical — user can set photo from profile later
     } finally {
       if (mounted) {
         setState(() => _isUploadingPhoto = false);
@@ -179,61 +194,54 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     }
   }
 
-  // ─── Signup validation & dispatch ─────────────────────────────────────────
+  // ─── Submit ────────────────────────────────────────────────────────────────
 
   void _handleSignup(BuildContext ctx) {
+    final l10n = AppLocalizations.of(ctx)!;
     final name = _nameController.text.trim();
-    final email = _emailController.text.trim();
-    final phone = _phoneController.text.trim();
-    final password = _passwordController.text;
-    final confirm = _confirmPasswordController.text;
-
-    if (name.isEmpty || email.isEmpty || phone.isEmpty || password.isEmpty || confirm.isEmpty) {
-      AppToast.show(ctx, AppLocalizations.of(ctx)!.fillRequiredFields, type: ToastType.warning);
+    if (name.isEmpty) {
+      AppToast.show(ctx, l10n.nameRequired, type: ToastType.warning);
       return;
     }
-
-    // Mobile is required — it's a connection identifier (link by phone).
-    if (!RegExp(r'^[6-9]\d{9}$').hasMatch(phone)) {
-      AppToast.show(ctx, 'Enter a valid 10-digit mobile number', type: ToastType.error);
-      return;
-    }
-
-    if (password != confirm) {
-      AppToast.show(ctx, 'Passwords do not match', type: ToastType.error);
-      return;
-    }
-
-    if (password.length < 8) {
-      AppToast.show(ctx, 'Password must be at least 8 characters', type: ToastType.error);
+    if (_signupToken.isEmpty) {
+      AppToast.show(
+        ctx,
+        l10n.sessionExpiredVerifyPhoneAgain,
+        type: ToastType.error,
+      );
+      context.go(AppRouter.phoneEntry);
       return;
     }
 
     ctx.read<AuthBloc>().add(
-          AuthSignupRequested(
-            name: name,
-            email: email,
-            password: password,
-            role: widget.role,
-            mobile: phone,
-            upiId: _upiController.text.trim().isEmpty
-                ? null
-                : _upiController.text.trim(),
-            businessName: _businessNameController.text.trim().isEmpty
-                ? null
-                : _businessNameController.text.trim(),
-            businessCategory: _selectedCategory,
-            businessAddress: _businessAddressController.text.trim().isEmpty
-                ? null
-                : _businessAddressController.text.trim(),
-          ),
-        );
+      AuthSignupRequested(
+        signupToken: _signupToken,
+        name: name,
+        role: _role,
+        email: _emailController.text.trim().isEmpty
+            ? null
+            : _emailController.text.trim(),
+        upiId: _upiController.text.trim().isEmpty
+            ? null
+            : _upiController.text.trim(),
+        businessName: _businessNameController.text.trim().isEmpty
+            ? null
+            : _businessNameController.text.trim(),
+        businessCategory: _selectedCategories.isNotEmpty ? _selectedCategories.first : null,
+        businessCategories: _selectedCategories.isNotEmpty ? _selectedCategories : null,
+        businessAddress: _businessAddressController.text.trim().isEmpty
+            ? null
+            : _businessAddressController.text.trim(),
+        customerLatitude: _role == 'customer' ? _pickedLocation?.lat : null,
+        customerLongitude: _role == 'customer' ? _pickedLocation?.lng : null,
+        customerAddress: _role == 'customer' ? _pickedLocation?.displayName : null,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final isVendor = widget.role == 'vendor';
+    final isVendor = _role == 'vendor';
 
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (ctx, state) {
@@ -244,214 +252,374 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         }
       },
       builder: (ctx, state) {
+        final l10n = AppLocalizations.of(ctx)!;
         final isLoading = state is AuthLoading || _isUploadingPhoto;
         final loadingLabel = _isUploadingPhoto
-            ? 'Uploading photo...'
-            : l10n.getStarted.toUpperCase();
+            ? l10n.uploadingPhotoLabel
+            : l10n.createAccountButton;
 
         return Scaffold(
           appBar: AppBar(title: Text(l10n.completeProfile)),
-          body: SafeArea(child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // ─── Profile photo ───────────────────────────────────────
-                Center(
-                  child: GestureDetector(
-                    onTap: isLoading ? null : _showPhotoOptions,
-                    child: Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundColor:
-                              AppColors.primary.withValues(alpha: 0.1),
-                          backgroundImage: _pickedImage != null
-                              ? FileImage(File(_pickedImage!.path))
-                              : null,
-                          child: _pickedImage == null
-                              ? const Icon(Icons.person_outline,
-                                  size: 50, color: AppColors.primary)
-                              : null,
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: const BoxDecoration(
-                              color: AppColors.primary,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(Icons.camera_alt,
-                                size: 18, color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Center(
-                  child: Text(
-                    'Tap to add profile photo',
-                    style: TextStyle(
-                        color: AppColors.textSecondary, fontSize: 12),
-                  ),
-                ),
-                const SizedBox(height: 32),
-
-                // ─── Account credentials ─────────────────────────────────
-                CustomTextField(
-                  label: l10n.fullName,
-                  hintText: l10n.enterYourName,
-                  prefixIcon: Icons.person_rounded,
-                  controller: _nameController,
-                ),
-                const SizedBox(height: 20),
-                CustomTextField(
-                  label: l10n.email,
-                  hintText: 'you@example.com',
-                  prefixIcon: Icons.email_rounded,
-                  keyboardType: TextInputType.emailAddress,
-                  controller: _emailController,
-                ),
-                const SizedBox(height: 20),
-                CustomTextField(
-                  label: 'Mobile number',
-                  hintText: '10-digit mobile number',
-                  prefixIcon: Icons.phone_rounded,
-                  keyboardType: TextInputType.phone,
-                  controller: _phoneController,
-                ),
-                const SizedBox(height: 20),
-                CustomTextField(
-                  label: l10n.password,
-                  hintText: l10n.passwordMinChars,
-                  prefixIcon: Icons.lock_rounded,
-                  controller: _passwordController,
-                  obscureText: _obscurePassword,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility_off_rounded
-                          : Icons.visibility_rounded,
-                      color: AppColors.textHint,
-                    ),
-                    onPressed: () =>
-                        setState(() => _obscurePassword = !_obscurePassword),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                CustomTextField(
-                  label: 'Confirm Password',
-                  hintText: 'Re-enter your password',
-                  prefixIcon: Icons.lock_outline_rounded,
-                  controller: _confirmPasswordController,
-                  obscureText: _obscureConfirm,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureConfirm
-                          ? Icons.visibility_off_rounded
-                          : Icons.visibility_rounded,
-                      color: AppColors.textHint,
-                    ),
-                    onPressed: () =>
-                        setState(() => _obscureConfirm = !_obscureConfirm),
-                  ),
-                ),
-
-                // ─── Vendor-only fields ──────────────────────────────────
-                if (isVendor) ...[
-                  const SizedBox(height: 20),
-                  CustomTextField(
-                    label: l10n.businessName,
-                    hintText: l10n.egBusinessName,
-                    prefixIcon: Icons.store_rounded,
-                    controller: _businessNameController,
-                  ),
-                  const SizedBox(height: 20),
-                  Text(l10n.businessCategory,
-                      style: AppTypography.labelLarge),
-                  const SizedBox(height: 8),
-                  DropdownButtonFormField<String>(
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.category_rounded,
-                          color: AppColors.textSecondary),
-                      contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                    ),
-                    hint: Text(l10n.selectCategory),
-                    initialValue: _selectedCategory,
-                    items: _vendorCategories
-                        .map((cat) =>
-                            DropdownMenuItem(value: cat, child: Text(cat)))
-                        .toList(),
-                    onChanged: isLoading
-                        ? null
-                        : (val) => setState(() => _selectedCategory = val),
-                  ),
-                  const SizedBox(height: 20),
-                  LocationPickerTile(
-                    location: _pickedLocation,
-                    enabled: !isLoading,
-                    onTap: () async {
-                      final result = await context.push<LocationData>(
-                        AppRouter.locationPicker,
-                        extra: _pickedLocation,
-                      );
-                      if (result != null) {
-                        setState(() {
-                          _pickedLocation = result;
-                          _businessAddressController.text = result.displayName;
-                        });
-                      }
-                    },
-                  ),
-                ],
-
-                // ─── UPI (optional, both roles) ──────────────────────────
-                const SizedBox(height: 20),
-                CustomTextField(
-                  label: '${l10n.upiId} (optional)',
-                  hintText: l10n.upiHint,
-                  prefixIcon: Icons.payments_rounded,
-                  controller: _upiController,
-                ),
-                const SizedBox(height: 40),
-
-                PrimaryButton(
-                  label: loadingLabel,
-                  isLoading: isLoading,
-                  onPressed:
-                      isLoading ? null : () => _handleSignup(ctx),
-                ),
-                const SizedBox(height: 16),
-                Center(
-                  child: TextButton(
-                    onPressed: isLoading ? null : () => ctx.pop(),
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'Already have an account? ',
-                        style: AppTypography.bodyMedium
-                            .copyWith(color: AppColors.textSecondary),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // ─── Profile photo ─────────────────────────────────────
+                  Center(
+                    child: GestureDetector(
+                      onTap: isLoading ? null : _showPhotoOptions,
+                      child: Stack(
                         children: [
-                          TextSpan(
-                            text: 'Login',
-                            style: AppTypography.bodyMedium.copyWith(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.bold,
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundColor: AppColors.primary.withValues(
+                              alpha: 0.1,
+                            ),
+                            backgroundImage: _pickedImage != null
+                                ? FileImage(File(_pickedImage!.path))
+                                : null,
+                            child: _pickedImage == null
+                                ? const Icon(
+                                    Icons.person_outline,
+                                    size: 50,
+                                    color: AppColors.primary,
+                                  )
+                                : null,
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: const BoxDecoration(
+                                color: AppColors.primary,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.camera_alt,
+                                size: 18,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-              ],
+                  const SizedBox(height: 8),
+                  Center(
+                    child: Text(
+                      l10n.tapToAddProfilePhoto,
+                      style: const TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // ─── Phone (pre-filled, locked) ────────────────────────
+                  if (_phone.isNotEmpty) ...[
+                    Text(
+                      l10n.phoneNumberLabel,
+                      style: AppTypography.labelLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppColors.divider),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.phone_android_rounded,
+                            color: AppColors.textSecondary,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Text('+91 $_phone', style: AppTypography.bodyMedium),
+                          const Spacer(),
+                          const Icon(
+                            Icons.lock_outline_rounded,
+                            color: AppColors.textHint,
+                            size: 16,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+
+                  // ─── Role toggle ───────────────────────────────────────
+                  Text(l10n.iAmA, style: AppTypography.labelLarge),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => setState(() => _role = 'vendor'),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            decoration: BoxDecoration(
+                              color: _role == 'vendor'
+                                  ? AppColors.primary.withValues(alpha: 0.12)
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: _role == 'vendor'
+                                    ? AppColors.primary
+                                    : AppColors.divider,
+                                width: _role == 'vendor' ? 1.5 : 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.storefront_rounded,
+                                  color: _role == 'vendor'
+                                      ? AppColors.primary
+                                      : AppColors.textSecondary,
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  l10n.vendor,
+                                  style: AppTypography.bodyMedium.copyWith(
+                                    color: _role == 'vendor'
+                                        ? AppColors.primary
+                                        : AppColors.textSecondary,
+                                    fontWeight: _role == 'vendor'
+                                        ? FontWeight.w600
+                                        : FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => setState(() => _role = 'customer'),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            decoration: BoxDecoration(
+                              color: _role == 'customer'
+                                  ? AppColors.customerAccent.withValues(
+                                      alpha: 0.12,
+                                    )
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: _role == 'customer'
+                                    ? AppColors.customerAccent
+                                    : AppColors.divider,
+                                width: _role == 'customer' ? 1.5 : 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.person_search_rounded,
+                                  color: _role == 'customer'
+                                      ? AppColors.customerAccent
+                                      : AppColors.textSecondary,
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  l10n.customer,
+                                  style: AppTypography.bodyMedium.copyWith(
+                                    color: _role == 'customer'
+                                        ? AppColors.customerAccent
+                                        : AppColors.textSecondary,
+                                    fontWeight: _role == 'customer'
+                                        ? FontWeight.w600
+                                        : FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // ─── Name ──────────────────────────────────────────────
+                  CustomTextField(
+                    label: l10n.fullName,
+                    hintText: l10n.enterYourName,
+                    prefixIcon: Icons.person_rounded,
+                    controller: _nameController,
+                  ),
+                  const SizedBox(height: 20),
+
+                  // ─── Email (optional) ──────────────────────────────────
+                  CustomTextField(
+                    label: l10n.emailOptionalLabel,
+                    hintText: l10n.emailPlaceholder,
+                    prefixIcon: Icons.email_rounded,
+                    keyboardType: TextInputType.emailAddress,
+                    controller: _emailController,
+                  ),
+
+                  // ─── Vendor-only fields ────────────────────────────────
+                  if (isVendor) ...[
+                    const SizedBox(height: 20),
+                    CustomTextField(
+                      label: l10n.businessName,
+                      hintText: l10n.egBusinessName,
+                      prefixIcon: Icons.store_rounded,
+                      controller: _businessNameController,
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(l10n.businessCategory, style: AppTypography.labelLarge),
+                        Text(
+                          l10n.customCategoryCountLabel(
+                      _selectedCategories.length),
+                          style: AppTypography.bodySmall.copyWith(
+                            color: _selectedCategories.length >= 3
+                                ? AppColors.error
+                                : AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        children: _vendorCategories(l10n).map((cat) {
+                          final isSelected = _selectedCategories.contains(cat);
+                          final isDisabled = !isSelected && _selectedCategories.length >= 3;
+                          return CheckboxListTile(
+                            value: isSelected,
+                            onChanged: isLoading || isDisabled
+                                ? null
+                                : (val) {
+                                    setState(() {
+                                      if (val == true) {
+                                        _selectedCategories.add(cat);
+                                      } else {
+                                        _selectedCategories.remove(cat);
+                                      }
+                                    });
+                                  },
+                            title: Text(
+                              cat,
+                              style: TextStyle(
+                                color: isDisabled ? AppColors.textHint : null,
+                              ),
+                            ),
+                            dense: true,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    LocationPickerTile(
+                      location: _pickedLocation,
+                      enabled: !isLoading,
+                      onTap: () async {
+                        final result = await context.push<LocationData>(
+                          AppRouter.locationPicker,
+                          extra: _pickedLocation,
+                        );
+                        if (result != null) {
+                          setState(() {
+                            _pickedLocation = result;
+                            _businessAddressController.text =
+                                result.displayName;
+                          });
+                        }
+                      },
+                    ),
+                  ],
+
+                  // ─── Customer-only: location picker ───────────────────
+                  if (!isVendor) ...[
+                    const SizedBox(height: 20),
+                    LocationPickerTile(
+                      location: _pickedLocation,
+                      enabled: !isLoading,
+                      onTap: () async {
+                        final result = await context.push<LocationData>(
+                          AppRouter.locationPicker,
+                          extra: _pickedLocation,
+                        );
+                        if (result != null) {
+                          setState(() => _pickedLocation = result);
+                        }
+                      },
+                    ),
+                  ],
+
+                  // ─── UPI (optional) ────────────────────────────────────
+                  const SizedBox(height: 20),
+                  CustomTextField(
+                    label: l10n.upiIdOptionalLabel,
+                    hintText: l10n.upiHint,
+                    prefixIcon: Icons.payments_rounded,
+                    controller: _upiController,
+                  ),
+                  const SizedBox(height: 40),
+
+                  PrimaryButton(
+                    label: loadingLabel,
+                    isLoading: isLoading,
+                    onPressed: isLoading ? null : () => _handleSignup(ctx),
+                  ),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: TextButton(
+                      onPressed: isLoading ? null : () => ctx.pop(),
+                      child: RichText(
+                        text: TextSpan(
+                          text: '${l10n.alreadyHaveAccount} ',
+                          style: AppTypography.bodyMedium.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: l10n.goBackButton,
+                              style: AppTypography.bodyMedium.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
-          ),
           ),
         );
       },

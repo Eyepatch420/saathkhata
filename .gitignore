@@ -32,6 +32,10 @@ Icon
 .cursorignore
 .cursorindexingignore
 
+# graphify knowledge-graph output (generated, large, machine-specific)
+.graphify/
+graphify-out/
+
 # ─── Flutter / Dart / Pub ────────────────────────────────────────────────────
 **/doc/api/
 **/ios/Flutter/.last_build_id

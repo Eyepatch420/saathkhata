@@ -12,6 +12,7 @@ import '../../features/shared_ledger/domain/repositories/ledger_repository.dart'
 
 import '../../features/staff/data/repositories/staff_repository_impl.dart';
 import '../../features/staff/domain/repositories/staff_repository.dart';
+import '../../features/staff_portal/data/staff_portal_repository.dart';
 
 import '../../features/notifications/data/repositories/notification_repository_impl.dart';
 import '../../features/notifications/domain/repositories/notification_repository.dart';
@@ -36,9 +37,16 @@ import '../../features/memberships/domain/repositories/membership_repository.dar
 import '../../features/voice_entry/data/repositories/voice_repository_impl.dart';
 import '../../features/voice_entry/domain/repositories/voice_repository.dart';
 import '../services/speech_service.dart';
+import '../../features/bulk_charge/data/repositories/template_repository.dart';
+import '../../features/orders/data/repositories/order_repository_impl.dart';
+import '../../features/orders/domain/repositories/order_repository.dart';
+
+import '../../features/schedule/data/repositories/schedule_repository_impl.dart';
+import '../../features/schedule/domain/repositories/schedule_repository.dart';
 
 // Auth + network
 import '../services/storage_service.dart';
+import '../services/ledger_attachment_service.dart';
 import '../services/ledger_socket_service.dart';
 import '../network/api_client.dart';
 import '../network/api_endpoints.dart';
@@ -47,6 +55,7 @@ import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/vendor/presentation/bloc/vendor_bloc.dart';
+import '../../features/customer/presentation/bloc/customer_bloc.dart';
 import '../../features/notifications/presentation/bloc/notification_bloc.dart';
 import '../services/push_notification_service.dart';
 
@@ -61,12 +70,14 @@ Future<void> configureDependencies() async {
   getIt.registerSingleton<StorageService>(storage);
   AppLogger.i(module, 'StorageService ready');
 
+  AppLogger.i(module, 'Registering Auth services');
+  final authStateNotifier = AuthStateNotifier();
+  getIt.registerSingleton<AuthStateNotifier>(authStateNotifier);
+
   AppLogger.i(module, 'Registering ApiClient (base: ${ApiEndpoints.baseUrl})');
-  final apiClient = ApiClient(storage);
+  final apiClient = ApiClient(storage, authStateNotifier);
   getIt.registerSingleton<ApiClient>(apiClient);
 
-  AppLogger.i(module, 'Registering Auth services');
-  getIt.registerSingleton<AuthStateNotifier>(AuthStateNotifier());
   getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl(apiClient));
   getIt.registerFactory<AuthBloc>(
     () => AuthBloc(
@@ -79,7 +90,9 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<VendorRepository>(() => VendorRepositoryImpl(apiClient));
   getIt.registerLazySingleton<CustomerRepository>(() => CustomerRepositoryImpl(apiClient));
   getIt.registerLazySingleton<LedgerRepository>(() => LedgerRepositoryImpl(apiClient));
+  getIt.registerLazySingleton<LedgerAttachmentService>(() => LedgerAttachmentService(apiClient));
   getIt.registerLazySingleton<StaffRepository>(() => StaffRepositoryImpl(apiClient));
+  getIt.registerLazySingleton<StaffPortalRepository>(() => StaffPortalRepository(apiClient));
   getIt.registerLazySingleton<NotificationRepository>(() => NotificationRepositoryImpl(apiClient));
   getIt.registerLazySingleton<BookingRepository>(() => BookingRepositoryImpl(apiClient));
   getIt.registerLazySingleton<PaymentRepository>(() => PaymentRepositoryImpl(apiClient));
@@ -91,7 +104,10 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<VoiceRepository>(
       () => VoiceRepositoryImpl(apiClient));
   getIt.registerLazySingleton<SpeechService>(() => SpeechService());
-  AppLogger.i(module, 'All repositories registered (11 lazy singletons + SpeechService)');
+  getIt.registerLazySingleton<TemplateRepository>(() => TemplateRepository(apiClient));
+  getIt.registerLazySingleton<OrderRepository>(() => OrderRepositoryImpl(apiClient));
+  getIt.registerLazySingleton<ScheduleRepository>(() => ScheduleRepositoryImpl(apiClient));
+  AppLogger.i(module, 'All repositories registered (13 lazy singletons + SpeechService)');
 
   // SearchCubit — factory: fresh instance + debounce per screen
   getIt.registerFactory<SearchCubit>(() => SearchCubit(getIt<SearchRepository>()));
@@ -105,6 +121,7 @@ Future<void> configureDependencies() async {
       () => LinkRequestCubit(getIt<LinkRequestRepository>()));
 
   getIt.registerLazySingleton<VendorBloc>(() => VendorBloc(getIt<VendorRepository>()));
+  getIt.registerLazySingleton<CustomerBloc>(() => CustomerBloc(getIt<CustomerRepository>()));
 
   // PushNotificationService depends on LedgerSocketService for the WebSocket notification stream.
   getIt.registerLazySingleton<PushNotificationService>(

@@ -32,6 +32,7 @@ class UserSummary extends Equatable {
 class VendorSummary extends UserSummary {
   final String? businessName;
   final String? businessCategory;
+  final List<String>? businessCategories;
 
   const VendorSummary({
     required super.id,
@@ -41,7 +42,11 @@ class VendorSummary extends UserSummary {
     super.upiId,
     this.businessName,
     this.businessCategory,
+    this.businessCategories,
   });
+
+  String? get primaryCategory =>
+      businessCategories?.isNotEmpty == true ? businessCategories!.first : businessCategory;
 
   factory VendorSummary.fromJson(Map<String, dynamic> json) => VendorSummary(
         id: json['id'] as String,
@@ -51,6 +56,9 @@ class VendorSummary extends UserSummary {
         upiId: json['upiId'] as String?,
         businessName: json['businessName'] as String?,
         businessCategory: json['businessCategory'] as String?,
+        businessCategories: (json['businessCategories'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList(),
       );
 
   @override
@@ -58,6 +66,7 @@ class VendorSummary extends UserSummary {
         ...super.props,
         businessName,
         businessCategory,
+        businessCategories,
       ];
 }
 
@@ -65,37 +74,104 @@ class VendorSummary extends UserSummary {
 class CustomerLinkItem extends Equatable {
   final String linkId;
   final double balance;
+
+  /// Vendor's nickname for this customer. Null means use customer.name.
+  final String? nickname;
+
   final UserSummary customer;
   final String createdAt;
 
   /// Membership tier this customer holds with the vendor, null if none.
-  final int? tierLevel; // 1 = lowest, 3 = highest
+  final int? tierLevel;
   final String? tierName;
+
+  final String? defaultProduct;
+  final String? defaultUnit;
+  final double? defaultQty;
+  final double? defaultPricePerUnit;
 
   const CustomerLinkItem({
     required this.linkId,
     required this.balance,
+    this.nickname,
     required this.customer,
     required this.createdAt,
     this.tierLevel,
     this.tierName,
+    this.defaultProduct,
+    this.defaultUnit,
+    this.defaultQty,
+    this.defaultPricePerUnit,
   });
+
+  /// The display name: nickname if set, otherwise the actual login name.
+  String get displayName => nickname?.isNotEmpty == true ? nickname! : customer.name;
+
+  /// The sub-label shown below the display name. Null if nickname is not set.
+  String? get subName => nickname?.isNotEmpty == true ? customer.name : null;
+
+  CustomerLinkItem copyWith({
+    double? balance,
+    String? nickname,
+    int? tierLevel,
+    String? tierName,
+    String? defaultProduct,
+    String? defaultUnit,
+    double? defaultQty,
+    double? defaultPricePerUnit,
+    bool clearDefaultProduct = false,
+    bool clearDefaultUnit = false,
+    bool clearDefaultQty = false,
+    bool clearDefaultPrice = false,
+  }) =>
+      CustomerLinkItem(
+        linkId: linkId,
+        balance: balance ?? this.balance,
+        nickname: nickname ?? this.nickname,
+        customer: customer,
+        createdAt: createdAt,
+        tierLevel: tierLevel ?? this.tierLevel,
+        tierName: tierName ?? this.tierName,
+        defaultProduct:
+            clearDefaultProduct ? null : (defaultProduct ?? this.defaultProduct),
+        defaultUnit: clearDefaultUnit ? null : (defaultUnit ?? this.defaultUnit),
+        defaultQty: clearDefaultQty ? null : (defaultQty ?? this.defaultQty),
+        defaultPricePerUnit: clearDefaultPrice
+            ? null
+            : (defaultPricePerUnit ?? this.defaultPricePerUnit),
+      );
 
   factory CustomerLinkItem.fromJson(Map<String, dynamic> json) {
     final tier = json['tier'] as Map<String, dynamic>?;
     return CustomerLinkItem(
       linkId: json['linkId'] as String,
       balance: (json['balance'] as num? ?? 0).toDouble(),
+      nickname: json['nickname'] as String?,
       customer: UserSummary.fromJson(json['customer'] as Map<String, dynamic>),
       createdAt: json['createdAt'] as String,
       tierLevel: (tier?['level'] as num?)?.toInt(),
       tierName: tier?['name'] as String?,
+      defaultProduct: json['defaultProduct'] as String?,
+      defaultUnit: json['defaultUnit'] as String?,
+      defaultQty: (json['defaultQty'] as num?)?.toDouble(),
+      defaultPricePerUnit: (json['defaultPricePerUnit'] as num?)?.toDouble(),
     );
   }
 
   @override
-  List<Object?> get props =>
-      [linkId, balance, customer, createdAt, tierLevel, tierName];
+  List<Object?> get props => [
+        linkId,
+        balance,
+        nickname,
+        customer,
+        createdAt,
+        tierLevel,
+        tierName,
+        defaultProduct,
+        defaultUnit,
+        defaultQty,
+        defaultPricePerUnit,
+      ];
 }
 
 /// Response from POST /api/v1/links/remind-all
@@ -118,23 +194,57 @@ class RemindAllResult extends Equatable {
 class VendorLinkItem extends Equatable {
   final String linkId;
   final double balance;
+
+  /// Customer's nickname for this vendor. Null means use vendor.name.
+  final String? nickname;
+
   final VendorSummary vendor;
   final String createdAt;
+
+  /// True when the customer has sent a request that the vendor hasn't accepted yet.
+  final bool isPending;
+
+  /// Customer's preference: when true, vendor credit entries on this link are auto-confirmed.
+  final bool customerAutoConfirm;
 
   const VendorLinkItem({
     required this.linkId,
     required this.balance,
+    this.nickname,
     required this.vendor,
     required this.createdAt,
+    this.isPending = false,
+    this.customerAutoConfirm = true,
   });
+
+  /// The display name: nickname if set, otherwise the business/login name.
+  String get displayName =>
+      nickname?.isNotEmpty == true ? nickname! : (vendor.businessName ?? vendor.name);
+
+  /// The sub-label shown below the display name. Null if nickname is not set.
+  String? get subName =>
+      nickname?.isNotEmpty == true ? (vendor.businessName ?? vendor.name) : null;
+
+  VendorLinkItem copyWith({bool? customerAutoConfirm}) => VendorLinkItem(
+        linkId: linkId,
+        balance: balance,
+        nickname: nickname,
+        vendor: vendor,
+        createdAt: createdAt,
+        isPending: isPending,
+        customerAutoConfirm: customerAutoConfirm ?? this.customerAutoConfirm,
+      );
 
   factory VendorLinkItem.fromJson(Map<String, dynamic> json) => VendorLinkItem(
         linkId: json['linkId'] as String,
         balance: (json['balance'] as num? ?? 0).toDouble(),
+        nickname: json['nickname'] as String?,
         vendor: VendorSummary.fromJson(json['vendor'] as Map<String, dynamic>),
         createdAt: json['createdAt'] as String,
+        isPending: json['isPending'] as bool? ?? false,
+        customerAutoConfirm: json['customerAutoConfirm'] as bool? ?? true,
       );
 
   @override
-  List<Object?> get props => [linkId, balance, vendor, createdAt];
+  List<Object?> get props => [linkId, balance, nickname, vendor, createdAt, isPending, customerAutoConfirm];
 }

@@ -1,11 +1,19 @@
+import 'dart:convert';
+import 'dart:math';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../features/auth/data/models/user_model.dart';
+import '../../features/auth/data/models/upi_id_model.dart';
 
 class StorageService {
   // Hive box for non-sensitive prefs (locale only)
   static const String _boxName = 'saath_khata_prefs';
   static const String _localeKey = 'app_locale';
+
+  /// Stable, non-sensitive install identity for the OTP flow. It is *not* a
+  /// credential: the server only uses it to tell one device from another when the
+  /// same phone number is authenticating in two places at once.
+  static const String _otpDeviceIdKey = 'otp_device_id';
 
   // Flutter Secure Storage keys
   static const String _accessTokenKey = 'access_token';
@@ -25,6 +33,8 @@ class StorageService {
   static const String _vendorBusinessNameKey = 'vendor_business_name';
   static const String _vendorBusinessCategoryKey = 'vendor_business_category';
   static const String _vendorBusinessAddressKey = 'vendor_business_address';
+  static const String _vendorUpiIdsKey = 'vendor_upi_ids';
+  static const String _staffProfileKey = 'staff_profile';
 
   late Box _box;
   final FlutterSecureStorage _secure = const FlutterSecureStorage(
@@ -40,6 +50,25 @@ class StorageService {
 
   String? getLocale() => _box.get(_localeKey) as String?;
   Future<void> setLocale(String localeCode) => _box.put(_localeKey, localeCode);
+
+  // ─── OTP device identity (Hive) ────────────────────────────────────────────
+
+  /// Returns this install's OTP device id, creating it on first use.
+  ///
+  /// Generated with `Random.secure()` so two installs can never collide, and kept
+  /// in Hive rather than secure storage because it is an identifier, not a secret.
+  /// A failure here must never block authentication, so callers treat `null` as
+  /// "unknown device" and the backend falls back to single-device behaviour.
+  Future<String?> getOrCreateOtpDeviceId() async {
+    final existing = _box.get(_otpDeviceIdKey) as String?;
+    if (existing != null && existing.length >= 8) return existing;
+
+    final random = Random.secure();
+    final bytes = List<int>.generate(16, (_) => random.nextInt(256));
+    final id = bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+    await _box.put(_otpDeviceIdKey, id);
+    return id;
+  }
 
   // ─── Onboarding flag ───────────────────────────────────────────────────────
 
@@ -78,6 +107,11 @@ class StorageService {
 
   /// Saves all profile fields from a [UserModel] into secure storage.
   Future<void> saveFullUser(UserModel user) async {
+    final upiIdsJson = jsonEncode(
+      (user.upiIds ?? [])
+          .map((u) => {'id': u.id, 'upiId': u.upiId, 'isPrimary': u.isPrimary})
+          .toList(),
+    );
     await Future.wait([
       _secure.write(key: _userIdKey, value: user.id),
       _secure.write(key: _userNameKey, value: user.name),
@@ -89,6 +123,19 @@ class StorageService {
       _secure.write(key: _vendorBusinessNameKey, value: user.businessName ?? ''),
       _secure.write(key: _vendorBusinessCategoryKey, value: user.businessCategory ?? ''),
       _secure.write(key: _vendorBusinessAddressKey, value: user.businessAddress ?? ''),
+      _secure.write(key: _vendorUpiIdsKey, value: upiIdsJson),
+      _secure.write(
+        key: _staffProfileKey,
+        value: user.staffProfile == null
+            ? ''
+            : jsonEncode({
+                'staffId': user.staffProfile!.staffId,
+                'vendorId': user.staffProfile!.vendorId,
+                'businessName': user.staffProfile!.businessName,
+                'businessCategory': user.staffProfile!.businessCategory,
+                'qrCodeUrl': user.staffProfile!.qrCodeUrl,
+              }),
+      ),
     ]);
   }
 
@@ -100,10 +147,34 @@ class StorageService {
 
     String? nz(String? v) => (v == null || v.isEmpty) ? null : v;
 
+    List<UpiIdModel>? upiIds;
+    final upiIdsRaw = await _secure.read(key: _vendorUpiIdsKey);
+    if (upiIdsRaw != null && upiIdsRaw.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(upiIdsRaw) as List<dynamic>;
+        upiIds = decoded
+            .map((e) => UpiIdModel.fromJson(e as Map<String, dynamic>))
+            .toList();
+      } catch (_) {
+        upiIds = null;
+      }
+    }
+
+    StaffProfile? staffProfile;
+    final staffRaw = await _secure.read(key: _staffProfileKey);
+    if (staffRaw != null && staffRaw.isNotEmpty) {
+      try {
+        staffProfile =
+            StaffProfile.fromJson(jsonDecode(staffRaw) as Map<String, dynamic>);
+      } catch (_) {
+        staffProfile = null;
+      }
+    }
+
     return UserModel(
       id: id,
       name: await _secure.read(key: _userNameKey) ?? '',
-      email: await _secure.read(key: _userEmailKey) ?? '',
+      email: nz(await _secure.read(key: _userEmailKey)) ?? '',
       role: role,
       mobile: nz(await _secure.read(key: _userMobileKey)),
       upiId: nz(await _secure.read(key: _userUpiIdKey)),
@@ -111,6 +182,8 @@ class StorageService {
       businessName: nz(await _secure.read(key: _vendorBusinessNameKey)),
       businessCategory: nz(await _secure.read(key: _vendorBusinessCategoryKey)),
       businessAddress: nz(await _secure.read(key: _vendorBusinessAddressKey)),
+      upiIds: upiIds,
+      staffProfile: staffProfile,
     );
   }
 
@@ -134,6 +207,8 @@ class StorageService {
         _secure.delete(key: _vendorBusinessNameKey),
         _secure.delete(key: _vendorBusinessCategoryKey),
         _secure.delete(key: _vendorBusinessAddressKey),
+        _secure.delete(key: _vendorUpiIdsKey),
+        _secure.delete(key: _staffProfileKey),
       ]);
 
   Future<void> clearAll() => Future.wait([clearTokens(), clearUser()]);
