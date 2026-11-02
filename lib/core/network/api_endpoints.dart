@@ -1,14 +1,21 @@
 class ApiEndpoints {
   /// Base URL for every API call.
   ///
-  /// Defaults to the Android-emulator loopback alias (`10.0.2.2` = the host
-  /// machine). Override at build time for a physical device on the same Wi-Fi
-  /// or for a released build:
+  /// Defaults to the **deployed backend**, so a plain `flutter run` on a
+  /// physical device (or an emulator) talks to a real server. The previous
+  /// default was `http://10.0.2.2:3001/api/v1`, which is only the Android
+  /// emulator's alias for the host machine: on a real phone that address is
+  /// unroutable, so every request sat until Dio's 15s connect timeout and the
+  /// OTP screen showed "The request timed out. Check your connection and try
+  /// again."
   ///
-  ///   flutter build apk --dart-define=API_BASE_URL=http://192.168.0.107:3001/api/v1
+  /// Override at build time to target a backend running on this machine
+  /// (`flutter run` must be restarted — this is a compile-time constant):
+  ///
+  ///   flutter run --dart-define=API_BASE_URL=http://192.168.0.107:3001/api/v1
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://10.0.2.2:3001/api/v1',
+    defaultValue: 'http://45.195.159.30:3001/api/v1',
   );
 
   // Auth — OTP
@@ -39,7 +46,8 @@ class ApiEndpoints {
   static const String myVendors = '/links/vendors';
   static const String remindAll = '/links/remind-all';
   static String linkById(String id) => '/links/$id';
-  static String vendorCustomerByLinkId(String linkId) => '/links/$linkId/customer-item';
+  static String vendorCustomerByLinkId(String linkId) =>
+      '/links/$linkId/customer-item';
   static String linkNickname(String id) => '/links/$id/nickname';
   static String linkDefaults(String id) => '/links/$id/defaults';
   static String linkAutoConfirm(String id) => '/links/$id/auto-confirm';
@@ -91,7 +99,8 @@ class ApiEndpoints {
   static String bookingById(String id) => '/bookings/$id';
   // Per-date slot overrides / capacity / replicate / merge
   static String dateSlots(String date) => '/bookings/date-slots/$date';
-  static String dateSlotsClosed(String date) => '/bookings/date-slots/$date/closed';
+  static String dateSlotsClosed(String date) =>
+      '/bookings/date-slots/$date/closed';
   static const String replicateDateSlots = '/bookings/date-slots/replicate';
   static const String mergeDateSlots = '/bookings/date-slots/merge';
 
@@ -103,7 +112,8 @@ class ApiEndpoints {
   static const String vendorSendLinkRequest = '/link-requests/vendor-send';
   static const String customerSendLinkRequest = '/link-requests/customer-send';
   static const String pendingLinkRequests = '/link-requests/pending';
-  static const String pendingCustomerLinkRequests = '/link-requests/pending-customer';
+  static const String pendingCustomerLinkRequests =
+      '/link-requests/pending-customer';
   static const String sentLinkRequests = '/link-requests/sent';
   static const String vendorSentLinkRequests = '/link-requests/vendor-sent';
   static String linkRequestById(String id) => '/link-requests/$id';
@@ -119,9 +129,12 @@ class ApiEndpoints {
   static String decrementBenefit(String membershipId) =>
       '/memberships/members/$membershipId/decrement-benefit';
   static String membershipStatus(String linkId) => '/memberships/links/$linkId';
-  static String enrollMember(String linkId) => '/memberships/links/$linkId/enroll';
-  static String requestMembership(String linkId) => '/memberships/links/$linkId/request';
-  static const String pendingMembershipRequests = '/memberships/requests/pending';
+  static String enrollMember(String linkId) =>
+      '/memberships/links/$linkId/enroll';
+  static String requestMembership(String linkId) =>
+      '/memberships/links/$linkId/request';
+  static const String pendingMembershipRequests =
+      '/memberships/requests/pending';
   static String approveMembershipRequest(String id) =>
       '/memberships/requests/$id/approve';
   static String declineMembershipRequest(String id) =>
@@ -134,7 +147,8 @@ class ApiEndpoints {
 
   // Search (authenticated — both roles)
   static const String searchVendors = '/search/vendors';
-  static String vendorPublicProfile(String vendorId) => '/search/vendors/$vendorId';
+  static String vendorPublicProfile(String vendorId) =>
+      '/search/vendors/$vendorId';
 
   // Orders
   static const String placeOrder = '/orders';
@@ -147,7 +161,8 @@ class ApiEndpoints {
   // Reports (vendor-only)
   static const String reportSummary = '/reports/summary';
   static const String reportCustomers = '/reports/customers';
-  static String reportCustomerDetail(String linkId) => '/reports/customers/$linkId';
+  static String reportCustomerDetail(String linkId) =>
+      '/reports/customers/$linkId';
   static const String reportOutstanding = '/reports/outstanding';
   static const String reportCollectedToday = '/reports/collected-today';
   static const String reportMonthly = '/reports/monthly';
@@ -158,12 +173,17 @@ class ApiEndpoints {
   static String scheduleServiceSubscriptions(String serviceId) =>
       '/schedule/services/$serviceId/subscriptions';
   static const String scheduleSubscriptions = '/schedule/subscriptions';
-  static String scheduleSubscriptionById(String id) => '/schedule/subscriptions/$id';
-  static String scheduleSubscriptionPause(String id) => '/schedule/subscriptions/$id/pause';
-  static String scheduleSubscriptionResume(String id) => '/schedule/subscriptions/$id/resume';
+  static String scheduleSubscriptionById(String id) =>
+      '/schedule/subscriptions/$id';
+  static String scheduleSubscriptionPause(String id) =>
+      '/schedule/subscriptions/$id/pause';
+  static String scheduleSubscriptionResume(String id) =>
+      '/schedule/subscriptions/$id/resume';
   static const String scheduleDeliveries = '/schedule/deliveries';
-  static String scheduleDeliveryDeliver(String id) => '/schedule/deliveries/$id/deliver';
-  static String scheduleDeliverySkip(String id) => '/schedule/deliveries/$id/skip';
+  static String scheduleDeliveryDeliver(String id) =>
+      '/schedule/deliveries/$id/deliver';
+  static String scheduleDeliverySkip(String id) =>
+      '/schedule/deliveries/$id/skip';
   static const String scheduleMySubscriptions = '/schedule/my/subscriptions';
   static const String scheduleMyDeliveries = '/schedule/my/deliveries';
 }

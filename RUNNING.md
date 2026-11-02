@@ -48,7 +48,36 @@ flutter pub get
 
 ---
 
-## 3. Running on Android
+## 3. API base URL (which backend the app talks to)
+
+`lib/core/network/api_endpoints.dart` holds the single base URL used by every
+API call (and by the Socket.IO connection, which strips `/api/v1`).
+
+| Target | Base URL |
+|--------|----------|
+| **Default (deployed)** | `http://45.195.159.30:3001/api/v1` |
+| Local backend, Android emulator | `http://10.0.2.2:3001/api/v1` |
+| Local backend, physical device on the same Wi-Fi | `http://<mac-lan-ip>:3001/api/v1` |
+
+The deployed backend is the default, so `flutter run` works on a real phone
+without extra flags. To point at a backend running on your machine:
+
+```bash
+npm run dev                        # in ../saath_khata_backend  (:3001)
+flutter run --dart-define=API_BASE_URL=http://192.168.0.107:3001/api/v1
+```
+
+> It is a **compile-time** `String.fromEnvironment` constant: hot reload and
+> hot restart do not pick up a new value — stop the app and run it again.
+
+Because the API is plain `http://` on a bare IP, Android's cleartext policy has
+to allow those hosts: see `android/app/src/main/res/xml/network_security_config.xml`
+(referenced from `AndroidManifest.xml`). Add a new host there if you change the
+LAN IP. iOS additionally needs an ATS exception for non-TLS hosts.
+
+---
+
+## 4. Running on Android
 
 ### Debug (hot-reload enabled)
 ```bash
@@ -88,7 +117,7 @@ Output is at `build/app/outputs/bundle/release/app-release.aab`.
 
 ---
 
-## 4. Running on iOS
+## 5. Running on iOS
 
 > Requires macOS with Xcode installed and a valid Apple developer account for physical devices.
 
@@ -120,7 +149,7 @@ Then open `build/ios/archive/Runner.xcarchive` in Xcode to distribute.
 
 ---
 
-## 5. Running on other platforms
+## 6. Running on other platforms
 
 ```bash
 # macOS
@@ -138,7 +167,7 @@ flutter run -d windows
 
 ---
 
-## 6. Useful flags
+## 7. Useful flags
 
 | Flag | Effect |
 |------|--------|
@@ -151,7 +180,7 @@ flutter run -d windows
 
 ---
 
-## 7. LocationIQ API key notes
+## 8. LocationIQ API key notes
 
 | Feature | Endpoint used |
 |---------|--------------|
@@ -164,7 +193,7 @@ If the key is missing the map will show blank tiles and search will return no re
 
 ---
 
-## 8. Troubleshooting
+## 9. Troubleshooting
 
 **`Bad state: No element` / dotenv error on startup**
 → Make sure `.env` exists in the project root and contains `LOCATIONIQ_API_KEY`.
